@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Artist Schedule</title>
+<link rel="stylesheet" href="../css/main.css">
+<script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="../js/admin.js" defer></script>
+</head>
+
+<body>
+
+<header>
+  <h1>🎤 Lịch hoạt động LenaMiu</h1>
+  <p>Bangkok Time (UTC+7)</p>
+</header>
+
+<button id="loginBtn" class="primary login-btn" onclick="openLogin()">🔐 Admin</button>
+
+<!-- LOGIN POPUP -->
+<div id="overlay" class="overlay hidden">
+  <div class="popup">
+    <h3>Admin Login</h3>
+    <input id="user" placeholder="Username">
+    <input id="pass" type="password" placeholder="Password">
+    <button class="primary" onclick="login()">Đăng nhập</button>
+    <button onclick="closeLogin()">Hủy</button>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ADMIN PANEL -->
+  <div id="adminPanel" class="card hidden">
+    <h3>👑 Quản lý lịch</h3>
+
+    <input id="activity" placeholder="Tên hoạt động">
+    <input id="keywords" placeholder="Từ khóa">
+    <input id="hashtags" placeholder="#hashtag">
+
+    <select id="member">
+      <option value="LenaMiu">LenaMiu</option>
+      <option value="Lena">Lena</option>
+      <option value="Miu">Miu</option>
+    </select>
+
+    <input id="time" type="datetime-local">
+
+    <button class="primary" onclick="addSchedule()">➕ Lưu lịch</button>
+    <button class="logout" onclick="logout()">Đăng xuất</button>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="card">
+    <input id="search" placeholder="🔍 Tìm kiếm lịch..." oninput="renderSchedules()">
+  </div>
+
+  <!-- SCHEDULE LIST -->
+  <div class="card">
+    <h3>📅 Lịch</h3>
+    <div id="list"></div>
+  </div>
+
+</div>
+</body>
+</html>
