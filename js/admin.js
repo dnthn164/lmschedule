@@ -10,6 +10,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+/* ===== FIREBASE ===== */
 const auth = firebase.auth();
 const db = firebase.firestore();
 
@@ -28,15 +29,14 @@ function login(){
     user.value.trim(),
     pass.value
   ).catch(err => {
-    console.log("AUTH ERROR:", err.code, err.message);
+    console.error(err);
     alert(err.code);
   });
 }
 
-
-
-
-function logout(){ auth.signOut(); }
+function logout(){
+  auth.signOut();
+}
 
 auth.onAuthStateChanged(u=>{
   const isAdmin = !!u;
@@ -44,18 +44,26 @@ auth.onAuthStateChanged(u=>{
   adminPanel.classList.toggle("hidden", !isAdmin);
   loginBtn.classList.toggle("hidden", isAdmin);
 
-  if(isAdmin){
-    closeLogin();   // ✅ ĐÓNG POPUP Ở ĐÂY
-  }
+  if(isAdmin) closeLogin();
 
   renderSchedules();
 });
 
+/* ===== TIME UTILS ===== */
+function sameDay(d1, d2){
+  return d1.getFullYear() === d2.getFullYear() &&
+         d1.getMonth() === d2.getMonth() &&
+         d1.getDate() === d2.getDate();
+}
+
+function expired24h(timestamp){
+  return Date.now() - timestamp.toDate().getTime() > 86400000;
+}
 
 /* ===== BADGE ===== */
-function getBadge(time){
+function getBadge(timestamp){
   const now = new Date();
-  const d = new Date(time);
+  const d = timestamp.toDate();
   const diff = Math.floor((d - now) / 86400000);
 
   if(diff === 0) return {t:"NOW",c:"today"};
@@ -64,41 +72,63 @@ function getBadge(time){
   return {t:"PAST",c:"future"};
 }
 
-function expired24h(time){
-  return Date.now() - new Date(time).getTime() > 86400000;
-}
-
 /* ===== CRUD ===== */
 let editId = null;
 
-function saveSchedule(){
-  if(!activity.value || !time.value) return alert("Thiếu thông tin");
+async function saveSchedule(){
+  if(!activity.value || !time.value){
+    alert("Thiếu thông tin");
+    return;
+  }
+
+  const activityName = activity.value.trim();
+  const inputDate = new Date(time.value);
+
+  /* ===== CHECK TRÙNG ===== */
+  const snap = await db.collection("schedules").get();
+
+  for(const doc of snap.docs){
+    if(editId && doc.id === editId) continue;
+
+    const s = doc.data();
+    const existDate = s.time.toDate();
+
+    if(
+      s.activity.trim().toLowerCase() === activityName.toLowerCase() &&
+      sameDay(existDate, inputDate)
+    ){
+      alert("⚠️ Trùng hoạt động trong cùng ngày");
+      return;
+    }
+  }
 
   const data = {
-    activity: activity.value,
-    keywords: keywords.value,
-    hashtags: hashtags.value,
+    activity: activityName,
+    keywords: keywords.value || "",
+    hashtags: hashtags.value || "",
     member: member.value,
-    time: time.value
+    time: firebase.firestore.Timestamp.fromDate(inputDate)
   };
 
   if(editId){
-    db.collection("schedules").doc(editId).set(data);
+    await db.collection("schedules").doc(editId).set(data);
     editId = null;
   }else{
-    db.collection("schedules").add(data);
+    await db.collection("schedules").add(data);
   }
 
   activity.value = keywords.value = hashtags.value = time.value = "";
 }
 
-function editSchedule(id,data){
+function editSchedule(id, data){
   editId = id;
   activity.value = data.activity;
   keywords.value = data.keywords;
   hashtags.value = data.hashtags;
   member.value = data.member;
-  time.value = data.time;
+
+  const d = data.time.toDate();
+  time.value = d.toISOString().slice(0,16);
 }
 
 function deleteSchedule(id){
@@ -108,47 +138,65 @@ function deleteSchedule(id){
 }
 
 /* ===== RENDER ===== */
+let unsub = null;
+
 function renderSchedules(){
-  list.innerHTML="";
+  if(unsub) unsub();
+
+  list.innerHTML = "";
   const q = search.value.toLowerCase();
 
-  db.collection("schedules").orderBy("time").onSnapshot(snap=>{
-    list.innerHTML="";
-    snap.forEach(doc=>{
-      const s = doc.data();
-      if(!s.activity.toLowerCase().includes(q)) return;
+  unsub = db.collection("schedules")
+    .orderBy("time")
+    .onSnapshot(snap=>{
+      list.innerHTML = "";
 
-      if(!auth.currentUser && expired24h(s.time)) return;
+      snap.forEach(doc=>{
+        const s = doc.data();
 
-      const b = getBadge(s.time);
-      const timeBK = new Date(s.time).toLocaleString("en-GB",{timeZone:"Asia/Bangkok"});
+        if(!s.activity.toLowerCase().includes(q)) return;
+        if(!auth.currentUser && expired24h(s.time)) return;
 
-      const div = document.createElement("div");
-      div.className="schedule";
+        const b = getBadge(s.time);
+        const timeBK = s.time.toDate().toLocaleString("en-GB", {
+          timeZone: "Asia/Bangkok"
+        });
 
-      div.innerHTML=`
-        <div class="schedule-left">
-          <strong>${s.activity}
-            <span class="badge ${b.c}">${b.t}</span>
-          </strong>
-          <div class="time">🕒 ${timeBK}</div>
-          <div>🔑 ${s.keywords||""}</div>
-          <div class="hashtags">${s.hashtags||""}</div>
-        </div>
+        const div = document.createElement("div");
+        div.className = "schedule";
 
-        <div class="schedule-right">
-          ${auth.currentUser ? `
-            <div class="action-btns">
-              <button class="edit-btn" onclick='editSchedule("${doc.id}",${JSON.stringify(s)})'>Sửa</button>
-              <button class="danger" onclick='deleteSchedule("${doc.id}")'>Xóa</button>
+        div.innerHTML = `
+          <div class="schedule-left">
+            <strong>${s.activity}
+              <span class="badge ${b.c}">${b.t}</span>
+            </strong>
+            <div class="time">🕒 ${timeBK}</div>
+            <div>🔑 ${s.keywords}</div>
+            <div class="hashtags">${s.hashtags}</div>
+          </div>
+
+          <div class="schedule-right">
+            ${auth.currentUser ? `
+              <div class="action-btns">
+                <button class="edit-btn"
+                  onclick='editSchedule("${doc.id}", ${JSON.stringify(s)})'>
+                  Sửa
+                </button>
+                <button class="danger"
+                  onclick='deleteSchedule("${doc.id}")'>
+                  Xóa
+                </button>
+              </div>
+            ` : ""}
+            <div class="member-name member-${s.member.replace(" ","")}">
+              ${s.member}
             </div>
-          `:""}
-          <div class="member-name member-${s.member.replace(" ","")}">${s.member}</div>
-        </div>
-      `;
-      list.appendChild(div);
+          </div>
+        `;
+
+        list.appendChild(div);
+      });
     });
-  });
 }
 
 renderSchedules();
