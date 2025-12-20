@@ -20,13 +20,17 @@ function openLogin(){ overlay.classList.remove("hidden"); }
 function closeLogin(){ overlay.classList.add("hidden"); }
 
 function login(){
-  auth.signInWithEmailAndPassword(user.value, pass.value)
-    .then(()=> closeLogin())
+  auth.signInWithEmailAndPassword(user.value.trim(), pass.value)
+    .then(()=> {
+      alert("LOGIN OK");
+      closeLogin();
+    })
     .catch(err => {
-      console.error(err);
-      alert(err.code + "\n" + err.message);
+      console.log("AUTH ERROR:", err.code, err.message);
+      alert(err.code);
     });
 }
+
 
 
 function logout(){ auth.signOut(); }
