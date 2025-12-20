@@ -22,8 +22,12 @@ function closeLogin(){ overlay.classList.add("hidden"); }
 function login(){
   auth.signInWithEmailAndPassword(user.value, pass.value)
     .then(()=> closeLogin())
-    .catch(()=> alert("Sai tài khoản hoặc mật khẩu"));
+    .catch(err => {
+      console.error(err);
+      alert(err.code + "\n" + err.message);
+    });
 }
+
 
 function logout(){ auth.signOut(); }
 
