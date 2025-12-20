@@ -1,152 +1,100 @@
 :root{
-    --main:#6c63ff;
-    --bg:#f4f5fb;
-    --card:#ffffff;
-    --today:#fff6d8;
-  }
-  
-  body{
-    margin:0;
-    font-family:Segoe UI, sans-serif;
-    background:var(--bg);
-  }
-  
-  /* HEADER */
-  header{
-    background:linear-gradient(135deg,#6c63ff,#8f88ff);
-    color:#fff;
-    padding:24px;
-    text-align:center;
-  }
-  
-  /* BUTTON */
-  button{
-    border:none;
-    border-radius:8px;
-    padding:10px 16px;
-    cursor:pointer;
-    font-size:14px;
-  }
-  .primary{background:var(--main);color:#fff;}
-  .danger{background:#ff4d4f;color:#fff;}
-  .logout{background:#444;color:#fff;}
-  
-  /* LOGIN BUTTON */
-  .login-btn{
-    position:fixed;
-    top:20px;
-    right:20px;
-    z-index:100;
-  }
-  
-  /* LAYOUT */
-  .container{
-    max-width:900px;
-    margin:30px auto;
-    padding:20px;
-  }
-  .card{
-    background:var(--card);
-    border-radius:16px;
-    padding:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,.08);
-    margin-bottom:20px;
-  }
-  
-  /* SCHEDULE */
-  .schedule{
-    background:#f8f9ff;
-    border-radius:14px;
-    padding:18px;
-    margin-bottom:14px;
-    position:relative;
-  }
-  .schedule.today{
-    background:var(--today);
-    border:2px solid #ffcc66;
-  }
-  .time{
-    font-size:13px;
-    color:#555;
-  }
-  .hashtags{color:#4a6cff;}
-  .delete{
-    position:absolute;
-    top:12px;
-    right:12px;
-  }
-  
-  /* FORM */
-  input{
-    width:100%;
-    padding:10px;
-    border-radius:8px;
-    border:1px solid #ddd;
-    margin-bottom:12px;
-  }
-  
-  /* POPUP */
-  .overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.45);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
-  }
-  .popup{
-    background:#fff;
-    border-radius:16px;
-    padding:24px;
-    width:320px;
-  }
-  
-  .overlay.hidden{
+  --main:#6c63ff;
+  --bg:#f4f5fb;
+  --card:#fff;
+}
+
+body{
+  margin:0;
+  font-family:Segoe UI,sans-serif;
+  background:var(--bg);
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,#6c63ff,#8f88ff);
+  color:#fff;
+  padding:30px;
+  text-align:center;
+}
+
+/* BUTTON */
+button{
+  border:none;
+  border-radius:8px;
+  padding:10px 16px;
+  cursor:pointer;
+}
+.primary{background:#6c63ff;color:#fff;}
+.danger{background:#ff4d4f;color:#fff;}
+.logout{background:#444;color:#fff;}
+
+.login-btn{
+  position:fixed;
+  top:20px;
+  right:20px;
+  z-index:100;
+}
+
+/* LAYOUT */
+.container{
+  max-width:900px;
+  margin:30px auto;
+  padding:20px;
+}
+.card{
+  background:var(--card);
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,.08);
+  margin-bottom:20px;
+}
+
+/* FORM */
+input,select{
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #ddd;
+  margin-bottom:12px;
+}
+
+/* OVERLAY FIX */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+.overlay.hidden{
   display:none;
   pointer-events:none;
 }
 
+.popup{
+  background:#fff;
+  border-radius:16px;
+  padding:24px;
+  width:320px;
+}
 
+.hidden{display:none;}
 
-  .badge{
-    font-size:11px;
-    padding:4px 8px;
-    border-radius:999px;
-    margin-left:8px;
-    font-weight:600;
-  }
-  
-  .badge.today{
-    background:#ffcc66;
-  }
-  
-  .badge.tomorrow{
-    background:#6c63ff;
-    color:#fff;
-  }
-  
-  .badge.upcoming{
-    background:#4caf50;
-    color:#fff;
-  }
-  
-  .badge.future{
-    background:#aaa;
-    color:#fff;
-  }
-  /* ===== SCHEDULE LAYOUT FIX ===== */
+/* SCHEDULE */
 .schedule{
+  background:#f8f9ff;
+  border-radius:14px;
+  padding:18px;
+  margin-bottom:14px;
   display:flex;
   justify-content:space-between;
   gap:16px;
-  align-items:flex-start;
 }
 
-.schedule-left{
-  flex:1;
-}
-
+.schedule-left{flex:1;}
 .schedule-right{
   display:flex;
   flex-direction:column;
@@ -154,31 +102,34 @@
   gap:8px;
 }
 
-/* BUTTON GROUP */
-.action-btns{
-  display:flex;
-  gap:8px;
-}
+.time{font-size:13px;color:#555;}
+.hashtags{color:#4a6cff;}
 
-/* MEMBER NAME */
+.action-btns{display:flex;gap:8px;}
+
+.edit-btn{background:#eee;}
+
 .member-name{
-  font-size:13px;
-  font-weight:600;
-  color:#6c63ff;
-  background:#eef0ff;
+  font-size:12px;
+  font-weight:700;
   padding:4px 10px;
   border-radius:999px;
 }
 
-/* BADGE STATUS FIX */
+/* MEMBER COLOR */
+.member-Lena{background:#ffe0e0;color:#c62828;}
+.member-Miu{background:#e0f7fa;color:#00796b;}
+.member-LenaMiu{background:#eef0ff;color:#6c63ff;}
+
+/* BADGE */
 .badge{
   font-size:11px;
   padding:4px 10px;
   border-radius:999px;
   font-weight:700;
+  margin-left:6px;
 }
-
-/* EDIT BUTTON */
-.edit-btn{
-  background:#eee;
-}
+.badge.today{background:#ffcc66;}
+.badge.tomorrow{background:#6c63ff;color:#fff;}
+.badge.upcoming{background:#4caf50;color:#fff;}
+.badge.future{background:#aaa;color:#fff;}
