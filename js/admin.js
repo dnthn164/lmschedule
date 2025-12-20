@@ -1,9 +1,13 @@
 /* ===== FIREBASE ===== */
 const firebaseConfig = {
-  apiKey: "XXX",
-  authDomain: "XXX",
-  projectId: "XXX"
+  apiKey: "AIzaSyD7pS-SlL_tqA_wBIK5JvVdwgd422495rU",
+  authDomain: "schedule-1a6d6.firebaseapp.com",
+  projectId: "schedule-1a6d6",
+  storageBucket: "schedule-1a6d6.firebasestorage.app",
+  messagingSenderId: "814395645954",
+  appId: "1:814395645954:web:cf4803875640637b17c71b"
 };
+
 firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
