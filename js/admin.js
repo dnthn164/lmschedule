@@ -24,16 +24,15 @@ function openLogin(){ overlay.classList.remove("hidden"); }
 function closeLogin(){ overlay.classList.add("hidden"); }
 
 function login(){
-  auth.signInWithEmailAndPassword(user.value.trim(), pass.value)
-    .then(()=> {
-      alert("LOGIN OK");
-      closeLogin();
-    })
-    .catch(err => {
-      console.log("AUTH ERROR:", err.code, err.message);
-      alert(err.code);
-    });
+  auth.signInWithEmailAndPassword(
+    user.value.trim(),
+    pass.value
+  ).catch(err => {
+    console.log("AUTH ERROR:", err.code, err.message);
+    alert(err.code);
+  });
 }
+
 
 
 
@@ -41,10 +40,17 @@ function logout(){ auth.signOut(); }
 
 auth.onAuthStateChanged(u=>{
   const isAdmin = !!u;
+
   adminPanel.classList.toggle("hidden", !isAdmin);
   loginBtn.classList.toggle("hidden", isAdmin);
+
+  if(isAdmin){
+    closeLogin();   // ✅ ĐÓNG POPUP Ở ĐÂY
+  }
+
   renderSchedules();
 });
+
 
 /* ===== BADGE ===== */
 function getBadge(time){
