@@ -85,7 +85,7 @@ async function saveSchedule(){
   const inputDate = new Date(time.value);
 
   /* ===== CHECK TRÙNG ===== */
-  const snap = await db.collection("schedules").get();
+  const snap = await db.collection("schedule").get();
 
   for(const doc of snap.docs){
     if(editId && doc.id === editId) continue;
@@ -111,10 +111,10 @@ async function saveSchedule(){
   };
 
   if(editId){
-    await db.collection("schedules").doc(editId).set(data);
+    await db.collection("schedule").doc(editId).set(data);
     editId = null;
   }else{
-    await db.collection("schedules").add(data);
+    await db.collection("schedule").add(data);
   }
 
   activity.value = keywords.value = hashtags.value = time.value = "";
@@ -133,7 +133,7 @@ function editSchedule(id, data){
 
 function deleteSchedule(id){
   if(confirm("Xóa lịch này?")){
-    db.collection("schedules").doc(id).delete();
+    db.collection("schedule").doc(id).delete();
   }
 }
 
@@ -146,7 +146,7 @@ function renderSchedules(){
   list.innerHTML = "";
   const q = search.value.toLowerCase();
 
-  unsub = db.collection("schedules")
+  unsub = db.collection("schedule")
     .orderBy("time")
     .onSnapshot(snap=>{
       list.innerHTML = "";
