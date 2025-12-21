@@ -1,275 +1,115 @@
 :root{
-    --main:#6c63ff;
-    --bg:#f4f5fb;
-    --card:#ffffff;
-    --today:#fff6d8;
-  }
-  
-  body{
-    margin:0;
-    font-family:Segoe UI, sans-serif;
-    background:var(--bg);
-  }
-  
-  /* HEADER */
-  header{
-    background:linear-gradient(135deg,#6c63ff,#8f88ff);
-    color:#fff;
-    padding:24px;
-    text-align:center;
-  }
-  
-  /* BUTTON */
-  button{
-    border:none;
-    border-radius:8px;
-    padding:10px 16px;
-    cursor:pointer;
-    font-size:14px;
-  }
-  .primary{background:var(--main);color:#fff;}
-  .danger{background:#ff4d4f;color:#fff;}
-  .logout{background:#444;color:#fff;}
-  
-  /* LOGIN BUTTON */
-  .login-btn{
-    position:fixed;
-    top:20px;
-    right:20px;
-    z-index:100;
-  }
-  
-  /* LAYOUT */
-  .container{
-    max-width:900px;
-    margin:30px auto;
-    padding:20px;
-  }
-  .card{
-    background:var(--card);
-    border-radius:16px;
-    padding:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,.08);
-    margin-bottom:20px;
-  }
-  
-  /* SCHEDULE */
-  .schedule{
-    background:#f8f9ff;
-    border-radius:14px;
-    padding:18px;
-    margin-bottom:14px;
-    position:relative;
-  }
-  .schedule.today{
-    background:var(--today);
-    border:2px solid #ffcc66;
-  }
-  .time{
-    font-size:13px;
-    color:#555;
-  }
-  .hashtags{color:#4a6cff;}
-  .delete{
-    position:absolute;
-    top:12px;
-    right:12px;
-  }
-  
-  /* FORM */
-  input{
-    width:100%;
-    padding:10px;
-    border-radius:8px;
-    border:1px solid #ddd;
-    margin-bottom:12px;
-  }
-  
-  /* POPUP */
-  .overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.45);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
-  }
-  .popup{
-    background:#fff;
-    border-radius:16px;
-    padding:24px;
-    width:320px;
-  }
-  
-  .hidden{display:none;}
+  --brown:#7a4a2e;
+  --brown-dark:#4a2c1a;
+  --brown-light:#f3e9e3;
+}
 
-  .badge{
-    font-size:11px;
-    padding:4px 8px;
-    border-radius:999px;
-    margin-left:8px;
-    font-weight:600;
-  }
-  
-  .badge.today{
-    background:#ffcc66;
-  }
-  
-  .badge.tomorrow{
-    background:#6c63ff;
-    color:#fff;
-  }
-  
-  .badge.upcoming{
-    background:#4caf50;
-    color:#fff;
-  }
-  
-  .badge.future{
-    background:#aaa;
-    color:#fff;
-  }
-  /* ===== SCHEDULE LAYOUT FIX ===== */
+body{
+  margin:0;
+  font-family:Segoe UI, sans-serif;
+  background:#f5f2ef;
+}
+
+header{
+  background:linear-gradient(135deg,#7a4a2e,#5a3825);
+  color:#fff;
+  padding:24px;
+  text-align:center;
+}
+
+button{
+  border:none;
+  border-radius:10px;
+  padding:10px 16px;
+  cursor:pointer;
+}
+
+.primary{background:var(--brown);color:#fff;}
+.logout{background:#333;color:#fff;}
+.danger{background:#c0392b;color:#fff;}
+
+.login-btn{
+  position:fixed;
+  top:16px;
+  right:16px;
+  z-index:100;
+}
+
+.container{
+  max-width:900px;
+  margin:20px auto;
+  padding:16px;
+}
+
+.card{
+  background:#fff;
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:16px;
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+input,select{
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  margin-bottom:12px;
+}
+
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.popup{
+  background:#fff;
+  padding:24px;
+  border-radius:18px;
+  width:320px;
+}
+
+.hidden{display:none;}
+
+.filter-bar{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+}
+.filter-bar button{
+  background:#fff;
+  border:1px solid var(--brown);
+  color:var(--brown);
+  white-space:nowrap;
+}
+
 .schedule{
+  background:var(--brown-light);
+  border-radius:16px;
+  padding:14px;
+  margin-bottom:12px;
   display:flex;
   justify-content:space-between;
-  gap:16px;
-  align-items:flex-start;
+  gap:12px;
 }
 
-.schedule-left{
-  flex:1;
+.member-Lena{border-left:6px solid #c89b7b;}
+.member-Miu{border-left:6px solid #8b5e3c;}
+.member-LenaMiu{border-left:6px solid #5a3825;}
+
+.member-tag{
+  background:var(--brown);
+  color:#fff;
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:12px;
 }
 
-.schedule-right{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-end;
-  gap:8px;
-}
-
-/* BUTTON GROUP */
 .action-btns{
   display:flex;
   gap:8px;
-}
-
-/* MEMBER NAME */
-.member-name{
-  font-size:13px;
-  font-weight:600;
-  color:#6c63ff;
-  background:#eef0ff;
-  padding:4px 10px;
-  border-radius:999px;
-}
-
-/* BADGE STATUS FIX */
-.badge{
-  font-size:11px;
-  padding:4px 10px;
-  border-radius:999px;
-  font-weight:700;
-}
-
-/* EDIT BUTTON */
-.edit-btn{
-  background:#eee;
-}
-/* ===== MEMBER COLOR HIGHLIGHT ===== */
-
-/* Lena */
-.member-Lena{
-  background:#ffe6ec;
-  color:#d6336c;
-}
-
-/* Miu */
-.member-Miu{
-  background:#e6fff4;
-  color:#0ca678;
-}
-
-/* LenaMiu */
-.member-LenaMiu{
-  background:#eef0ff;
-  color:#4c6ef5;
-}
-
-/* Border theo member */
-.schedule:has(.member-Lena){
-  border-left:6px solid #d6336c;
-}
-
-.schedule:has(.member-Miu){
-  border-left:6px solid #0ca678;
-}
-
-.schedule:has(.member-LenaMiu){
-  border-left:6px solid #4c6ef5;
-}
-
-/* ===== MOBILE UI ===== */
-@media (max-width: 640px){
-
-  header{
-    padding:18px 12px;
-  }
-
-  .container{
-    padding:12px;
-    margin:12px auto;
-  }
-
-  .card{
-    padding:16px;
-    border-radius:14px;
-  }
-
-  /* Schedule mobile */
-  .schedule{
-    flex-direction:column;
-    gap:12px;
-  }
-
-  .schedule-right{
-    width:100%;
-    flex-direction:row;
-    justify-content:space-between;
-    align-items:center;
-  }
-
-  .action-btns{
-    order:2;
-  }
-
-  .member-name{
-    order:1;
-    font-size:12px;
-  }
-
-  /* Buttons */
-  button{
-    padding:8px 12px;
-    font-size:13px;
-  }
-
-  /* Login popup */
-  .popup{
-    width:90%;
-    padding:20px;
-  }
-
-  /* Login button */
-  .login-btn{
-    top:12px;
-    right:12px;
-    padding:8px 12px;
-    font-size:13px;
-  }
-
-  input, select{
-    font-size:14px;
-  }
 }
