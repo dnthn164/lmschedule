@@ -28,10 +28,7 @@ function login(){
   auth.signInWithEmailAndPassword(
     user.value.trim(),
     pass.value
-  ).catch(err => {
-    console.error(err);
-    alert(err.code);
-  });
+  ).catch(err => alert(err.message));
 }
 
 function logout(){
@@ -39,31 +36,21 @@ function logout(){
 }
 
 auth.onAuthStateChanged(u=>{
-  const isAdmin = !!u;
-
-  adminPanel.classList.toggle("hidden", !isAdmin);
-  loginBtn.classList.toggle("hidden", isAdmin);
-
-  if(isAdmin) closeLogin();
-
-  renderSchedules();
+  adminPanel.classList.toggle("hidden", !u);
+  loginBtn.classList.toggle("hidden", !!u);
+  if(u) closeLogin();
 });
 
-/* ===== TIME UTILS ===== */
+/* ===== UTIL ===== */
 function sameDay(d1, d2){
   return d1.getFullYear() === d2.getFullYear() &&
          d1.getMonth() === d2.getMonth() &&
          d1.getDate() === d2.getDate();
 }
 
-function expired24h(timestamp){
-  return Date.now() - timestamp.toDate().getTime() > 86400000;
-}
-
-/* ===== BADGE ===== */
-function getBadge(timestamp){
+function getBadge(ts){
   const now = new Date();
-  const d = timestamp.toDate();
+  const d = ts.toDate();
   const diff = Math.floor((d - now) / 86400000);
 
   if(diff === 0) return {t:"NOW",c:"today"};
@@ -74,6 +61,7 @@ function getBadge(timestamp){
 
 /* ===== CRUD ===== */
 let editId = null;
+let cache = {};
 
 async function saveSchedule(){
   if(!activity.value || !time.value){
@@ -81,29 +69,10 @@ async function saveSchedule(){
     return;
   }
 
-  const activityName = activity.value.trim();
   const inputDate = new Date(time.value);
 
-  /* ===== CHECK TRÙNG ===== */
-  const snap = await db.collection("schedule").get();
-
-  for(const doc of snap.docs){
-    if(editId && doc.id === editId) continue;
-
-    const s = doc.data();
-    const existDate = s.time.toDate();
-
-    if(
-      s.activity.trim().toLowerCase() === activityName.toLowerCase() &&
-      sameDay(existDate, inputDate)
-    ){
-      alert("⚠️ Trùng hoạt động trong cùng ngày");
-      return;
-    }
-  }
-
   const data = {
-    activity: activityName,
+    activity: activity.value.trim(),
     keywords: keywords.value || "",
     hashtags: hashtags.value || "",
     member: member.value,
@@ -120,15 +89,15 @@ async function saveSchedule(){
   activity.value = keywords.value = hashtags.value = time.value = "";
 }
 
-function editSchedule(id, data){
+function editSchedule(id){
+  const s = cache[id];
   editId = id;
-  activity.value = data.activity;
-  keywords.value = data.keywords;
-  hashtags.value = data.hashtags;
-  member.value = data.member;
 
-  const d = data.time.toDate();
-  time.value = d.toISOString().slice(0,16);
+  activity.value = s.activity;
+  keywords.value = s.keywords;
+  hashtags.value = s.hashtags;
+  member.value = s.member;
+  time.value = s.time.toDate().toISOString().slice(0,16);
 }
 
 function deleteSchedule(id){
@@ -137,78 +106,71 @@ function deleteSchedule(id){
   }
 }
 
+/* ===== FILTER ===== */
+let memberFilter = "ALL";
+function setMemberFilter(m){
+  memberFilter = m;
+  renderSchedules();
+}
+
 /* ===== RENDER ===== */
 let unsub = null;
 
 function renderSchedules(){
   if(unsub) unsub();
 
-  console.log("🔥 renderSchedules called");
-
-  list.innerHTML = "";
   const q = search.value.toLowerCase();
 
   unsub = db.collection("schedule")
     .orderBy("time")
-    .onSnapshot(
-      snap => {
-        console.log("📦 SNAP SIZE:", snap.size);
+    .onSnapshot(snap=>{
+      list.innerHTML = "";
+      cache = {};
 
-        list.innerHTML = "";
+      snap.forEach(doc=>{
+        const s = doc.data();
+        cache[doc.id] = s;
 
-        snap.forEach(doc=>{
-          console.log("📄 DOC:", doc.id, doc.data());
+        if(!s.activity.toLowerCase().includes(q)) return;
+        if(memberFilter !== "ALL" && s.member !== memberFilter) return;
 
-          const s = doc.data();
+        // Ẩn lịch đã qua với user thường
+        if(!auth.currentUser && s.time.toDate() < new Date()) return;
 
-          if(!s.activity.toLowerCase().includes(q)) return;
-          if(!auth.currentUser && expired24h(s.time)) return;
-
-          const b = getBadge(s.time);
-          const timeBK = s.time.toDate().toLocaleString("en-GB", {
-            timeZone: "Asia/Bangkok"
-          });
-
-          const div = document.createElement("div");
-          div.className = "schedule";
-
-          div.innerHTML = `
-            <div class="schedule-left">
-              <strong>${s.activity}
-                <span class="badge ${b.c}">${b.t}</span>
-              </strong>
-              <div class="time">🕒 ${timeBK}</div>
-              <div>🔑 ${s.keywords || ""}</div>
-              <div class="hashtags">${s.hashtags || ""}</div>
-            </div>
-
-            <div class="schedule-right">
-              ${auth.currentUser ? `
-                <div class="action-btns">
-                  <button class="edit-btn"
-                    onclick='editSchedule("${doc.id}", ${JSON.stringify(s)})'>
-                    Sửa
-                  </button>
-                  <button class="danger"
-                    onclick='deleteSchedule("${doc.id}")'>
-                    Xóa
-                  </button>
-                </div>
-              ` : ""}
-              <div class="member-name member-${s.member.replace(" ","")}">
-                ${s.member}
-              </div>
-            </div>
-          `;
-
-          list.appendChild(div);
+        const b = getBadge(s.time);
+        const timeBK = s.time.toDate().toLocaleString("en-GB", {
+          timeZone: "Asia/Bangkok"
         });
-      },
-      err => {
-        console.error("❌ SNAPSHOT ERROR:", err);
-        alert(err.message);
-      }
-    );
+
+        const div = document.createElement("div");
+        div.className = "schedule";
+
+        div.innerHTML = `
+          <div class="schedule-left">
+            <strong>${s.activity}
+              <span class="badge ${b.c}">${b.t}</span>
+            </strong>
+            <div class="time">🕒 ${timeBK}</div>
+            <div>🔑 ${s.keywords}</div>
+            <div class="hashtags">${s.hashtags}</div>
+          </div>
+
+          <div class="schedule-right">
+            ${auth.currentUser ? `
+              <div class="action-btns">
+                <button class="edit-btn" onclick="editSchedule('${doc.id}')">Sửa</button>
+                <button class="danger" onclick="deleteSchedule('${doc.id}')">Xóa</button>
+              </div>
+            ` : ""}
+            <div class="member-name member-${s.member}">
+              ${s.member}
+            </div>
+          </div>
+        `;
+
+        list.appendChild(div);
+      });
+    });
 }
 
 renderSchedules();

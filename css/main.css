@@ -10,7 +10,6 @@ body{
   background:var(--bg);
 }
 
-/* HEADER */
 header{
   background:linear-gradient(135deg,#6c63ff,#8f88ff);
   color:#fff;
@@ -18,16 +17,12 @@ header{
   text-align:center;
 }
 
-/* BUTTON */
 button{
   border:none;
   border-radius:8px;
   padding:10px 16px;
   cursor:pointer;
 }
-.primary{background:#6c63ff;color:#fff;}
-.danger{background:#ff4d4f;color:#fff;}
-.logout{background:#444;color:#fff;}
 
 .login-btn{
   position:fixed;
@@ -36,12 +31,12 @@ button{
   z-index:100;
 }
 
-/* LAYOUT */
 .container{
   max-width:900px;
   margin:30px auto;
   padding:20px;
 }
+
 .card{
   background:var(--card);
   border-radius:16px;
@@ -50,7 +45,6 @@ button{
   margin-bottom:20px;
 }
 
-/* FORM */
 input,select{
   width:100%;
   padding:10px;
@@ -59,7 +53,6 @@ input,select{
   margin-bottom:12px;
 }
 
-/* OVERLAY FIX */
 .overlay{
   position:fixed;
   inset:0;
@@ -69,10 +62,7 @@ input,select{
   align-items:center;
   z-index:9999;
 }
-.overlay.hidden{
-  display:none;
-  pointer-events:none;
-}
+.overlay.hidden{display:none;}
 
 .popup{
   background:#fff;
@@ -81,9 +71,6 @@ input,select{
   width:320px;
 }
 
-.hidden{display:none;}
-
-/* SCHEDULE */
 .schedule{
   background:#f8f9ff;
   border-radius:14px;
@@ -91,23 +78,7 @@ input,select{
   margin-bottom:14px;
   display:flex;
   justify-content:space-between;
-  gap:16px;
 }
-
-.schedule-left{flex:1;}
-.schedule-right{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-end;
-  gap:8px;
-}
-
-.time{font-size:13px;color:#555;}
-.hashtags{color:#4a6cff;}
-
-.action-btns{display:flex;gap:8px;}
-
-.edit-btn{background:#eee;}
 
 .member-name{
   font-size:12px;
@@ -116,19 +87,17 @@ input,select{
   border-radius:999px;
 }
 
-/* MEMBER COLOR */
 .member-Lena{background:#ffe0e0;color:#c62828;}
 .member-Miu{background:#e0f7fa;color:#00796b;}
 .member-LenaMiu{background:#eef0ff;color:#6c63ff;}
 
-/* BADGE */
 .badge{
   font-size:11px;
   padding:4px 10px;
   border-radius:999px;
   font-weight:700;
-  margin-left:6px;
 }
+
 .badge.today{background:#ffcc66;}
 .badge.tomorrow{background:#6c63ff;color:#fff;}
 .badge.upcoming{background:#4caf50;color:#fff;}
