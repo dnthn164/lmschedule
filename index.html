@@ -22,21 +22,22 @@
   <p>Bangkok Time (UTC+7)</p>
 </header>
 
-<button id="loginBtn" class="login-btn">🔒 Admin</button>
+<button id="loginBtn" class="primary login-btn" onclick="openLogin()">🔐 Admin</button>
 
-<!-- LOGIN -->
+<!-- LOGIN POPUP -->
 <div id="overlay" class="overlay hidden">
   <div class="popup">
     <h3>Admin Login</h3>
-    <input id="user" type="email" placeholder="Email admin">
+    <input id="user" placeholder="Username">
     <input id="pass" type="password" placeholder="Password">
-    <button id="loginSubmit">Đăng nhập</button>
-    <button id="loginCancel">Hủy</button>
+    <button class="primary" onclick="login()">Đăng nhập</button>
+    <button onclick="closeLogin()">Hủy</button>
   </div>
 </div>
 
 <div class="container">
 
+  <!-- ADMIN PANEL -->
   <div id="adminPanel" class="card hidden">
     <h3>👑 Quản lý lịch</h3>
 
@@ -52,27 +53,25 @@
 
     <input id="time" type="datetime-local">
 
-    <button id="saveBtn">💾 Lưu lịch</button>
-    <button id="logoutBtn">Đăng xuất</button>
+    <button class="primary" onclick="addSchedule()">➕ Lưu lịch</button>
+    <button class="logout" onclick="logout()">Đăng xuất</button>
   </div>
 
+  <!-- SEARCH -->
   <div class="card">
-    <input id="search" placeholder="🔍 Tìm kiếm...">
+    <input id="search" placeholder="🔍 Tìm kiếm lịch..." oninput="renderSchedules()">
   </div>
 
-  <div class="filters">
-    <button data-filter="ALL">Tất cả</button>
-    <button data-filter="Lena">Lena</button>
-    <button data-filter="Miu">Miu</button>
-    <button data-filter="LenaMiu">LenaMiu</button>
-  </div>
-
+  <!-- SCHEDULE LIST -->
   <div class="card">
     <h3>📅 Lịch</h3>
     <div id="list"></div>
   </div>
 
 </div>
+</body>
+</html>
+
 
 </body>
 </html>
