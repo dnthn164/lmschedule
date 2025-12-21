@@ -3,13 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <title>Lịch hoạt động LenaMiu</title>
+
   <link rel="stylesheet" href="./css/main.css">
+
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-  <script src="./js/admin.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
+  <!-- JS -->
+  <script src="./js/admin.js" defer></script>
 </head>
 
 <body>
@@ -19,22 +22,22 @@
   <p>Bangkok Time (UTC+7)</p>
 </header>
 
-<button id="loginBtn" class="login-btn primary" onclick="openLogin()">🔒 Admin</button>
+<button id="loginBtn" class="login-btn" onclick="openLogin()">🔒 Admin</button>
 
-<!-- LOGIN POPUP -->
+<!-- LOGIN -->
 <div id="overlay" class="overlay hidden">
   <div class="popup">
     <h3>Admin Login</h3>
     <input id="user" type="email" placeholder="Email admin">
     <input id="pass" type="password" placeholder="Password">
-    <button class="primary" onclick="login()">Đăng nhập</button>
+    <button onclick="login()">Đăng nhập</button>
     <button onclick="closeLogin()">Hủy</button>
   </div>
 </div>
 
 <div class="container">
 
-  <!-- ADMIN PANEL -->
+  <!-- ADMIN -->
   <div id="adminPanel" class="card hidden">
     <h3>👑 Quản lý lịch</h3>
 
@@ -50,13 +53,21 @@
 
     <input id="time" type="datetime-local">
 
-    <button class="primary" onclick="saveSchedule()">💾 Lưu lịch</button>
-    <button class="logout" onclick="logout()">Đăng xuất</button>
+    <button onclick="saveSchedule()">💾 Lưu lịch</button>
+    <button onclick="logout()">Đăng xuất</button>
   </div>
 
   <!-- SEARCH -->
   <div class="card">
-    <input id="search" placeholder="🔍 Tìm kiếm lịch..." oninput="renderSchedules()">
+    <input id="search" placeholder="🔍 Tìm kiếm..." oninput="renderSchedules()">
+  </div>
+
+  <!-- FILTER -->
+  <div class="filters">
+    <button onclick="setMemberFilter('ALL')">Tất cả</button>
+    <button onclick="setMemberFilter('Lena')">Lena</button>
+    <button onclick="setMemberFilter('Miu')">Miu</button>
+    <button onclick="setMemberFilter('LenaMiu')">LenaMiu</button>
   </div>
 
   <!-- LIST -->
@@ -67,6 +78,5 @@
 
 </div>
 
-<script src="admin.js"></script>
 </body>
 </html>
