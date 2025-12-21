@@ -23,7 +23,7 @@ const adminPanel = document.getElementById("adminPanel");
 const loginBtn   = document.getElementById("loginBtn");
 const overlay    = document.getElementById("overlay");
 
-const user     = document.getElementById("user");     // EMAIL
+const user     = document.getElementById("user");
 const pass     = document.getElementById("pass");
 const activity = document.getElementById("activity");
 const keywords = document.getElementById("keywords");
@@ -31,11 +31,11 @@ const hashtags = document.getElementById("hashtags");
 const member   = document.getElementById("member");
 const time     = document.getElementById("time");
 const search   = document.getElementById("search");
+
 /*********************************
- * FILTER MEMBER
+ * MEMBER FILTER
  *********************************/
 let memberFilter = "ALL";
-
 function setMemberFilter(val){
   memberFilter = val;
   renderList();
@@ -44,26 +44,16 @@ function setMemberFilter(val){
 /*********************************
  * LOGIN UI
  *********************************/
-function openLogin(){
-  overlay.classList.remove("hidden");
-}
-
-function closeLogin(){
-  overlay.classList.add("hidden");
-}
+function openLogin(){ overlay.classList.remove("hidden"); }
+function closeLogin(){ overlay.classList.add("hidden"); }
 
 /*********************************
  * AUTH
  *********************************/
 function login(){
   auth.signInWithEmailAndPassword(user.value.trim(), pass.value)
-    .then(() => {
-      closeLogin();
-    })
-    .catch(err => {
-      console.error(err);
-      alert("❌ Đăng nhập thất bại: " + err.message);
-    });
+    .then(closeLogin)
+    .catch(err => alert("❌ " + err.message));
 }
 
 function logout(){
@@ -74,7 +64,6 @@ function logout(){
  * ADMIN STATE
  *********************************/
 let isAdmin = false;
-
 auth.onAuthStateChanged(u=>{
   isAdmin = !!u;
   adminPanel.classList.toggle("hidden", !isAdmin);
@@ -82,11 +71,11 @@ auth.onAuthStateChanged(u=>{
 });
 
 /*********************************
- * BADGE
+ * TIME / BADGE
  *********************************/
-function getBadge(dateStr){
+function getBadge(timeStr){
   const now = new Date();
-  const d   = new Date(dateStr);
+  const d   = new Date(timeStr);
 
   const n0 = new Date(now.setHours(0,0,0,0));
   const d0 = new Date(d.setHours(0,0,0,0));
@@ -98,18 +87,15 @@ function getBadge(dateStr){
   return          { text:"PAST", cls:"future" };
 }
 
-/*********************************
- * HIDE PAST > 24H (USER)
- *********************************/
 function isExpired24h(timeStr){
-  return (Date.now() - new Date(timeStr).getTime()) > 86400000;
+  return Date.now() - new Date(timeStr).getTime() > 86400000;
 }
 
 /*********************************
  * CRUD
  *********************************/
 let editId = null;
-let cache  = {}; // lưu data để edit an toàn
+let cache  = {};
 
 async function addSchedule(){
   if(!activity.value || !time.value){
@@ -125,20 +111,17 @@ async function addSchedule(){
     time     : time.value
   };
 
-  try {
+  try{
     if(editId){
       await db.collection("schedule").doc(editId).set(data);
       editId = null;
-    } else {
+    }else{
       await db.collection("schedule").add(data);
     }
 
     activity.value = keywords.value = hashtags.value = time.value = "";
-    alert("✅ Đã lưu lịch");
-
-  } catch (err) {
-    console.error(err);
-    alert("❌ Không lưu được: " + err.message);
+  }catch(err){
+    alert("❌ Không lưu được");
   }
 }
 
@@ -155,51 +138,46 @@ function editSchedule(id){
 }
 
 async function deleteSchedule(id){
-  if(confirm("Xóa lịch này?")){
-    try {
-      await db.collection("schedule").doc(id).delete();
-    } catch(err){
-      console.error(err);
-      alert("❌ Không xóa được");
-    }
+  if(confirm("Delete this?")){
+    await db.collection("schedule").doc(id).delete();
   }
 }
 
 /*********************************
- * REALTIME RENDER
+ * REALTIME DATA
  *********************************/
 db.collection("schedule")
   .orderBy("time")
   .onSnapshot(snapshot=>{
-    list.innerHTML = "";
     cache = {};
-
     snapshot.forEach(doc=>{
       const s = doc.data();
       s.id = doc.id;
       cache[s.id] = s;
-      renderList();
-
     });
+    renderList();
   });
+
+/*********************************
+ * RENDER
+ *********************************/
+function renderList(){
+  list.innerHTML = "";
+
+  const q = search.value.toLowerCase().trim();
+
+  Object.values(cache).forEach(s=>{
+    if(memberFilter !== "ALL" && s.member !== memberFilter) return;
+    if(!isAdmin && isExpired24h(s.time)) return;
+    if(q && !s.activity.toLowerCase().includes(q)) return;
+
+    renderItem(s);
+  });
+}
 
 function renderItem(s){
-  // Lọc member
-  if(memberFilter !== "ALL" && s.member !== memberFilter) return;
-
-  // Ẩn lịch cũ với user
-  if(!isAdmin && isExpired24h(s.time)) return;
-
-  // Search
-  if(search.value){
-    const q = search.value.toLowerCase();
-    if(!s.activity.toLowerCase().includes(q)) return;
-  }
-
   const badge  = getBadge(s.time);
-  const timeBK = new Date(s.time).toLocaleString("en-GB", {
-    timeZone:"Asia/Bangkok"
-  });
+  const timeBK = new Date(s.time).toLocaleString("en-GB",{ timeZone:"Asia/Bangkok" });
 
   const div = document.createElement("div");
   div.className = "schedule";
@@ -210,7 +188,6 @@ function renderItem(s){
         ${s.activity}
         <span class="badge ${badge.cls}">${badge.text}</span>
       </strong>
-
       <div class="time">🕒 ${timeBK}</div>
       <div>🔑 ${s.keywords || ""}</div>
       <div class="hashtags">${s.hashtags || ""}</div>
@@ -223,16 +200,14 @@ function renderItem(s){
           <button class="danger" onclick="deleteSchedule('${s.id}')">Xóa</button>
         </div>
       ` : ""}
-
-      <div class="member-name member-${s.member}">
-        ${s.member}
-      </div>
+      <div class="member-name member-${s.member}">${s.member}</div>
     </div>
   `;
 
   list.appendChild(div);
 }
-function renderList(){
-  list.innerHTML = "";
-  Object.values(cache).forEach(s => renderItem(s));
-}
+
+/*********************************
+ * SEARCH EVENT
+ *********************************/
+search.addEventListener("input", renderList);
