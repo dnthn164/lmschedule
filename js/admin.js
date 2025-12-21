@@ -110,10 +110,10 @@ async function addSchedule(){
   };
 
   if(editId){
-    await db.collection("schedules").doc(editId).set(data);
+    await db.collection("schedule").doc(editId).set(data);
     editId = null;
   } else {
-    await db.collection("schedules").add(data);
+    await db.collection("schedule").add(data);
   }
 
   activity.value = keywords.value = hashtags.value = time.value = "";
@@ -130,14 +130,14 @@ function editSchedule(s){
 
 async function deleteSchedule(id){
   if(confirm("Xóa lịch này?")){
-    await db.collection("schedules").doc(id).delete();
+    await db.collection("schedule").doc(id).delete();
   }
 }
 
 /*********************************
  * REALTIME RENDER
  *********************************/
-db.collection("schedules")
+db.collection("schedule")
   .orderBy("time")
   .onSnapshot(snapshot=>{
     list.innerHTML = "";
