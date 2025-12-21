@@ -1,4 +1,6 @@
-/* ===== FIREBASE ===== */
+/*********************************
+ * FIREBASE INIT
+ *********************************/
 const firebaseConfig = {
   apiKey: "AIzaSyD7pS-SlL_tqA_wBIK5JvVdwgd422495rU",
   authDomain: "schedule-1a6d6.firebaseapp.com",
@@ -9,7 +11,6 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-
 
 const db   = firebase.firestore();
 const auth = firebase.auth();
@@ -22,7 +23,7 @@ const adminPanel = document.getElementById("adminPanel");
 const loginBtn   = document.getElementById("loginBtn");
 const overlay    = document.getElementById("overlay");
 
-const user     = document.getElementById("user");
+const user     = document.getElementById("user");     // EMAIL
 const pass     = document.getElementById("pass");
 const activity = document.getElementById("activity");
 const keywords = document.getElementById("keywords");
@@ -46,9 +47,14 @@ function closeLogin(){
  * AUTH
  *********************************/
 function login(){
-  auth.signInWithEmailAndPassword(user.value, pass.value)
-    .then(closeLogin)
-    .catch(()=> alert("Sai tài khoản hoặc mật khẩu"));
+  auth.signInWithEmailAndPassword(user.value.trim(), pass.value)
+    .then(() => {
+      closeLogin();
+    })
+    .catch(err => {
+      console.error(err);
+      alert("❌ Đăng nhập thất bại: " + err.message);
+    });
 }
 
 function logout(){
@@ -60,8 +66,8 @@ function logout(){
  *********************************/
 let isAdmin = false;
 
-auth.onAuthStateChanged(user=>{
-  isAdmin = !!user;
+auth.onAuthStateChanged(u=>{
+  isAdmin = !!u;
   adminPanel.classList.toggle("hidden", !isAdmin);
   loginBtn.classList.toggle("hidden", isAdmin);
 });
@@ -77,10 +83,10 @@ function getBadge(dateStr){
   const d0 = new Date(d.setHours(0,0,0,0));
   const diff = (d0 - n0) / 86400000;
 
-  if(diff === 0) return { text:"NOW",          cls:"today" };
-  if(diff === 1) return { text:"TOMORROW",     cls:"tomorrow" };
-  if(diff > 1)   return { text:"COMING SOON",  cls:"upcoming" };
-  return           { text:"PAST",         cls:"future" };
+  if(diff === 0) return { text:"NOW", cls:"today" };
+  if(diff === 1) return { text:"TOMORROW", cls:"tomorrow" };
+  if(diff > 1)   return { text:"COMING SOON", cls:"upcoming" };
+  return          { text:"PAST", cls:"future" };
 }
 
 /*********************************
@@ -94,43 +100,59 @@ function isExpired24h(timeStr){
  * CRUD
  *********************************/
 let editId = null;
+let cache  = {}; // lưu data để edit an toàn
 
 async function addSchedule(){
   if(!activity.value || !time.value){
-    alert("Thiếu thông tin");
+    alert("⚠️ Thiếu thông tin");
     return;
   }
 
   const data = {
-    activity : activity.value,
-    keywords : keywords.value,
-    hashtags : hashtags.value,
+    activity : activity.value.trim(),
+    keywords : keywords.value.trim(),
+    hashtags : hashtags.value.trim(),
     member   : member.value,
     time     : time.value
   };
 
-  if(editId){
-    await db.collection("schedule").doc(editId).set(data);
-    editId = null;
-  } else {
-    await db.collection("schedule").add(data);
-  }
+  try {
+    if(editId){
+      await db.collection("schedule").doc(editId).set(data);
+      editId = null;
+    } else {
+      await db.collection("schedule").add(data);
+    }
 
-  activity.value = keywords.value = hashtags.value = time.value = "";
+    activity.value = keywords.value = hashtags.value = time.value = "";
+    alert("✅ Đã lưu lịch");
+
+  } catch (err) {
+    console.error(err);
+    alert("❌ Không lưu được: " + err.message);
+  }
 }
 
-function editSchedule(s){
+function editSchedule(id){
+  const s = cache[id];
+  if(!s) return;
+
   activity.value = s.activity;
   keywords.value = s.keywords;
   hashtags.value = s.hashtags;
   member.value   = s.member;
   time.value     = s.time;
-  editId = s.id;
+  editId = id;
 }
 
 async function deleteSchedule(id){
   if(confirm("Xóa lịch này?")){
-    await db.collection("schedule").doc(id).delete();
+    try {
+      await db.collection("schedule").doc(id).delete();
+    } catch(err){
+      console.error(err);
+      alert("❌ Không xóa được");
+    }
   }
 }
 
@@ -141,9 +163,12 @@ db.collection("schedule")
   .orderBy("time")
   .onSnapshot(snapshot=>{
     list.innerHTML = "";
+    cache = {};
+
     snapshot.forEach(doc=>{
       const s = doc.data();
       s.id = doc.id;
+      cache[s.id] = s;
       renderItem(s);
     });
   });
@@ -151,8 +176,15 @@ db.collection("schedule")
 function renderItem(s){
   if(!isAdmin && isExpired24h(s.time)) return;
 
+  if(search.value){
+    const q = search.value.toLowerCase();
+    if(!s.activity.toLowerCase().includes(q)) return;
+  }
+
   const badge  = getBadge(s.time);
-  const timeBK = new Date(s.time).toLocaleString("en-GB",{timeZone:"Asia/Bangkok"});
+  const timeBK = new Date(s.time).toLocaleString("en-GB", {
+    timeZone:"Asia/Bangkok"
+  });
 
   const div = document.createElement("div");
   div.className = "schedule";
@@ -172,7 +204,7 @@ function renderItem(s){
     <div class="schedule-right">
       ${isAdmin ? `
         <div class="action-btns">
-          <button class="edit-btn" onclick='editSchedule(${JSON.stringify(s)})'>Sửa</button>
+          <button class="edit-btn" onclick="editSchedule('${s.id}')">Sửa</button>
           <button class="danger" onclick="deleteSchedule('${s.id}')">Xóa</button>
         </div>
       ` : ""}
