@@ -1,104 +1,255 @@
-:root{
-  --bg:#f4efe9;
-  --card:#fff;
-  --brown:#8d5a3a;
-  --blue:#2979ff;
+/* ===============================
+   RESET & BASE
+================================ */
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
-/* BASE */
 body{
-  margin:0;
-  font-family:Segoe UI,sans-serif;
-  background:var(--bg);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background:#f4efe9;
+  color:#3b2a1a;
+  line-height:1.5;
 }
+
+.hidden{ display:none !important; }
 
 button{
   border:none;
-  border-radius:10px;
-  padding:10px 16px;
   cursor:pointer;
+  font-family:inherit;
 }
 
-.primary{background:var(--brown);color:#fff;}
-.danger{background:#c0392b;color:#fff;}
-.edit-btn{background:#eee;}
+input, select{
+  font-family:inherit;
+}
 
-.hidden{display:none}
-
-/* LAYOUT */
+/* ===============================
+   LAYOUT
+================================ */
 .container{
   max-width:900px;
-  margin:24px auto;
+  margin:0 auto;
   padding:16px;
 }
 
 .card{
-  background:var(--card);
+  background:#fff;
   border-radius:20px;
-  padding:20px;
+  padding:16px;
+  margin-bottom:16px;
+}
+
+/* ===============================
+   HEADER
+================================ */
+header{
   margin-bottom:20px;
 }
 
-/* SCHEDULE */
+header h1{
+  font-size:26px;
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+header small{
+  color:#7a5a3a;
+}
+
+/* ===============================
+   ADMIN LOGIN
+================================ */
+#loginBtn{
+  background:#8d5a3a;
+  color:#fff;
+  padding:8px 14px;
+  border-radius:999px;
+  font-size:14px;
+}
+
+#adminPanel{
+  background:#fff;
+  border-radius:20px;
+  padding:16px;
+  margin-bottom:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,.12);
+}
+
+#adminPanel h3{
+  margin-bottom:12px;
+}
+
+#adminPanel input,
+#adminPanel select{
+  width:100%;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid #ddd;
+  margin-bottom:10px;
+}
+
+.admin-actions{
+  display:flex;
+  gap:10px;
+  margin-top:8px;
+}
+
+.admin-actions button{
+  padding:10px 14px;
+  border-radius:14px;
+  font-weight:600;
+}
+
+.save-btn{
+  background:#8d5a3a;
+  color:#fff;
+}
+
+.logout-btn{
+  background:#333;
+  color:#fff;
+}
+
+/* ===============================
+   FILTER MEMBER
+================================ */
+.filter-wrap{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.filter-btn{
+  padding:8px 16px;
+  border-radius:999px;
+  background:#eee;
+  border:1px solid transparent;
+  font-size:14px;
+}
+
+.filter-btn.active{
+  background:#8d5a3a;
+  color:#fff;
+}
+
+/* ===============================
+   SEARCH
+================================ */
+.search-box{
+  width:100%;
+  padding:10px 14px;
+  border-radius:14px;
+  border:1px solid #ddd;
+}
+
+/* ===============================
+   SCHEDULE LIST
+================================ */
 .schedule{
   display:flex;
   justify-content:space-between;
-  gap:16px;
-  padding:18px;
-  border-radius:16px;
-  background:#f6ede7;
-  margin-bottom:14px;
+  gap:12px;
+  padding:14px;
+  border-radius:18px;
+  background:#f6ede6;
+  margin-bottom:12px;
+  border-left:6px solid #8d5a3a;
 }
 
-.schedule-left{flex:1}
-.schedule-right{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-end;
-  gap:8px;
+.schedule-left{
+  flex:1;
 }
 
-.time{font-size:13px;color:#555}
-.hashtags{color:#8d5a3a}
-
-/* MEMBER COLOR */
-.member-Lena{border-left:6px solid var(--blue)}
-.member-Miu{border-left:6px solid var(--brown)}
-.member-LenaMiu{border-left:6px solid #4e2c1a}
-
-.member-tag{
-  padding:4px 12px;
-  border-radius:999px;
-  color:#fff;
-  font-size:12px;
+.schedule-left strong{
+  font-size:16px;
 }
 
-.member-Lena .member-tag{background:var(--blue)}
-.member-Miu .member-tag{background:var(--brown)}
-.member-LenaMiu .member-tag{background:#4e2c1a}
+.schedule-left .time{
+  font-size:14px;
+  color:#6b4a2d;
+  margin:4px 0;
+}
 
-/* BADGE */
+.hashtags{
+  font-size:13px;
+  color:#8d5a3a;
+}
+
+/* ===============================
+   BADGE
+================================ */
 .badge{
-  font-size:11px;
-  padding:4px 10px;
-  border-radius:999px;
+  display:inline-block;
   margin-left:8px;
-  color:#fff;
+  padding:3px 8px;
+  border-radius:999px;
+  font-size:11px;
   font-weight:700;
+  color:#fff;
 }
 
-.badge-now{background:#e53935}
-.badge-tomorrow{background:#43a047}
-.badge-soon{background:#fb8c00}
+.badge.today{ background:#e53935; }       /* NOW - đỏ */
+.badge.tomorrow{ background:#43a047; }    /* Tomorrow - xanh lá */
+.badge.upcoming{ background:#fb8c00; }    /* Coming soon - cam */
+.badge.future{ background:#999; }
 
-/* MOBILE */
+/* ===============================
+   MEMBER TAG
+================================ */
+.member-name{
+  align-self:flex-start;
+  padding:6px 12px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:600;
+  color:#fff;
+}
+
+.member-Lena{ background:#1976d2; }       /* xanh dương */
+.member-Miu{ background:#8d5a3a; }        /* nâu */
+.member-LenaMiu{ background:#5e35b1; }    /* tím */
+
+/* ===============================
+   ACTION BUTTONS
+================================ */
+.action-btns{
+  display:flex;
+  gap:8px;
+  margin-bottom:8px;
+}
+
+.edit-btn{
+  background:#fff;
+  border:1px solid #bbb;
+  padding:6px 10px;
+  border-radius:10px;
+}
+
+.danger{
+  background:#d32f2f;
+  color:#fff;
+  padding:6px 10px;
+  border-radius:10px;
+}
+
+/* ===============================
+   MOBILE
+================================ */
 @media(max-width:600px){
+  header h1{
+    font-size:22px;
+  }
+
   .schedule{
     flex-direction:column;
   }
+
   .schedule-right{
-    flex-direction:row;
+    display:flex;
     justify-content:space-between;
-    width:100%;
+    align-items:center;
   }
 }
