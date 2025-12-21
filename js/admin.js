@@ -143,72 +143,60 @@ let unsub = null;
 function renderSchedules(){
   if(unsub) unsub();
 
-  console.log("🔥 renderSchedules called");
-
   list.innerHTML = "";
   const q = search.value.toLowerCase();
 
   unsub = db.collection("schedule")
     .orderBy("time")
-    .onSnapshot(
-      snap => {
-        console.log("📦 SNAP SIZE:", snap.size);
+    .onSnapshot(snap=>{
+      list.innerHTML = "";
 
-        list.innerHTML = "";
+      snap.forEach(doc=>{
+        const s = doc.data();
 
-        snap.forEach(doc=>{
-          console.log("📄 DOC:", doc.id, doc.data());
+        if(!s.activity.toLowerCase().includes(q)) return;
+        if(!auth.currentUser && expired24h(s.time)) return;
 
-          const s = doc.data();
-
-          if(!s.activity.toLowerCase().includes(q)) return;
-          if(!auth.currentUser && expired24h(s.time)) return;
-
-          const b = getBadge(s.time);
-          const timeBK = s.time.toDate().toLocaleString("en-GB", {
-            timeZone: "Asia/Bangkok"
-          });
-
-          const div = document.createElement("div");
-          div.className = "schedule";
-
-          div.innerHTML = `
-            <div class="schedule-left">
-              <strong>${s.activity}
-                <span class="badge ${b.c}">${b.t}</span>
-              </strong>
-              <div class="time">🕒 ${timeBK}</div>
-              <div>🔑 ${s.keywords || ""}</div>
-              <div class="hashtags">${s.hashtags || ""}</div>
-            </div>
-
-            <div class="schedule-right">
-              ${auth.currentUser ? `
-                <div class="action-btns">
-                  <button class="edit-btn"
-                    onclick='editSchedule("${doc.id}", ${JSON.stringify(s)})'>
-                    Sửa
-                  </button>
-                  <button class="danger"
-                    onclick='deleteSchedule("${doc.id}")'>
-                    Xóa
-                  </button>
-                </div>
-              ` : ""}
-              <div class="member-name member-${s.member.replace(" ","")}">
-                ${s.member}
-              </div>
-            </div>
-          `;
-
-          list.appendChild(div);
+        const b = getBadge(s.time);
+        const timeBK = s.time.toDate().toLocaleString("en-GB", {
+          timeZone: "Asia/Bangkok"
         });
-      },
-      err => {
-        console.error("❌ SNAPSHOT ERROR:", err);
-        alert(err.message);
-      }
-    );
+
+        const div = document.createElement("div");
+        div.className = "schedule";
+
+        div.innerHTML = `
+          <div class="schedule-left">
+            <strong>${s.activity}
+              <span class="badge ${b.c}">${b.t}</span>
+            </strong>
+            <div class="time">🕒 ${timeBK}</div>
+            <div>🔑 ${s.keywords}</div>
+            <div class="hashtags">${s.hashtags}</div>
+          </div>
+
+          <div class="schedule-right">
+            ${auth.currentUser ? `
+              <div class="action-btns">
+                <button class="edit-btn"
+                  onclick='editSchedule("${doc.id}", ${JSON.stringify(s)})'>
+                  Sửa
+                </button>
+                <button class="danger"
+                  onclick='deleteSchedule("${doc.id}")'>
+                  Xóa
+                </button>
+              </div>
+            ` : ""}
+            <div class="member-name member-${s.member.replace(" ","")}">
+              ${s.member}
+            </div>
+          </div>
+        `;
+
+        list.appendChild(div);
+      });
+    });
 }
 
 renderSchedules();
