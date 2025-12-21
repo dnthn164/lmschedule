@@ -14,189 +14,107 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-/* ===== ELEMENTS ===== */
+/* ===== DOM ===== */
 const overlay = document.getElementById("overlay");
 const adminPanel = document.getElementById("adminPanel");
 const loginBtn = document.getElementById("loginBtn");
 const list = document.getElementById("list");
 
-/* ===== LOGIN ===== */
-function openLogin(){ overlay.classList.remove("hidden"); }
-function closeLogin(){ overlay.classList.add("hidden"); }
+const user = document.getElementById("user");
+const pass = document.getElementById("pass");
+const activity = document.getElementById("activity");
+const keywords = document.getElementById("keywords");
+const hashtags = document.getElementById("hashtags");
+const member = document.getElementById("member");
+const time = document.getElementById("time");
+const search = document.getElementById("search");
 
-function login(){
-  auth.signInWithEmailAndPassword(
-    user.value.trim(),
-    pass.value
-  ).catch(err => {
-    console.error(err);
-    alert(err.code);
-  });
-}
+let editId = null;
+let memberFilter = "ALL";
+let cache = {};
 
-function logout(){
-  auth.signOut();
-}
+/* ===== LOGIN UI ===== */
+loginBtn.onclick = () => overlay.classList.remove("hidden");
+document.getElementById("loginCancel").onclick = () => overlay.classList.add("hidden");
 
-auth.onAuthStateChanged(u=>{
-  const isAdmin = !!u;
+document.getElementById("loginSubmit").onclick = () => {
+  auth.signInWithEmailAndPassword(user.value, pass.value)
+    .catch(e => alert(e.message));
+};
 
-  adminPanel.classList.toggle("hidden", !isAdmin);
-  loginBtn.classList.toggle("hidden", isAdmin);
+document.getElementById("logoutBtn").onclick = () => auth.signOut();
 
-  if(isAdmin) closeLogin();
-
-  renderSchedules();
+/* ===== AUTH STATE ===== */
+auth.onAuthStateChanged(u => {
+  adminPanel.classList.toggle("hidden", !u);
+  loginBtn.classList.toggle("hidden", !!u);
+  if (u) overlay.classList.add("hidden");
 });
 
-/* ===== TIME UTILS ===== */
-function sameDay(d1, d2){
-  return d1.getFullYear() === d2.getFullYear() &&
-         d1.getMonth() === d2.getMonth() &&
-         d1.getDate() === d2.getDate();
-}
-
-function expired24h(timestamp){
-  return Date.now() - timestamp.toDate().getTime() > 86400000;
-}
-
-/* ===== BADGE ===== */
-function getBadge(timestamp){
-  const now = new Date();
-  const d = timestamp.toDate();
-  const diff = Math.floor((d - now) / 86400000);
-
-  if(diff === 0) return {t:"NOW",c:"today"};
-  if(diff === 1) return {t:"TOMORROW",c:"tomorrow"};
-  if(diff > 1) return {t:"COMING SOON",c:"upcoming"};
-  return {t:"PAST",c:"future"};
-}
-
-/* ===== CRUD ===== */
-let editId = null;
-
-async function saveSchedule(){
-  if(!activity.value || !time.value){
+/* ===== SAVE ===== */
+document.getElementById("saveBtn").onclick = async () => {
+  if (!activity.value || !time.value) {
     alert("Thiếu thông tin");
     return;
   }
 
-  const activityName = activity.value.trim();
-  const inputDate = new Date(time.value);
-
-  /* ===== CHECK TRÙNG ===== */
-  const snap = await db.collection("schedule").get();
-
-  for(const doc of snap.docs){
-    if(editId && doc.id === editId) continue;
-
-    const s = doc.data();
-    const existDate = s.time.toDate();
-
-    if(
-      s.activity.trim().toLowerCase() === activityName.toLowerCase() &&
-      sameDay(existDate, inputDate)
-    ){
-      alert("⚠️ Trùng hoạt động trong cùng ngày");
-      return;
-    }
-  }
-
   const data = {
-    activity: activityName,
-    keywords: keywords.value || "",
-    hashtags: hashtags.value || "",
+    activity: activity.value.trim(),
+    keywords: keywords.value,
+    hashtags: hashtags.value,
     member: member.value,
-    time: firebase.firestore.Timestamp.fromDate(inputDate)
+    time: firebase.firestore.Timestamp.fromDate(new Date(time.value))
   };
 
-  if(editId){
+  if (editId) {
     await db.collection("schedule").doc(editId).set(data);
     editId = null;
-  }else{
+  } else {
     await db.collection("schedule").add(data);
   }
 
   activity.value = keywords.value = hashtags.value = time.value = "";
-}
+};
 
-function editSchedule(id, data){
-  editId = id;
-  activity.value = data.activity;
-  keywords.value = data.keywords;
-  hashtags.value = data.hashtags;
-  member.value = data.member;
+/* ===== FILTER ===== */
+document.querySelectorAll(".filters button").forEach(btn => {
+  btn.onclick = () => {
+    memberFilter = btn.dataset.filter;
+    render();
+  };
+});
 
-  const d = data.time.toDate();
-  time.value = d.toISOString().slice(0,16);
-}
-
-function deleteSchedule(id){
-  if(confirm("Xóa lịch này?")){
-    db.collection("schedule").doc(id).delete();
-  }
-}
+search.oninput = render;
 
 /* ===== RENDER ===== */
-let unsub = null;
-
-function renderSchedules(){
-  if(unsub) unsub();
-
+function render() {
   list.innerHTML = "";
   const q = search.value.toLowerCase();
 
-  unsub = db.collection("schedule")
-    .orderBy("time")
-    .onSnapshot(snap=>{
-      list.innerHTML = "";
+  Object.entries(cache).forEach(([id, s]) => {
+    if (!s.activity.toLowerCase().includes(q)) return;
+    if (memberFilter !== "ALL" && s.member !== memberFilter) return;
+    if (!auth.currentUser && s.time.toDate() < new Date()) return;
 
-      snap.forEach(doc=>{
-        const s = doc.data();
-
-        if(!s.activity.toLowerCase().includes(q)) return;
-        if(!auth.currentUser && expired24h(s.time)) return;
-
-        const b = getBadge(s.time);
-        const timeBK = s.time.toDate().toLocaleString("en-GB", {
-          timeZone: "Asia/Bangkok"
-        });
-
-        const div = document.createElement("div");
-        div.className = "schedule";
-
-        div.innerHTML = `
-          <div class="schedule-left">
-            <strong>${s.activity}
-              <span class="badge ${b.c}">${b.t}</span>
-            </strong>
-            <div class="time">🕒 ${timeBK}</div>
-            <div>🔑 ${s.keywords}</div>
-            <div class="hashtags">${s.hashtags}</div>
-          </div>
-
-          <div class="schedule-right">
-            ${auth.currentUser ? `
-              <div class="action-btns">
-                <button class="edit-btn"
-                  onclick='editSchedule("${doc.id}", ${JSON.stringify(s)})'>
-                  Sửa
-                </button>
-                <button class="danger"
-                  onclick='deleteSchedule("${doc.id}")'>
-                  Xóa
-                </button>
-              </div>
-            ` : ""}
-            <div class="member-name member-${s.member.replace(" ","")}">
-              ${s.member}
-            </div>
-          </div>
-        `;
-
-        list.appendChild(div);
-      });
-    });
+    const div = document.createElement("div");
+    div.className = "schedule";
+    div.innerHTML = `
+      <div>
+        <strong>${s.activity}</strong>
+        <div>🕒 ${s.time.toDate().toLocaleString("en-GB",{timeZone:"Asia/Bangkok"})}</div>
+        <div>${s.keywords}</div>
+        <div>${s.hashtags}</div>
+      </div>
+      <div class="member-name member-${s.member}">${s.member}</div>
+    `;
+    list.appendChild(div);
+  });
 }
 
-renderSchedules();
+/* ===== FIRESTORE ===== */
+db.collection("schedule").orderBy("time")
+  .onSnapshot(snap => {
+    cache = {};
+    snap.forEach(doc => cache[doc.id] = doc.data());
+    render();
+  });

@@ -11,7 +11,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
- 
 
   <script src="./js/admin.js" defer></script>
 </head>
@@ -23,7 +22,7 @@
   <p>Bangkok Time (UTC+7)</p>
 </header>
 
-<button id="loginBtn" class="login-btn" onclick="openLogin()">🔒 Admin</button>
+<button id="loginBtn" class="login-btn">🔒 Admin</button>
 
 <!-- LOGIN -->
 <div id="overlay" class="overlay hidden">
@@ -31,14 +30,13 @@
     <h3>Admin Login</h3>
     <input id="user" type="email" placeholder="Email admin">
     <input id="pass" type="password" placeholder="Password">
-    <button onclick="login()">Đăng nhập</button>
-    <button onclick="closeLogin()">Hủy</button>
+    <button id="loginSubmit">Đăng nhập</button>
+    <button id="loginCancel">Hủy</button>
   </div>
 </div>
 
 <div class="container">
 
-  <!-- ADMIN -->
   <div id="adminPanel" class="card hidden">
     <h3>👑 Quản lý lịch</h3>
 
@@ -54,24 +52,21 @@
 
     <input id="time" type="datetime-local">
 
-    <button onclick="saveSchedule()">💾 Lưu lịch</button>
-    <button onclick="logout()">Đăng xuất</button>
+    <button id="saveBtn">💾 Lưu lịch</button>
+    <button id="logoutBtn">Đăng xuất</button>
   </div>
 
-  <!-- SEARCH -->
   <div class="card">
-    <input id="search" placeholder="🔍 Tìm kiếm..." oninput="renderSchedules()">
+    <input id="search" placeholder="🔍 Tìm kiếm...">
   </div>
 
-  <!-- FILTER -->
   <div class="filters">
-    <button onclick="setMemberFilter('ALL')">Tất cả</button>
-    <button onclick="setMemberFilter('Lena')">Lena</button>
-    <button onclick="setMemberFilter('Miu')">Miu</button>
-    <button onclick="setMemberFilter('LenaMiu')">LenaMiu</button>
+    <button data-filter="ALL">Tất cả</button>
+    <button data-filter="Lena">Lena</button>
+    <button data-filter="Miu">Miu</button>
+    <button data-filter="LenaMiu">LenaMiu</button>
   </div>
 
-  <!-- LIST -->
   <div class="card">
     <h3>📅 Lịch</h3>
     <div id="list"></div>
