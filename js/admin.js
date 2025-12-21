@@ -14,8 +14,7 @@ const auth = firebase.auth();
  * ADMIN EMAILS
  *********************************/
 const ADMIN_EMAILS = [
-  "admin1@gmail.com",
-  "admin2@gmail.com"
+  "dn.thn164@gmail.com",
 ];
 
 /*********************************
