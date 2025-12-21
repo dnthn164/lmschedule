@@ -57,8 +57,11 @@ function login(){
 }
 
 function logout(){
-  auth.signOut();
+  auth.signOut().then(()=>{
+    renderList();
+  });
 }
+
 
 /*********************************
  * ADMIN STATE
