@@ -15,10 +15,21 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 /* ===== ELEMENTS ===== */
+
+/* ===== ELEMENTS ===== */
 const overlay = document.getElementById("overlay");
 const adminPanel = document.getElementById("adminPanel");
 const loginBtn = document.getElementById("loginBtn");
 const list = document.getElementById("list");
+
+const user = document.getElementById("user");
+const pass = document.getElementById("pass");
+const activity = document.getElementById("activity");
+const keywords = document.getElementById("keywords");
+const hashtags = document.getElementById("hashtags");
+const member = document.getElementById("member");
+const time = document.getElementById("time");
+const search = document.getElementById("search");
 
 /* ===== LOGIN ===== */
 function openLogin(){ overlay.classList.remove("hidden"); }
