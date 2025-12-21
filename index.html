@@ -22,7 +22,7 @@
   <p>Bangkok Time (UTC+7)</p>
 </header>
 
-<button id="loginBtn" class="primary login-btn" onclick="openLogin()">🔐 Admin</button>
+<button id="loginBtn" class="primary login-btn" onclick="openLogin()">🔐 MyThn </button>
 
 <!-- LOGIN POPUP -->
 <div id="overlay" class="overlay hidden">
@@ -61,6 +61,15 @@
   <div class="card">
     <input id="search" placeholder="🔍 Tìm kiếm lịch..." oninput="renderSchedules()">
   </div>
+<!-- FILTER MEMBER -->
+<div class="card filter">
+  <select id="memberFilter" onchange="setMemberFilter(this.value)">
+    <option value="ALL">👥 Tất cả</option>
+    <option value="LenaMiu">LenaMiu</option>
+    <option value="Lena">Lena</option>
+    <option value="Miu">Miu</option>
+  </select>
+</div>
 
   <!-- SCHEDULE LIST -->
   <div class="card">

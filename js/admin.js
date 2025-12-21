@@ -31,6 +31,15 @@ const hashtags = document.getElementById("hashtags");
 const member   = document.getElementById("member");
 const time     = document.getElementById("time");
 const search   = document.getElementById("search");
+/*********************************
+ * FILTER MEMBER
+ *********************************/
+let memberFilter = "ALL";
+
+function setMemberFilter(val){
+  memberFilter = val;
+  renderList();
+}
 
 /*********************************
  * LOGIN UI
@@ -169,13 +178,19 @@ db.collection("schedule")
       const s = doc.data();
       s.id = doc.id;
       cache[s.id] = s;
-      renderItem(s);
+      renderList();
+
     });
   });
 
 function renderItem(s){
+  // Lọc member
+  if(memberFilter !== "ALL" && s.member !== memberFilter) return;
+
+  // Ẩn lịch cũ với user
   if(!isAdmin && isExpired24h(s.time)) return;
 
+  // Search
   if(search.value){
     const q = search.value.toLowerCase();
     if(!s.activity.toLowerCase().includes(q)) return;
@@ -216,4 +231,8 @@ function renderItem(s){
   `;
 
   list.appendChild(div);
+}
+function renderList(){
+  list.innerHTML = "";
+  Object.values(cache).forEach(s => renderItem(s));
 }

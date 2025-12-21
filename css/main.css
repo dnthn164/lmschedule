@@ -177,3 +177,99 @@
 .edit-btn{
   background:#eee;
 }
+/* ===== MEMBER COLOR HIGHLIGHT ===== */
+
+/* Lena */
+.member-Lena{
+  background:#ffe6ec;
+  color:#d6336c;
+}
+
+/* Miu */
+.member-Miu{
+  background:#e6fff4;
+  color:#0ca678;
+}
+
+/* LenaMiu */
+.member-LenaMiu{
+  background:#eef0ff;
+  color:#4c6ef5;
+}
+
+/* Border theo member */
+.schedule:has(.member-Lena){
+  border-left:6px solid #d6336c;
+}
+
+.schedule:has(.member-Miu){
+  border-left:6px solid #0ca678;
+}
+
+.schedule:has(.member-LenaMiu){
+  border-left:6px solid #4c6ef5;
+}
+
+/* ===== MOBILE UI ===== */
+@media (max-width: 640px){
+
+  header{
+    padding:18px 12px;
+  }
+
+  .container{
+    padding:12px;
+    margin:12px auto;
+  }
+
+  .card{
+    padding:16px;
+    border-radius:14px;
+  }
+
+  /* Schedule mobile */
+  .schedule{
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .schedule-right{
+    width:100%;
+    flex-direction:row;
+    justify-content:space-between;
+    align-items:center;
+  }
+
+  .action-btns{
+    order:2;
+  }
+
+  .member-name{
+    order:1;
+    font-size:12px;
+  }
+
+  /* Buttons */
+  button{
+    padding:8px 12px;
+    font-size:13px;
+  }
+
+  /* Login popup */
+  .popup{
+    width:90%;
+    padding:20px;
+  }
+
+  /* Login button */
+  .login-btn{
+    top:12px;
+    right:12px;
+    padding:8px 12px;
+    font-size:13px;
+  }
+
+  input, select{
+    font-size:14px;
+  }
+}
