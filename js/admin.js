@@ -1,20 +1,21 @@
-/* ================= FIREBASE ================= */
+/* ===== FIREBASE ===== */
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID"
+  apiKey: "AIzaSyD7pS-SlL_tqA_wBIK5JvVdwgd422495rU",
+  authDomain: "schedule-1a6d6.firebaseapp.com",
+  projectId: "schedule-1a6d6",
+  storageBucket: "schedule-1a6d6.firebasestorage.app",
+  messagingSenderId: "814395645954",
+  appId: "1:814395645954:web:cf4803875640637b17c71b"
 };
 
 firebase.initializeApp(firebaseConfig);
-
-const auth = firebase.auth();
-const db = firebase.firestore();
 
 /* ================= ELEMENTS ================= */
 const overlay = document.getElementById("overlay");
 const adminPanel = document.getElementById("adminPanel");
 const loginBtn = document.getElementById("loginBtn");
 const list = document.getElementById("list");
+const searchInput = document.getElementById("search");
 
 /* ================= LOGIN ================= */
 function openLogin(){ overlay.classList.remove("hidden"); }
@@ -33,10 +34,15 @@ auth.onAuthStateChanged(u=>{
   adminPanel.classList.toggle("hidden", !u);
   loginBtn.classList.toggle("hidden", !!u);
   if(u) closeLogin();
-  renderSchedules();
+  drawSchedules(); // chỉ vẽ lại, KHÔNG đụng firestore
 });
 
-/* ================= UTILS ================= */
+/* ================= STATE ================= */
+let schedulesCache = [];   // 🔥 CACHE DUY NHẤT
+let memberFilter = "ALL";
+let editId = null;
+
+/* ================= TIME UTILS ================= */
 function sameDay(a,b){
   return a.getFullYear()===b.getFullYear() &&
          a.getMonth()===b.getMonth() &&
@@ -52,24 +58,90 @@ function getBadge(ts){
   return {t:"PAST",c:"future"};
 }
 
-/* ================= CRUD ================= */
-let editId = null;
+/* ================= REALTIME LISTENER (1 LẦN DUY NHẤT) ================= */
+db.collection("schedule")
+  .orderBy("time")
+  .onSnapshot(
+    snap=>{
+      schedulesCache = snap.docs.map(d=>({
+        id: d.id,
+        ...d.data()
+      }));
+      drawSchedules();
+    },
+    err=>{
+      console.error("SNAPSHOT ERROR:", err);
+      alert(err.message);
+    }
+  );
 
+/* ================= DRAW UI ================= */
+function drawSchedules(){
+  list.innerHTML = "";
+  const q = searchInput.value.toLowerCase();
+
+  schedulesCache.forEach(s=>{
+    if(memberFilter!=="ALL" && s.member!==memberFilter) return;
+    if(!s.activity.toLowerCase().includes(q)) return;
+
+    const b = getBadge(s.time);
+    const timeBK = s.time.toDate().toLocaleString("en-GB", {
+      timeZone:"Asia/Bangkok"
+    });
+
+    const div = document.createElement("div");
+    div.className = "schedule";
+
+    div.innerHTML = `
+      <div class="schedule-left">
+        <strong>
+          ${s.activity}
+          <span class="badge ${b.c}">${b.t}</span>
+        </strong>
+        <div>🕒 ${timeBK}</div>
+        <div>🔑 ${s.keywords || ""}</div>
+        <div class="hashtags">${s.hashtags || ""}</div>
+      </div>
+
+      <div class="schedule-right">
+        ${auth.currentUser ? `
+          <button onclick='editSchedule("${s.id}")'>Sửa</button>
+          <button onclick='deleteSchedule("${s.id}")'>Xóa</button>
+        ` : ""}
+        <div class="member-name">${s.member}</div>
+      </div>
+    `;
+
+    list.appendChild(div);
+  });
+}
+
+/* ================= FILTER ================= */
+function setMemberFilter(m){
+  memberFilter = m;
+  drawSchedules(); // ✅ CHỈ VẼ
+}
+
+searchInput.addEventListener("input", drawSchedules);
+
+/* ================= CRUD ================= */
 async function saveSchedule(){
-  if(!activity.value || !time.value) return alert("Thiếu thông tin");
+  if(!activity.value || !time.value){
+    alert("Thiếu thông tin");
+    return;
+  }
 
   const name = activity.value.trim();
   const inputDate = new Date(time.value);
 
-  const snap = await db.collection("schedule").get();
-  for(const d of snap.docs){
-    if(editId && d.id===editId) continue;
-    const s = d.data();
+  // check trùng
+  for(const s of schedulesCache){
+    if(editId && s.id===editId) continue;
     if(
       s.activity.toLowerCase()===name.toLowerCase() &&
       sameDay(s.time.toDate(), inputDate)
     ){
-      alert("⚠️ Trùng hoạt động trong ngày");
+      alert("⚠️ Trùng hoạt động trong cùng ngày");
       return;
     }
   }
@@ -82,73 +154,30 @@ async function saveSchedule(){
     time: firebase.firestore.Timestamp.fromDate(inputDate)
   };
 
-  editId
-    ? await db.collection("schedule").doc(editId).set(data)
-    : await db.collection("schedule").add(data);
+  if(editId){
+    await db.collection("schedule").doc(editId).set(data);
+    editId = null;
+  }else{
+    await db.collection("schedule").add(data);
+  }
 
-  editId=null;
-  activity.value=keywords.value=hashtags.value=time.value="";
+  activity.value = keywords.value = hashtags.value = time.value = "";
 }
 
-function editSchedule(id,s){
-  editId=id;
-  activity.value=s.activity;
-  keywords.value=s.keywords;
-  hashtags.value=s.hashtags;
-  member.value=s.member;
-  time.value=s.time.toDate().toISOString().slice(0,16);
+function editSchedule(id){
+  const s = schedulesCache.find(x=>x.id===id);
+  if(!s) return;
+
+  editId = id;
+  activity.value = s.activity;
+  keywords.value = s.keywords;
+  hashtags.value = s.hashtags;
+  member.value = s.member;
+  time.value = s.time.toDate().toISOString().slice(0,16);
 }
 
 function deleteSchedule(id){
-  if(confirm("Xóa lịch này?"))
+  if(confirm("Xóa lịch này?")){
     db.collection("schedule").doc(id).delete();
+  }
 }
-
-/* ================= FILTER ================= */
-let memberFilter="ALL";
-function setMemberFilter(m){
-  memberFilter=m;
-  renderSchedules();
-}
-
-/* ================= RENDER ================= */
-let unsub=null;
-
-function renderSchedules(){
-  if(unsub) unsub();
-
-  const q = search.value.toLowerCase();
-  list.innerHTML="";
-
-  unsub = db.collection("schedule")
-    .orderBy("time")
-    .onSnapshot(snap=>{
-      list.innerHTML="";
-
-      snap.forEach(doc=>{
-        const s = doc.data();
-
-        if(memberFilter!=="ALL" && s.member!==memberFilter) return;
-        if(!s.activity.toLowerCase().includes(q)) return;
-
-        const b=getBadge(s.time);
-        const timeBK=s.time.toDate().toLocaleString("en-GB",{timeZone:"Asia/Bangkok"});
-
-        const div=document.createElement("div");
-        div.className="schedule";
-        div.innerHTML=`
-          <strong>${s.activity} <span class="${b.c}">${b.t}</span></strong>
-          <div>🕒 ${timeBK}</div>
-          <div>${s.keywords}</div>
-          <div>${s.hashtags}</div>
-          <div>${s.member}</div>
-          ${auth.currentUser?`
-            <button onclick='editSchedule("${doc.id}",${JSON.stringify(s)})'>Sửa</button>
-            <button onclick='deleteSchedule("${doc.id}")'>Xóa</button>`:""}
-        `;
-        list.appendChild(div);
-      });
-    });
-}
-
-renderSchedules();
