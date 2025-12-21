@@ -41,8 +41,6 @@ function setMemberFilter(val){
   renderList();
 }
 
-let allSchedules = [];
-
 /*********************************
  * LOGIN UI
  *********************************/
@@ -136,7 +134,7 @@ async function addSchedule(){
     }
 
     activity.value = keywords.value = hashtags.value = time.value = "";
-    alert("✅ Saved");
+    alert("✅ Đã lưu lịch");
 
   } catch (err) {
     console.error(err);
@@ -157,7 +155,7 @@ function editSchedule(id){
 }
 
 async function deleteSchedule(id){
-  if(confirm("Delete this?")){
+  if(confirm("Xóa lịch này?")){
     try {
       await db.collection("schedule").doc(id).delete();
     } catch(err){
@@ -180,61 +178,7 @@ db.collection("schedule")
       const s = doc.data();
       s.id = doc.id;
       cache[s.id] = s;
-      renderList();
-
+      renderItem(s);
     });
   });
 
-function renderItem(s){
-  // Lọc member
-  if(memberFilter !== "ALL" && s.member !== memberFilter) return;
-
-  // Ẩn lịch cũ với user
-  if(!isAdmin && isExpired24h(s.time)) return;
-
-  // Search
-  if(search.value){
-    const q = search.value.toLowerCase();
-    if(!s.activity.toLowerCase().includes(q)) return;
-  }
-
-  const badge  = getBadge(s.time);
-  const timeBK = new Date(s.time).toLocaleString("en-GB", {
-    timeZone:"Asia/Bangkok"
-  });
-
-  const div = document.createElement("div");
-  div.className = "schedule";
-
-  div.innerHTML = `
-    <div class="schedule-left">
-      <strong>
-        ${s.activity}
-        <span class="badge ${badge.cls}">${badge.text}</span>
-      </strong>
-
-      <div class="time">🕒 ${timeBK}</div>
-      <div>🔑 ${s.keywords || ""}</div>
-      <div class="hashtags">${s.hashtags || ""}</div>
-    </div>
-
-    <div class="schedule-right">
-      ${isAdmin ? `
-        <div class="action-btns">
-          <button class="edit-btn" onclick="editSchedule('${s.id}')">Sửa</button>
-          <button class="danger" onclick="deleteSchedule('${s.id}')">Xóa</button>
-        </div>
-      ` : ""}
-
-      <div class="member-name member-${s.member}">
-        ${s.member}
-      </div>
-    </div>
-  `;
-
-  list.appendChild(div);
-}
-function renderList(){
-  list.innerHTML = "";
-  Object.values(cache).forEach(s => renderItem(s));
-}
