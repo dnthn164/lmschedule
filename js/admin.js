@@ -53,7 +53,7 @@ let memberFilter = "ALL";
 function openLogin(){ overlay.classList.remove("hidden"); }
 function closeLogin(){ overlay.classList.add("hidden"); }
 
-function login(){
+/*function login(){
   auth.signInWithEmailAndPassword(
     user.value.trim(),
     pass.value.trim()
@@ -63,8 +63,12 @@ function login(){
     pass.value = "";    // optional
   })
   .catch(err => alert(err.message));
-}
+}*/
 
+function login(){
+  auth.signInWithEmailAndPassword(user.value.trim(), pass.value)
+    .catch(err => alert(err.message));
+}
 
 function logout(){
   auth.signOut();
@@ -78,7 +82,9 @@ auth.onAuthStateChanged(u=>{
 
   adminPanel.classList.toggle("hidden", !isAdmin);
   loginBtn.classList.toggle("hidden", isAdmin);
-
+if (u) {
+    closeLogin(); // 🔥 ĐÓNG POPUP KHI LOGIN THÀNH CÔNG
+  }
   renderList();
 });
 
