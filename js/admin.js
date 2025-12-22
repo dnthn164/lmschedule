@@ -38,7 +38,10 @@ const address = document.getElementById("address");
 const ADMIN_EMAILS = [
   "dn.thn164@gmail.com",
 ];
+const SUPER_ADMIN = "dn.thn164@gmail.com";
 
+let canAdd    = false;
+let canEdit   = false;
 /*********************************
  * STATE
  *********************************/
@@ -77,7 +80,7 @@ function logout(){
 /*********************************
  * AUTH STATE
  *********************************/
-auth.onAuthStateChanged(u=>{
+/*auth.onAuthStateChanged(u=>{
   isAdmin = !!u && ADMIN_EMAILS.includes(u.email);
 
   adminPanel.classList.toggle("hidden", !isAdmin);
@@ -86,7 +89,37 @@ if (u) {
     closeLogin(); // 🔥 ĐÓNG POPUP KHI LOGIN THÀNH CÔNG
   }
   renderList();
+});*/
+auth.onAuthStateChanged(user => {
+
+  if (!user) {
+    canAdd  = false;
+    canEdit = false;
+    isAdmin = false;
+
+    adminPanel.classList.add("hidden");
+    loginBtn.classList.remove("hidden");
+    closeLogin();
+
+    renderList();
+    return;
+  }
+
+  const email = user.email;
+
+  canAdd  = ADD_ADMINS.includes(email) || email === SUPER_ADMIN;
+  canEdit = email === SUPER_ADMIN;
+  isAdmin = canAdd; // 👈 QUAN TRỌNG
+
+  adminPanel.classList.toggle("hidden", !canAdd);
+  loginBtn.classList.add("hidden");
+
+  closeLogin(); // ✅ popup đóng chắc chắn
+
+  renderList();
 });
+
+
 
 /*********************************
  * FILTER
@@ -149,7 +182,7 @@ async function autoDeleteOldSchedules(){
 /*********************************
  * CRUD
  *********************************/
-async function addSchedule(){
+/*async function addSchedule(){
   if(!activity.value || !time.value){
     alert("Thiếu thông tin");
     return;
@@ -176,7 +209,49 @@ async function addSchedule(){
   }catch(err){
     alert(err.message);
   }
+}*/
+async function addSchedule(){
+  if (!canAdd) {
+    alert("❌ Bạn không có quyền thêm lịch");
+    return;
+  }
+
+  if (!activity.value || !time.value) {
+    alert("⚠️ Thiếu thông tin");
+    return;
+  }
+
+  const data = {
+    activity : activity.value.trim(),
+    keywords : keywords.value.trim(),
+    hashtags : hashtags.value.trim(),
+    address  : address.value.trim(), 
+    member   : member.value,
+    time     : time.value,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  };
+
+  if (editId && !canEdit) {
+    alert("❌ Chỉ SUPER ADMIN mới được sửa");
+    return;
+  }
+
+  try {
+    if (editId) {
+      await db.collection("schedule").doc(editId).update(data);
+      editId = null;
+    } else {
+      await db.collection("schedule").add(data);
+    }
+
+    activity.value = keywords.value = hashtags.value = time.value = "";
+    alert("✅ Đã lưu");
+
+  } catch (err) {
+    alert("❌ Lỗi: " + err.message);
+  }
 }
+
 
 function editSchedule(id){
   const s = cache[id];
@@ -191,11 +266,17 @@ function editSchedule(id){
   editId = id;
 }
 
-function deleteSchedule(id){
-  if(confirm("Xóa lịch này?")){
-    db.collection("schedule").doc(id).delete();
+async function deleteSchedule(id){
+  if (!canEdit) {
+    alert("❌ Bạn không có quyền xóa");
+    return;
   }
+
+  if (!confirm("Xóa lịch này?")) return;
+
+  await db.collection("schedule").doc(id).delete();
 }
+
 
 /*********************************
  * REALTIME
@@ -241,10 +322,13 @@ function renderList(){
 
       <div class="schedule-right">
         ${isAdmin ? `
-          <div class="action-btns">
-            <button class="edit-btn" onclick="editSchedule('${s.id}')">Sửa</button>
-            <button class="danger" onclick="deleteSchedule('${s.id}')">Xóa</button>
-          </div>
+          ${canEdit ? `
+  <div class="action-btns">
+    <button class="edit-btn" onclick="editSchedule('${s.id}')">Sửa</button>
+    <button class="danger" onclick="deleteSchedule('${s.id}')">Xóa</button>
+  </div>
+` : ""}
+
         ` : ""}
         <div class="member-tag">${s.member}</div>
       </div>
