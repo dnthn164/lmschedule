@@ -2,8 +2,9 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Lịch hoạt động LenaMiu</title>
+  <title>Lịch OTPs</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="./img/favicons/favicon-16x16.png" type="image/x-icon">
 
   <link rel="stylesheet" href="./css/main.css">
 
@@ -49,6 +50,7 @@
       <option value="Lena">Lena</option>
       <option value="Miu">Miu</option>
       <option value="LenaMiu">LenaMiu</option>
+      <option value="Sonya">Sonya</option>
     </select>
 
     <input id="time" type="datetime-local">
@@ -58,11 +60,12 @@
   </div>
 
   <!-- FILTER -->
-  <div class="card filter-bar">
+  <div class="card filter-bar" id="filterBar">
     <button onclick="setMemberFilter('ALL')" class="btnAll">Tất cả</button>
     <button onclick="setMemberFilter('Lena')" class="btnLena">Lena</button>
     <button onclick="setMemberFilter('Miu')" class="btnMiu">Miu</button>
     <button onclick="setMemberFilter('LenaMiu')" class="btnLenaMiu">LenaMiu</button>
+     <button onclick="setMemberFilter('Sonya')" class="btnSonya">Sonya</button>
   </div>
 
   <!-- SEARCH -->

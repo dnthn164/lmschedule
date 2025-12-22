@@ -36,6 +36,10 @@
     color: #d6336c;
   }
   button.btnLenaMiu{
+    background: #bdd8cc;
+    color: #634f0e;
+  }
+  button.btnSonya{
     background: #eef0ff;
     color: #4c6ef5;
   }
@@ -206,10 +210,17 @@
 
 /* LenaMiu */
 .member-LenaMiu{
+  background: #bdd8cc;
+  color: #634f0e;
+}
+.member-Sonya{
   background:#eef0ff;
   color:#4c6ef5;
 }
-
+.address{
+  color:brown;
+  font-size:13px;
+}
 /* Border theo member */
 .schedule:has(.member-Lena){
   border-left:6px solid #d6336c;
@@ -223,66 +234,224 @@
   border-left:6px solid #4c6ef5;
 }
 
-/* ===== MOBILE UI ===== */
+/* ================================
+   MOBILE FIX – NO OVERFLOW / NO BREAK
+================================ */
 @media (max-width: 640px){
 
-  header{
-    padding:18px 12px;
-  }
-
-  .container{
-    padding:12px;
-    margin:12px auto;
-  }
-
-  .card{
-    padding:16px;
-    border-radius:14px;
-  }
-
-  /* Schedule mobile */
-  .schedule{
-    flex-direction:column;
-    gap:12px;
-  }
-
-  .schedule-right{
+  /* 🔒 khóa viewport */
+  html, body{
     width:100%;
-    flex-direction:row;
+    max-width:100%;
+    overflow-x:hidden;
+  }
+
+  body{
+    margin:0;
+    background:#f3f4f6;
+  }
+
+  /* ===== CONTAINER ===== */
+  .container{
+    max-width:100%;
+    width:100%;
+    padding:12px;
+    margin:0;
+    box-sizing:border-box;
+  }
+
+  /* ===== HEADER ===== */
+  header{
+    width:100%;
+    padding:20px 14px;
+    box-sizing:border-box;
+    border-radius:0 0 20px 20px;
+  }
+
+  header h1{
+    font-size:18px;
+    line-height:1.3;
+    margin:0 0 6px;
+  }
+
+  header p{
+    font-size:12px;
+    margin:0;
+  }
+
+  /* ===== CARD ===== */
+  .card{
+    width:100%;
+    max-width:100%;
+    margin:0 0 14px;
+    padding:14px;
+    border-radius:16px;
+    box-sizing:border-box;
+  }
+
+  /* ===== FILTER BUTTONS ===== */
+  .filter-group{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+
+  .filter-group button{
+    flex:1;
+    min-width:70px;
+    padding:8px 0;
+    font-size:12px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+
+  /* ===== SEARCH ===== */
+  #search{
+    width:100%;
+    box-sizing:border-box;
+    padding:10px 14px;
+    font-size:14px;
+    border-radius:999px;
+  }
+
+  /* =====================
+     SCHEDULE CARD MOBILE
+  ===================== */
+  .schedule{
+    width:100%;
+    box-sizing:border-box;
+    padding:14px;
+    border-radius:16px;
+    background:#f5f7ff;
+    display:block;
+  }
+
+  .schedule-left{
+    width:100%;
+  }
+
+  .schedule-left strong{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:6px;
+    font-size:14px;
+    line-height:1.4;
+  }
+
+  .schedule-left .time{
+    font-size:12px;
+    margin-top:4px;
+  }
+
+  .schedule-left div{
+    font-size:13px;
+    margin-top:4px;
+  }
+
+  /* ===== BADGE ===== */
+  .badge{
+    font-size:10px;
+    padding:3px 8px;
+    border-radius:999px;
+  }
+
+  /* ===== FOOTER ROW ===== */
+  .schedule-right{
+    margin-top:10px;
+    display:flex;
     justify-content:space-between;
     align-items:center;
-  }
-
-  .action-btns{
-    order:2;
+    width:100%;
   }
 
   .member-name{
-    order:1;
-    font-size:12px;
+    font-size:11px;
+    padding:4px 10px;
+    border-radius:999px;
   }
 
-  /* Buttons */
-  button{
-    padding:8px 12px;
-    font-size:13px;
+  .action-btns{
+    display:flex;
+    gap:6px;
   }
 
-  /* Login popup */
-  .popup{
-    width:90%;
-    padding:20px;
+  .action-btns button{
+    font-size:11px;
+    padding:6px 10px;
+    border-radius:8px;
   }
 
-  /* Login button */
+  /* ===== LOGIN BUTTON ===== */
   .login-btn{
-    top:12px;
-    right:12px;
-    padding:8px 12px;
-    font-size:13px;
+    position:fixed;
+    top:10px;
+    right:10px;
+    padding:6px 12px;
+    font-size:12px;
+    border-radius:999px;
+    z-index:1000;
   }
 
-  input, select{
-    font-size:14px;
+  /* ===== POPUP ===== */
+  .popup{
+    width:92%;
+    max-width:92%;
+    box-sizing:border-box;
+    padding:18px;
+  }
+}
+/* ===============================
+   STICKY FILTER BAR
+================================ */
+.filter-bar{
+  position:relative;
+  z-index:10;
+  transition:all .25s ease;
+}
+
+/* Khi sticky */
+.filter-bar.sticky{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  margin:0 auto;
+  width:100%;
+  max-width:900px;
+  border-radius:0 0 18px 18px;
+  box-shadow:0 10px 30px rgba(0,0,0,.12);
+}
+
+/* placeholder tránh nhảy layout */
+.filter-placeholder{
+  height:0;
+}
+
+.filter-placeholder.active{
+  height:86px;
+}
+
+/* ===== MOBILE FIX ===== */
+@media (max-width:640px){
+
+  .filter-bar.sticky{
+    max-width:100%;
+    padding:12px;
+    border-radius:0 0 16px 16px;
+  }
+
+  .filter-bar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+  }
+
+  .filter-bar button{
+    flex:1 1 auto;
+    min-width:70px;
+    padding:8px 10px;
+    font-size:13px;
   }
 }

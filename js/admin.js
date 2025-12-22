@@ -222,7 +222,7 @@ function renderList(){
         <div class="time">🕒 ${new Date(s.time).toLocaleString("vi-VN")}</div>
         <div>🔑 ${s.keywords || ""}</div>
         <div class="hashtags">#️⃣ ${s.hashtags || ""}</div>
-        <div class="address"> ${s.address || ""}</div>
+        <div class="address"> Address: ${s.address || ""}</div>
       </div>
 
       <div class="schedule-right">
@@ -242,4 +242,38 @@ function renderList(){
 window.addEventListener("load", () => {
   autoDeleteOldSchedules();
 });
+
+// ============================
+// STICKY FILTER AFTER SEARCH
+// ============================
+const filterBar = document.getElementById('filterBar');
+const searchInput = document.getElementById('search');
+
+if(filterBar && searchInput){
+
+  // placeholder chống nhảy layout
+  const placeholder = document.createElement('div');
+  placeholder.className = 'filter-placeholder';
+  filterBar.parentNode.insertBefore(placeholder, filterBar);
+
+  function updateSticky(){
+    const searchBottom =
+      searchInput.getBoundingClientRect().bottom + window.scrollY;
+
+    if(window.scrollY > searchBottom){
+      if(!filterBar.classList.contains('sticky')){
+        filterBar.classList.add('sticky');
+        placeholder.classList.add('active');
+        placeholder.style.height = filterBar.offsetHeight + 'px';
+      }
+    }else{
+      filterBar.classList.remove('sticky');
+      placeholder.classList.remove('active');
+      placeholder.style.height = '0px';
+    }
+  }
+
+  window.addEventListener('scroll', updateSticky);
+  window.addEventListener('resize', updateSticky);
+}
 
