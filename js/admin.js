@@ -37,6 +37,7 @@ const address = document.getElementById("address");
  *********************************/
 const ADMIN_EMAILS = [
   "dn.thn164@gmail.com",
+  "admintest@gmail.com",
 ];
 const SUPER_ADMIN = "dn.thn164@gmail.com";
 
@@ -97,7 +98,12 @@ auth.onAuthStateChanged(user => {
     canEdit = false;
     isAdmin = false;
 
-    adminPanel.classList.add("hidden");
+    if (canAdd) {
+  adminPanel.classList.remove("hidden");
+} else {
+  adminPanel.classList.add("hidden");
+}
+
     loginBtn.classList.remove("hidden");
     closeLogin();
 
