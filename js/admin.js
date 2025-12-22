@@ -107,17 +107,17 @@ auth.onAuthStateChanged(user => {
 
   const email = user.email;
 
-  canAdd  = ADD_ADMINS.includes(email) || email === SUPER_ADMIN;
+  canAdd  = ADMIN_EMAILS.includes(email) || email === SUPER_ADMIN;
   canEdit = email === SUPER_ADMIN;
-  isAdmin = canAdd; // 👈 QUAN TRỌNG
+  isAdmin = canAdd;
 
   adminPanel.classList.toggle("hidden", !canAdd);
   loginBtn.classList.add("hidden");
 
-  closeLogin(); // ✅ popup đóng chắc chắn
-
+  closeLogin();
   renderList();
 });
+
 
 
 
