@@ -54,9 +54,17 @@ function openLogin(){ overlay.classList.remove("hidden"); }
 function closeLogin(){ overlay.classList.add("hidden"); }
 
 function login(){
-  auth.signInWithEmailAndPassword(user.value.trim(), pass.value)
-    .catch(err => alert(err.message));
+  auth.signInWithEmailAndPassword(
+    user.value.trim(),
+    pass.value.trim()
+  )
+  .then(() => {
+    closeLogin();       // ✅ ĐÓNG POPUP
+    pass.value = "";    // optional
+  })
+  .catch(err => alert(err.message));
 }
+
 
 function logout(){
   auth.signOut();
