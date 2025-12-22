@@ -321,7 +321,7 @@ function renderList(){
         </strong>
 
         <div class="time">🕒 ${new Date(s.time).toLocaleString("vi-VN")}</div>
-        <div>🔑 ${s.keywords || ""}</div>
+        <div class="keywords">🔑 ${s.keywords || ""}</div>
         <div class="hashtags">#️⃣ ${s.hashtags || ""}</div>
         <div class="address"> Address: ${s.address || ""}</div>
       </div>
@@ -379,5 +379,71 @@ if(filterBar && searchInput){
 
   window.addEventListener('scroll', updateSticky);
   window.addEventListener('resize', updateSticky);
+}
+
+/**Copy keywords hashtags*/
+
+
+document.addEventListener("click", function(e){
+  if(!e.target.classList.contains("hashtags")) return;
+
+  const schedule = e.target.closest(".schedule");
+  if(!schedule) return;
+
+  const keywordsEl = schedule.querySelector(".keywords");
+  const hashtagsEl = schedule.querySelector(".hashtags");
+
+  const cleanLine = (el, icon) => {
+    if(!el) return "";
+    let text = el.textContent.trim();
+    if(text.startsWith(icon)){
+      text = text.slice(icon.length).trim();
+    }
+    return text;
+  };
+
+  const keywords = cleanLine(keywordsEl, "🔑");
+
+  // 👉 chuẩn hóa hashtag
+  let rawHashtags = cleanLine(hashtagsEl, "#️⃣");
+
+  const hashtags = rawHashtags
+    .split(/\s+/)           // tách theo space
+    .filter(Boolean)
+    .map(tag => tag.startsWith("#") ? tag : `#${tag}`)
+    .join(" ");
+
+  const textToCopy = `${keywords}\n${hashtags}`;
+
+  navigator.clipboard.writeText(textToCopy).then(()=>{
+    showCopyToast();
+  });
+});
+
+function showCopyToast(){
+  const toast = document.createElement("div");
+  toast.textContent = "✅ Đã copy Keyword & Hashtag";
+  toast.style.cssText = `
+    position:fixed;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#333;
+    color:#fff;
+    padding:8px 14px;
+    border-radius:999px;
+    font-size:12px;
+    z-index:9999;
+    opacity:0;
+    transition:.3s;
+  `;
+  document.body.appendChild(toast);
+
+  requestAnimationFrame(()=> toast.style.opacity = 1);
+
+  setTimeout(()=>{
+    toast.style.opacity = 0;
+    setTimeout(()=> toast.remove(), 300);
+  },1500);
 }
 
