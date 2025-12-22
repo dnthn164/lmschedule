@@ -31,7 +31,7 @@ const hashtags = document.getElementById("hashtags");
 const member   = document.getElementById("member");
 const time     = document.getElementById("time");
 const search   = document.getElementById("search");
-
+const address = document.getElementById("address");
 /*********************************
  * ADMIN EMAIL LIST
  *********************************/
@@ -102,6 +102,35 @@ function getTimeBadge(timeStr){
 function isExpired24h(timeStr){
   return Date.now() - new Date(timeStr).getTime() > 86400000;
 }
+/*********************************
+ * AUTO DELETE PAST > 25 HOURS
+ *********************************/
+const AUTO_DELETE_HOURS = 25;
+
+async function autoDeleteOldSchedules(){
+  const now = Date.now();
+  const limit = AUTO_DELETE_HOURS * 60 * 60 * 1000;
+
+  try{
+    const snap = await db.collection("schedule").get();
+
+    snap.forEach(doc=>{
+      const s = doc.data();
+      if(!s.time) return;
+
+      const t = new Date(s.time).getTime();
+
+      if(now - t > limit){
+        console.log("🗑 Auto delete:", s.activity);
+        db.collection("schedule").doc(doc.id).delete();
+      }
+    });
+
+  }catch(err){
+    console.error("Auto delete error:", err);
+  }
+}
+
 
 /*********************************
  * CRUD
@@ -116,6 +145,7 @@ async function addSchedule(){
     activity : activity.value.trim(),
     keywords : keywords.value.trim(),
     hashtags : hashtags.value.trim(),
+    address : address.value.trim(),
     member   : member.value,
     time     : time.value
   };
@@ -141,6 +171,7 @@ function editSchedule(id){
   activity.value = s.activity;
   keywords.value = s.keywords;
   hashtags.value = s.hashtags;
+  address.value  = s.address;
   member.value   = s.member;
   time.value     = s.time;
   editId = id;
@@ -191,6 +222,7 @@ function renderList(){
         <div class="time">🕒 ${new Date(s.time).toLocaleString("vi-VN")}</div>
         <div>🔑 ${s.keywords || ""}</div>
         <div class="hashtags">#️⃣ ${s.hashtags || ""}</div>
+        <div class="address"> ${s.address || ""}</div>
       </div>
 
       <div class="schedule-right">
@@ -207,3 +239,7 @@ function renderList(){
     list.appendChild(div);
   });
 }
+window.addEventListener("load", () => {
+  autoDeleteOldSchedules();
+});
+
