@@ -205,7 +205,9 @@ body {
 
   
 }
-
+h3{
+  color:#1f1f1f
+}
   .delete{
     position:absolute;
     top:12px;
@@ -336,6 +338,10 @@ body {
 .member-Sonya{
   background:#eef0ff;
   color:#4c6ef5;
+}
+.member-KaoJaneJaneKao{
+  background:#aad0e8;
+  color:#3f554f;
 }
 .address{
   color:brown;
@@ -640,5 +646,49 @@ input[type="datetime-local"]{
   .topbar-right {
     flex-wrap: wrap;
     gap: 12px;
+  }
+}
+/*Scroll top*/
+#scrollTopBtn{
+  position: fixed;
+  right: 20px;
+  bottom: 24px;
+
+  width: 44px;
+  height: 44px;
+
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+
+  background: #6c63ff;
+  color: #fff;
+  font-size: 18px;
+
+  box-shadow: 0 8px 24px rgba(0,0,0,.25);
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all .25s ease;
+
+  z-index: 1100; /* trên filter */
+}
+
+#scrollTopBtn.show{
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+#scrollTopBtn:hover{
+  background: #5a52e0;
+}
+
+/* Mobile né ngón tay */
+@media (max-width: 768px){
+  #scrollTopBtn{
+    right: 16px;
+    bottom: 16px;
   }
 }
