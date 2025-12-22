@@ -189,8 +189,8 @@ function renderList(){
         </strong>
 
         <div class="time">🕒 ${new Date(s.time).toLocaleString("vi-VN")}</div>
-        <div>${s.keywords || ""}</div>
-        <div class="hashtags">${s.hashtags || ""}</div>
+        <div>🔑 ${s.keywords || ""}</div>
+        <div class="hashtags">#️⃣ ${s.hashtags || ""}</div>
       </div>
 
       <div class="schedule-right">

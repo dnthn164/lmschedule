@@ -27,6 +27,18 @@
     cursor:pointer;
     font-size:14px;
   }
+  button.btnMiu{
+    background: #e6fff4;
+    color: #0ca678;
+  }
+  button.btnLena{
+    background: #ffe6ec;
+    color: #d6336c;
+  }
+  button.btnLenaMiu{
+    background: #eef0ff;
+    color: #4c6ef5;
+  }
   .primary{background:var(--main);color:#fff;}
   .danger{background:#ff4d4f;color:#fff;}
   .logout{background:#444;color:#fff;}
@@ -112,16 +124,17 @@
     font-weight:600;
   }
   
-  .badge.today{
-    background:#ffcc66;
+  .badge.badge-now{
+    background:#de3742;
+    color:#fff;
   }
   
-  .badge.tomorrow{
+  .badge.badge-tomorrow{
     background:#6c63ff;
     color:#fff;
   }
   
-  .badge.upcoming{
+  .badge.badge-soon{
     background:#4caf50;
     color:#fff;
   }
