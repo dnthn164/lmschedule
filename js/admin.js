@@ -447,20 +447,65 @@ function showCopyToast(){
   },1500);
 }
 
-/** Scroll top */
+/*********************************
+ * SCROLL TO TOP (AUTO DETECT)
+ *********************************/
+/*********************************
+ * SCROLL TO TOP (SAFE & AUTO)
+ *********************************/
 const scrollTopBtn = document.getElementById('scrollTopBtn');
 
-window.addEventListener('scroll', () => {
-  if(window.scrollY > 300){
-    scrollTopBtn.classList.add('show');
-  }else{
-    scrollTopBtn.classList.remove('show');
-  }
-});
+// detect scroll container (nếu có)
+let scrollContainer = null;
 
-scrollTopBtn.addEventListener('click', () => {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
-});
+const possibleContainers = [
+  'main.content',
+  '.content',
+  '.page',
+  '.wrapper'
+];
+
+for (const selector of possibleContainers) {
+  const el = document.querySelector(selector);
+  if (el && el.scrollHeight > el.clientHeight) {
+    scrollContainer = el;
+    break;
+  }
+}
+
+// fallback về window
+const scrollTarget = scrollContainer || window;
+
+// helper: lấy scrollTop
+function getScrollTop() {
+  return scrollContainer
+    ? scrollContainer.scrollTop
+    : window.scrollY || document.documentElement.scrollTop;
+}
+
+// helper: scroll lên đầu
+function scrollToTop() {
+  if (scrollContainer) {
+    scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+// listen scroll
+scrollTarget.addEventListener(
+  'scroll',
+  () => {
+    if (getScrollTop() > 300) {
+      scrollTopBtn.classList.add('show');
+    } else {
+      scrollTopBtn.classList.remove('show');
+    }
+  },
+  { passive: true }
+);
+
+// click
+scrollTopBtn.addEventListener('click', scrollToTop);
+
+
