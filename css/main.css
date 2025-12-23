@@ -132,9 +132,10 @@ body {
     color: #d6336c;
   }
   button.btnLenaMiu{
-    background: #bdd8cc;
-    color: #634f0e;
-  }
+  background: #F1D8B8;
+  color: #634f0e;
+}
+  
   button.btnSonya{
     background: #eef0ff;
     color: #4c6ef5;
@@ -332,7 +333,7 @@ h3{
 
 /* LenaMiu */
 .member-LenaMiu{
-  background: #bdd8cc;
+  background: #F1D8B8;
   color: #634f0e;
 }
 .member-Sonya{
