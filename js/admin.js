@@ -32,6 +32,7 @@ const member   = document.getElementById("member");
 const time     = document.getElementById("time");
 const search   = document.getElementById("search");
 const address = document.getElementById("address");
+const note = document.getElementById("note");
 /*********************************
  * ADMIN EMAIL LIST
  *********************************/
@@ -232,6 +233,7 @@ async function addSchedule(){
     keywords : keywords.value.trim(),
     hashtags : hashtags.value.trim(),
     address  : address.value.trim(), 
+    note  : note.value.trim(), 
     member   : member.value,
     time     : time.value,
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -267,6 +269,7 @@ function editSchedule(id){
   keywords.value = s.keywords;
   hashtags.value = s.hashtags;
   address.value  = s.address;
+  note.value  = s.note;
   member.value   = s.member;
   time.value     = s.time;
   editId = id;
@@ -323,7 +326,8 @@ function renderList(){
         <div class="time">🕒 ${new Date(s.time).toLocaleString("vi-VN")}</div>
         <div class="keywords">🔑 ${s.keywords || ""}</div>
         <div class="hashtags">#️⃣ ${s.hashtags || ""}</div>
-        <div class="address"> Address: ${s.address || ""}</div>
+        <div class="address"> Diễn ra: ${s.address || ""}</div>
+        <div class="note"> Ghi chú: ${s.note || ""}</div>
       </div>
 
       <div class="schedule-right">

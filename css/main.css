@@ -132,7 +132,10 @@ body {
   background: #F1D8B8;
   color: #634f0e;
 }
-  
+  button.btnGinJay{
+     background: #edeffd;
+    color: #9b3c90;
+  }
   button.btnSonya{
     background: #eef0ff;
     color: #4c6ef5;
@@ -340,6 +343,10 @@ h3{
 .member-KaoJaneJaneKao{
   background:#aad0e8;
   color:#3f554f;
+}
+.member-GinJay{
+  background:#bfd2df;
+  color:#626d6a;
 }
 .address{
   color:brown;
@@ -655,9 +662,9 @@ input[type="datetime-local"]{
   width: 44px;
   height: 44px;
 
-  display: flex;              /* 🔥 THÊM */
-  align-items: center;        /* 🔥 THÊM */
-  justify-content: center;    /* 🔥 THÊM */
+  display: flex;             
+  align-items: center;      
+  justify-content: center;   
 
   border: none;
   border-radius: 50%;
@@ -666,9 +673,9 @@ input[type="datetime-local"]{
   background: #6c63ff;
   color: #fff;
 
-  font-size: 12px;            /* ⬅ giảm cho đẹp */
+  font-size: 12px;         
   font-weight: 700;
-  line-height: 1;             /* 🔥 QUAN TRỌNG */
+  line-height: 1;             
 
   box-shadow: 0 8px 24px rgba(0,0,0,.25);
 
