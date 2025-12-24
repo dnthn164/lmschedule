@@ -376,3 +376,15 @@ function showCopySuccess(){
     setTimeout(() => toast.remove(), 300);
   }, 1500);
 }
+/*********************************
+ * MEMBER FILTER
+ *********************************/
+function setMemberFilter(val){
+  memberFilter = val;
+  renderList();
+
+  // active tab UI (nếu có)
+  document.querySelectorAll(".member-tab").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.member === val);
+  });
+}
