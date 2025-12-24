@@ -1,87 +1,109 @@
-/* ===============================
-   DARK FOOTER
-================================ */
 .footer-dark {
-  background: #2b2f33;
+  background: #0f1115;
   color: #d1d5db;
-  padding: 48px 16px;
+  padding: 40px 20px;
+  font-size: 14px;
 }
 
 .footer-container {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 0 auto;
-
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
+  display: flex;
+  align-items: center;        /* 🔥 QUAN TRỌNG: căn giữa theo trục dọc */
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
 }
 
-/* LEFT */
+/* Căn lại từng cột cho đều */
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;    /* 🔥 không bị dồn lên trên */
+}
+
+/* Cột trái: icon + text thẳng hàng đẹp hơn */
+.footer-item {
+  align-items: center;        /* 🔥 icon & text cùng trục */
+}
+
+/* Cột phải: không bị dạt lên */
+.footer-col h4 {
+  margin-top: 0;
+}
+
+
+/* ITEM BÊN TRÁI */
 .footer-item {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 16px;
-  font-size: 14px;
+  gap: 10px;
+  margin-bottom: 14px;
 }
 
 .footer-icon {
   font-size: 18px;
-  line-height: 1;
+  line-height: 1.4;
 }
 
-.footer-item a {
-  color: #60a5fa;
+/* LINK */
+.footer-dark a {
+  color: #93c5fd;
   text-decoration: none;
 }
 
-.footer-item a:hover {
+.footer-dark a:hover {
+  color: #bfdbfe;
   text-decoration: underline;
 }
 
-/* RIGHT */
+/* TIÊU ĐỀ */
 .footer-col h4 {
-  margin-bottom: 12px;
   font-size: 16px;
   color: #fff;
+  margin-bottom: 12px;
 }
 
+/* MÔ TẢ */
 .footer-col p {
-  font-size: 14px;
   line-height: 1.6;
-  color: #cbd5e1;
-  margin-bottom: 16px;
+  color: #9ca3af;
 }
 
-/* SOCIAL ICONS */
+/* SOCIAL */
 .footer-socials {
+  margin-top: 14px;
   display: flex;
-  gap: 12px;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .footer-socials a {
-  width: 36px;
-  height: 36px;
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: 6px;
   background: #1f2933;
   color: #e5e7eb;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  font-size: 14px;
-  text-decoration: none;
+  transition: 0.2s;
 }
 
 .footer-socials a:hover {
   background: #374151;
+  color: #fff;
 }
 
-/* ===============================
-   MOBILE
-================================ */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .footer-container {
-    grid-template-columns: 1fr;
-    gap: 32px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-item {
+    justify-content: center;
+  }
+
+  .footer-socials {
+    justify-content: center;
   }
 }

@@ -223,3 +223,113 @@ body {
     padding: 16px;
   }
 }
+/* ===== ADMIN PANEL ===== */
+/* ===== ADMIN PANEL ===== */
+#hashtagAdmin {
+  max-width: 520px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #0f172a;
+  border-radius: 12px;
+}
+
+#hashtagAdmin h3 {
+  margin: 0 0 16px;
+  text-align: center;
+}
+
+#hashtagAdmin .form-group {
+  margin-bottom: 14px;
+}
+
+#hashtagAdmin label {
+  font-size: 13px;
+  color: #cbd5f5;
+}
+
+#hashtagAdmin input,
+#hashtagAdmin textarea,
+#hashtagAdmin select {
+  width: 100%;
+  margin-top: 6px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: none;
+  background: #020617;
+  color: #fff;
+  outline: none;
+}
+
+#hashtagAdmin textarea {
+  min-height: 70px;
+}
+
+#hashtagAdmin button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+#hashtagAdmin button:hover {
+  background: #1d4ed8;
+}
+
+/* ===== HASHTAGS VIEW ===== */
+.tag-group {
+  margin-bottom: 18px;
+}
+
+.hashtags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hashtags span {
+  background: #111827;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.hashtags span:hover {
+  background: #1f2937;
+}
+
+/* ===== ADMIN LIST ITEM ===== */
+.hashtag-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.hashtag-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.hashtag-actions button {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.hashtag-actions .edit {
+  background: #16a34a;
+  color: #fff;
+}
+
+.hashtag-actions .delete {
+  background: #dc2626;
+  color: #fff;
+}
