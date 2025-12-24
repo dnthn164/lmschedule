@@ -31,8 +31,9 @@ const hashtags = document.getElementById("hashtags");
 const member   = document.getElementById("member");
 const time     = document.getElementById("time");
 const search   = document.getElementById("search");
-const address = document.getElementById("address");
-const note = document.getElementById("note");
+const address  = document.getElementById("address");
+const note     = document.getElementById("note");
+
 /*********************************
  * ADMIN EMAIL LIST
  *********************************/
@@ -42,8 +43,9 @@ const ADMIN_EMAILS = [
 ];
 const SUPER_ADMIN = "dn.thn164@gmail.com";
 
-let canAdd    = false;
-let canEdit   = false;
+let canAdd  = false;
+let canEdit = false;
+
 /*********************************
  * STATE
  *********************************/
@@ -58,18 +60,6 @@ let memberFilter = "ALL";
 function openLogin(){ overlay.classList.remove("hidden"); }
 function closeLogin(){ overlay.classList.add("hidden"); }
 
-/*function login(){
-  auth.signInWithEmailAndPassword(
-    user.value.trim(),
-    pass.value.trim()
-  )
-  .then(() => {
-    closeLogin();       // ✅ ĐÓNG POPUP
-    pass.value = "";    // optional
-  })
-  .catch(err => alert(err.message));
-}*/
-
 function login(){
   auth.signInWithEmailAndPassword(user.value.trim(), pass.value)
     .catch(err => alert(err.message));
@@ -82,37 +72,21 @@ function logout(){
 /*********************************
  * AUTH STATE
  *********************************/
-/*auth.onAuthStateChanged(u=>{
-  isAdmin = !!u && ADMIN_EMAILS.includes(u.email);
+auth.onAuthStateChanged(u => {
 
-  adminPanel.classList.toggle("hidden", !isAdmin);
-  loginBtn.classList.toggle("hidden", isAdmin);
-if (u) {
-    closeLogin(); // 🔥 ĐÓNG POPUP KHI LOGIN THÀNH CÔNG
-  }
-  renderList();
-});*/
-auth.onAuthStateChanged(user => {
-
-  if (!user) {
-    canAdd  = false;
+  if (!u) {
+    canAdd = false;
     canEdit = false;
     isAdmin = false;
 
-    if (canAdd) {
-  adminPanel.classList.remove("hidden");
-} else {
-  adminPanel.classList.add("hidden");
-}
-
+    adminPanel.classList.add("hidden");
     loginBtn.classList.remove("hidden");
     closeLogin();
-
     renderList();
     return;
   }
 
-  const email = user.email;
+  const email = u.email;
 
   canAdd  = ADMIN_EMAILS.includes(email) || email === SUPER_ADMIN;
   canEdit = email === SUPER_ADMIN;
@@ -125,101 +99,45 @@ auth.onAuthStateChanged(user => {
   renderList();
 });
 
-
-
-
 /*********************************
- * FILTER
+ * FORM HELPERS
  *********************************/
-function setMemberFilter(val){
-  memberFilter = val;
-  renderList();
+function lockFields(){
+  activity.disabled = true;
+  address.disabled  = true;
+  note.disabled     = true;
+  member.disabled   = true;
+  time.disabled     = true;
 }
 
-/*********************************
- * BADGE TIME
- *********************************/
-function getTimeBadge(timeStr){
-  const now = new Date();
-  const d   = new Date(timeStr);
-
-  const n0 = new Date(now.setHours(0,0,0,0));
-  const d0 = new Date(d.setHours(0,0,0,0));
-  const diff = (d0 - n0) / 86400000;
-
-  if(diff === 0) return { text:"NOW", cls:"badge-now" };
-  if(diff === 1) return { text:"TOMORROW", cls:"badge-tomorrow" };
-  if(diff > 1)   return { text:"COMING SOON", cls:"badge-soon" };
-  return null;
+function unlockFields(){
+  activity.disabled =
+  address.disabled  =
+  note.disabled     =
+  member.disabled   =
+  time.disabled     = false;
 }
 
-function isExpired24h(timeStr){
-  return Date.now() - new Date(timeStr).getTime() > 86400000;
+function resetForm(){
+  activity.value =
+  keywords.value =
+  hashtags.value =
+  address.value =
+  note.value =
+  time.value = "";
+
+  member.value = "ALL";
+  editId = null;
+  unlockFields();
 }
-/*********************************
- * AUTO DELETE PAST > 25 HOURS
- *********************************/
-const AUTO_DELETE_HOURS = 25;
-
-async function autoDeleteOldSchedules(){
-  const now = Date.now();
-  const limit = AUTO_DELETE_HOURS * 60 * 60 * 1000;
-
-  try{
-    const snap = await db.collection("schedule").get();
-
-    snap.forEach(doc=>{
-      const s = doc.data();
-      if(!s.time) return;
-
-      const t = new Date(s.time).getTime();
-
-      if(now - t > limit){
-        console.log("🗑 Auto delete:", s.activity);
-        db.collection("schedule").doc(doc.id).delete();
-      }
-    });
-
-  }catch(err){
-    console.error("Auto delete error:", err);
-  }
-}
-
 
 /*********************************
  * CRUD
  *********************************/
-/*async function addSchedule(){
-  if(!activity.value || !time.value){
-    alert("Thiếu thông tin");
-    return;
-  }
-
-  const data = {
-    activity : activity.value.trim(),
-    keywords : keywords.value.trim(),
-    hashtags : hashtags.value.trim(),
-    address : address.value.trim(),
-    member   : member.value,
-    time     : time.value
-  };
-
-  try{
-    if(editId){
-      await db.collection("schedule").doc(editId).set(data);
-      editId = null;
-    }else{
-      await db.collection("schedule").add(data);
-    }
-
-    activity.value = keywords.value = hashtags.value = time.value = "";
-  }catch(err){
-    alert(err.message);
-  }
-}*/
 async function addSchedule(){
+
   if (!canAdd) {
-    alert("❌ Bạn không có quyền thêm lịch");
+    alert("❌ Bạn không có quyền");
     return;
   }
 
@@ -228,64 +146,106 @@ async function addSchedule(){
     return;
   }
 
-  const data = {
-    activity : activity.value.trim(),
-    keywords : keywords.value.trim(),
-    hashtags : hashtags.value.trim(),
-    address  : address.value.trim(), 
-    note  : note.value.trim(), 
-    member   : member.value,
-    time     : time.value,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  };
-
-  if (editId && !canEdit) {
-    alert("❌ Chỉ SUPER ADMIN mới được sửa");
-    return;
-  }
-
   try {
+
+    /************ EDIT ************/
     if (editId) {
-      await db.collection("schedule").doc(editId).update(data);
-      editId = null;
-    } else {
-      await db.collection("schedule").add(data);
+
+      // SUPER ADMIN → sửa tất cả
+      if (canEdit) {
+        await db.collection("schedule").doc(editId).update({
+          activity : activity.value.trim(),
+          keywords : keywords.value.trim(),
+          hashtags : hashtags.value.trim(),
+          address  : address.value.trim(),
+          note     : note.value.trim(),
+          member   : member.value,
+          time     : time.value
+        });
+      }
+      // ADMIN → chỉ keywords & hashtags
+      else {
+        await db.collection("schedule").doc(editId).update({
+          keywords : keywords.value.trim(),
+          hashtags : hashtags.value.trim()
+        });
+      }
+
+      resetForm();
+      alert("✅ Đã cập nhật");
+      return;
     }
 
-    activity.value = keywords.value = hashtags.value = time.value = "";
-    alert("✅ Đã lưu");
+    /************ ADD ************/
+    await db.collection("schedule").add({
+      activity : activity.value.trim(),
+      keywords : keywords.value.trim(),
+      hashtags : hashtags.value.trim(),
+      address  : address.value.trim(),
+      note     : note.value.trim(),
+      member   : member.value,
+      time     : time.value,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    resetForm();
+    alert("✅ Đã thêm lịch");
 
   } catch (err) {
     alert("❌ Lỗi: " + err.message);
   }
+  document.getElementById("cancelBtn").style.display = "none";
+
 }
 
-
+/*********************************
+ * EDIT
+ *********************************/
 function editSchedule(id){
   const s = cache[id];
   if(!s) return;
 
-  activity.value = s.activity;
-  keywords.value = s.keywords;
-  hashtags.value = s.hashtags;
-  address.value  = s.address;
-  note.value  = s.note;
-  member.value   = s.member;
-  time.value     = s.time;
+  activity.value = s.activity || "";
+  keywords.value = s.keywords || "";
+  hashtags.value = s.hashtags || "";
+  address.value  = s.address || "";
+  note.value     = s.note || "";
+  member.value   = s.member || "ALL";
+  time.value     = s.time || "";
+
   editId = id;
+
+  // 🔥 HIỆN NÚT BỎ QUA
+  document.getElementById("cancelBtn").style.display = "inline-block";
+
+  if (canEdit) {
+    activity.disabled =
+    address.disabled  =
+    note.disabled     =
+    member.disabled   =
+    time.disabled     = false;
+  } else {
+    activity.disabled = true;
+    address.disabled  = true;
+    note.disabled     = true;
+    member.disabled   = true;
+    time.disabled     = true;
+  }
 }
 
+
+/*********************************
+ * DELETE (SUPER ADMIN ONLY)
+ *********************************/
 async function deleteSchedule(id){
   if (!canEdit) {
-    alert("❌ Bạn không có quyền xóa");
+    alert("❌ Chỉ SUPER ADMIN mới được xóa");
     return;
   }
 
   if (!confirm("Xóa lịch này?")) return;
-
   await db.collection("schedule").doc(id).delete();
 }
-
 
 /*********************************
  * REALTIME
@@ -309,37 +269,25 @@ function renderList(){
   Object.values(cache).forEach(s=>{
     if(memberFilter !== "ALL" && s.member !== memberFilter) return;
     if(search.value && !s.activity.toLowerCase().includes(search.value.toLowerCase())) return;
-    if(!isAdmin && isExpired24h(s.time)) return;
-
-    const badge = getTimeBadge(s.time);
 
     const div = document.createElement("div");
     div.className = `schedule member-${s.member}`;
 
     div.innerHTML = `
       <div class="schedule-left">
-        <strong>
-          ${s.activity}
-          ${badge ? `<span class="badge ${badge.cls}">${badge.text}</span>` : ""}
-        </strong>
-
+        <strong>${s.activity}</strong>
         <div class="time">🕒 ${new Date(s.time).toLocaleString("vi-VN")}</div>
         <div class="keywords">🔑 ${s.keywords || ""}</div>
         <div class="hashtags">#️⃣ ${s.hashtags || ""}</div>
-        <div class="address"> Diễn ra: ${s.address || ""}</div>
-        <div class="note"> Ghi chú: ${s.note || ""}</div>
+        <div class="address">📍 ${s.address || ""}</div>
+        <div class="note">📝 ${s.note || ""}</div>
       </div>
 
       <div class="schedule-right">
         ${isAdmin ? `
-          ${canEdit ? `
-  <div class="action-btns">
-    <button class="edit-btn" onclick="editSchedule('${s.id}')">Sửa</button>
-    <button class="danger" onclick="deleteSchedule('${s.id}')">Xóa</button>
-  </div>
-` : ""}
-
-        ` : ""}
+          <button onclick="editSchedule('${s.id}')">Sửa</button>
+          ${canEdit ? `<button class="danger" onclick="deleteSchedule('${s.id}')">Xóa</button>` : ``}
+        ` : ``}
         <div class="member-tag">${s.member}</div>
       </div>
     `;
@@ -347,169 +295,27 @@ function renderList(){
     list.appendChild(div);
   });
 }
-window.addEventListener("load", () => {
-  autoDeleteOldSchedules();
-});
+function cancelEdit(){
+  if (!editId) return;
 
-// ============================
-// STICKY FILTER AFTER SEARCH
-// ============================
-const filterBar = document.getElementById('filterBar');
-const searchInput = document.getElementById('search');
+  // reset form + thoát chế độ sửa
+  activity.value =
+  keywords.value =
+  hashtags.value =
+  address.value =
+  note.value =
+  time.value = "";
 
-if(filterBar && searchInput){
+  member.value = "ALL";
+  editId = null;
 
-  // placeholder chống nhảy layout
-  const placeholder = document.createElement('div');
-  placeholder.className = 'filter-placeholder';
-  filterBar.parentNode.insertBefore(placeholder, filterBar);
+  // mở lại toàn bộ input
+  activity.disabled =
+  address.disabled  =
+  note.disabled     =
+  member.disabled   =
+  time.disabled     = false;
 
-  function updateSticky(){
-    const searchBottom =
-      searchInput.getBoundingClientRect().bottom + window.scrollY;
-
-    if(window.scrollY > searchBottom){
-      if(!filterBar.classList.contains('sticky')){
-        filterBar.classList.add('sticky');
-        placeholder.classList.add('active');
-        placeholder.style.height = filterBar.offsetHeight + 'px';
-      }
-    }else{
-      filterBar.classList.remove('sticky');
-      placeholder.classList.remove('active');
-      placeholder.style.height = '0px';
-    }
-  }
-
-  window.addEventListener('scroll', updateSticky);
-  window.addEventListener('resize', updateSticky);
+  // ẩn nút bỏ qua
+  document.getElementById("cancelBtn").style.display = "none";
 }
-
-/**Copy keywords hashtags*/
-
-
-document.addEventListener("click", function(e){
-  if(!e.target.classList.contains("hashtags")) return;
-
-  const schedule = e.target.closest(".schedule");
-  if(!schedule) return;
-
-  const keywordsEl = schedule.querySelector(".keywords");
-  const hashtagsEl = schedule.querySelector(".hashtags");
-
-  const cleanLine = (el, icon) => {
-    if(!el) return "";
-    let text = el.textContent.trim();
-    if(text.startsWith(icon)){
-      text = text.slice(icon.length).trim();
-    }
-    return text;
-  };
-
-  const keywords = cleanLine(keywordsEl, "🔑");
-
-  // 👉 chuẩn hóa hashtag
-  let rawHashtags = cleanLine(hashtagsEl, "#️⃣");
-
-  const hashtags = rawHashtags
-    .split(/\s+/)           // tách theo space
-    .filter(Boolean)
-    .map(tag => tag.startsWith("#") ? tag : `#${tag}`)
-    .join(" ");
-
-  const textToCopy = `${keywords}\n${hashtags}`;
-
-  navigator.clipboard.writeText(textToCopy).then(()=>{
-    showCopyToast();
-  });
-});
-
-function showCopyToast(){
-  const toast = document.createElement("div");
-  toast.textContent = "✅ Đã copy Keyword & Hashtag";
-  toast.style.cssText = `
-    position:fixed;
-    bottom:20px;
-    left:50%;
-    transform:translateX(-50%);
-    background:#333;
-    color:#fff;
-    padding:8px 14px;
-    border-radius:999px;
-    font-size:12px;
-    z-index:9999;
-    opacity:0;
-    transition:.3s;
-  `;
-  document.body.appendChild(toast);
-
-  requestAnimationFrame(()=> toast.style.opacity = 1);
-
-  setTimeout(()=>{
-    toast.style.opacity = 0;
-    setTimeout(()=> toast.remove(), 300);
-  },1500);
-}
-
-/*********************************
- * SCROLL TO TOP (AUTO DETECT)
- *********************************/
-/*********************************
- * SCROLL TO TOP (SAFE & AUTO)
- *********************************/
-const scrollTopBtn = document.getElementById('scrollTopBtn');
-
-// detect scroll container (nếu có)
-let scrollContainer = null;
-
-const possibleContainers = [
-  'main.content',
-  '.content',
-  '.page',
-  '.wrapper'
-];
-
-for (const selector of possibleContainers) {
-  const el = document.querySelector(selector);
-  if (el && el.scrollHeight > el.clientHeight) {
-    scrollContainer = el;
-    break;
-  }
-}
-
-// fallback về window
-const scrollTarget = scrollContainer || window;
-
-// helper: lấy scrollTop
-function getScrollTop() {
-  return scrollContainer
-    ? scrollContainer.scrollTop
-    : window.scrollY || document.documentElement.scrollTop;
-}
-
-// helper: scroll lên đầu
-function scrollToTop() {
-  if (scrollContainer) {
-    scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
-  } else {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-}
-
-// listen scroll
-scrollTarget.addEventListener(
-  'scroll',
-  () => {
-    if (getScrollTop() > 300) {
-      scrollTopBtn.classList.add('show');
-    } else {
-      scrollTopBtn.classList.remove('show');
-    }
-  },
-  { passive: true }
-);
-
-// click
-scrollTopBtn.addEventListener('click', scrollToTop);
-
-

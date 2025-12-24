@@ -28,9 +28,10 @@
     <a href="./html/trend.html" title="How to trend">Cách trend</a>
     <a href="./html/hashtags.html" title="Hashtags">Hashtags</a>
     <a href="mailto:mystthn@gmail.com?subject=Liên hệ qua otpschedule" target="_blank"
-  rel="noopener noreferrer" title="Problem?">Liên hệ nông dân </a>
-  </div>
+  rel="noopener noreferrer" title="Problem?">Liên hệ</a>
   <button id="loginBtn" class="primary login-btn" onclick="openLogin()">🔐 Admin</button>
+  </div>
+  
 </header>
 
 <!-- LOGIN -->
@@ -65,8 +66,10 @@
     </select>
 
     <input id="time" type="datetime-local">
-
     <button class="primary" onclick="addSchedule()">➕ Lưu lịch</button>
+<button id="cancelBtn" onclick="cancelEdit()" style="display:none">
+  Bỏ qua
+</button>
     <button class="logout" onclick="logout()">Đăng xuất</button>
   </div>
 
