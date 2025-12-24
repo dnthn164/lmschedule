@@ -259,23 +259,41 @@ db.collection("schedule")
     });
     renderList();
   });
-
+function getTimeBadge(timeStr){ 
+ const now = new Date(); 
+ const d = new Date(timeStr); 
+ const n0 = new Date(now.setHours(0,0,0,0)); 
+ const d0 = new Date(d.setHours(0,0,0,0)); 
+ const diff = (d0 - n0) / 86400000; 
+ if(diff === 0) return { text:"TODAY", cls:"badge-now" }; 
+ if(diff === 1) return { text:"TOMORROW", cls:"badge-tomorrow" }; 
+ if(diff > 1) return { text:"COMING SOON", cls:"badge-soon" }; 
+ return null; } 
+ function isExpired24h(timeStr){ 
+ return Date.now() - new Date(timeStr).getTime() > 86400000; } 
 /*********************************
  * RENDER
  *********************************/
 function renderList(){
   list.innerHTML = "";
 
-  Object.values(cache).forEach(s=>{
-    if(memberFilter !== "ALL" && s.member !== memberFilter) return;
-    if(search.value && !s.activity.toLowerCase().includes(search.value.toLowerCase())) return;
+  Object.values(cache).forEach(s => {
+
+    if (memberFilter !== "ALL" && s.member !== memberFilter) return;
+    if (search.value && !s.activity.toLowerCase().includes(search.value.toLowerCase())) return;
+
+    const badge = getTimeBadge(s.time); // ✅ ĐÚNG CHỖ
 
     const div = document.createElement("div");
     div.className = `schedule member-${s.member}`;
 
     div.innerHTML = `
       <div class="schedule-left">
-        <strong>${s.activity}</strong>
+        <strong>
+          ${s.activity}
+          ${badge ? `<span class="badge ${badge.cls}">${badge.text}</span>` : ""}
+        </strong>
+
         <div class="time">🕒 ${new Date(s.time).toLocaleString("vi-VN")}</div>
         <div class="keywords">🔑 ${s.keywords || ""}</div>
         <div class="hashtags">#️⃣ ${s.hashtags || ""}</div>
@@ -295,6 +313,7 @@ function renderList(){
     list.appendChild(div);
   });
 }
+
 function cancelEdit(){
   if (!editId) return;
 
