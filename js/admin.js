@@ -319,3 +319,60 @@ function cancelEdit(){
   // ẩn nút bỏ qua
   document.getElementById("cancelBtn").style.display = "none";
 }
+document.addEventListener("click", function (e) {
+
+  if (!e.target.classList.contains("hashtags")) return;
+
+  const schedule = e.target.closest(".schedule");
+  if (!schedule) return;
+
+  const keywordsEl = schedule.querySelector(".keywords");
+  const hashtagsEl = schedule.querySelector(".hashtags");
+
+  const cleanText = (el, icon) => {
+    if (!el) return "";
+    let text = el.textContent.trim();
+    return text.startsWith(icon) ? text.slice(icon.length).trim() : text;
+  };
+
+  const keywordsText = cleanText(keywordsEl, "🔑");
+
+  let hashtagsText = cleanText(hashtagsEl, "#️⃣");
+  hashtagsText = hashtagsText
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(t => t.startsWith("#") ? t : `#${t}`)
+    .join(" ");
+
+  const textToCopy = `${keywordsText}\n${hashtagsText}`;
+
+  navigator.clipboard.writeText(textToCopy).then(() => {
+    showCopySuccess();
+  });
+});
+function showCopySuccess(){
+  const toast = document.createElement("div");
+  toast.textContent = "✅ Đã copy Keywords & Hashtags";
+  toast.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #222;
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    z-index: 9999;
+    opacity: 0;
+    transition: 0.3s;
+  `;
+  document.body.appendChild(toast);
+
+  requestAnimationFrame(() => toast.style.opacity = 1);
+
+  setTimeout(() => {
+    toast.style.opacity = 0;
+    setTimeout(() => toast.remove(), 300);
+  }, 1500);
+}
