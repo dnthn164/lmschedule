@@ -254,6 +254,16 @@ h3{
     margin-left:8px;
     font-weight:600;
   }
+  .badge.badge-past{
+  background:#999;
+  color:#fff;
+  font-size:11px;
+  padding:2px 8px;
+  border-radius:999px;
+  margin-left:6px;
+  opacity:.85;
+}
+
   .badge.badge-trending{
   background: linear-gradient(45deg,#ff1744,#ff9100);
   color:#fff;
@@ -289,6 +299,10 @@ h3{
   justify-content:space-between;
   gap:16px;
   align-items:flex-start;
+}
+.schedule.past{
+  opacity:0.5;
+  filter:grayscale(50%);
 }
 
 .schedule-left{

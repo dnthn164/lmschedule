@@ -259,12 +259,14 @@ db.collection("schedule")
     });
     renderList();
   });
-function getTimeBadge(timeStr){ 
+/*function getTimeBadge(timeStr){ 
  const now = new Date(); 
  const d = new Date(timeStr); 
  const n0 = new Date(now.setHours(0,0,0,0)); 
  const d0 = new Date(d.setHours(0,0,0,0)); 
  const diff = (d0 - n0) / 86400000; 
+  
+
  // 🔥 TRENDING trong 24h kể từ giờ nhập
   if(isTrending24hFromStart(timeStr)){
     return { text:"TRENDING NOW", cls:"badge-trending" };
@@ -273,7 +275,34 @@ function getTimeBadge(timeStr){
  if(diff === 0) return { text:"TODAY", cls:"badge-now" }; 
  if(diff === 1) return { text:"TOMORROW", cls:"badge-tomorrow" }; 
  if(diff > 1) return { text:"COMING SOON", cls:"badge-soon" }; 
- return null; } 
+ 
+ return null; } */
+ function getTimeBadge(timeStr){ 
+  const now   = Date.now();
+  const start = new Date(timeStr).getTime();
+  const end   = start + 86400000; // +24h
+
+  // ⏳ ĐÃ QUA (sau khi hết TRENDING)
+  if (now > end) {
+    return { text:"PAST", cls:"badge-past" };
+  }
+
+  // 🔥 TRENDING trong 24h kể từ giờ nhập
+  if (now >= start && now <= end) {
+    return { text:"TRENDING NOW", cls:"badge-trending" };
+  }
+
+  const today0 = new Date().setHours(0,0,0,0);
+  const d0     = new Date(timeStr).setHours(0,0,0,0);
+  const diff   = (d0 - today0) / 86400000;
+
+  if (diff === 0) return { text:"TODAY", cls:"badge-now" };
+  if (diff === 1) return { text:"TOMORROW", cls:"badge-tomorrow" };
+  if (diff > 1)  return { text:"COMING SOON", cls:"badge-soon" };
+
+  return null;
+}
+
  function isExpired24h(timeStr){ 
  return Date.now() - new Date(timeStr).getTime() > 86400000; } 
 /*********************************
@@ -282,7 +311,20 @@ function getTimeBadge(timeStr){
 function renderList(){
   list.innerHTML = "";
 
-  Object.values(cache).forEach(s => {
+  const items = Object.values(cache);
+
+// sort: chưa qua trước, đã qua sau
+items.sort((a, b) => {
+  const aPast = isPast(a.time);
+  const bPast = isPast(b.time);
+
+  if (aPast !== bPast) return aPast ? 1 : -1;
+
+  // cùng trạng thái → sort theo time
+  return new Date(a.time) - new Date(b.time);
+});
+
+items.forEach(s => {
 
     if (memberFilter !== "ALL" && s.member !== memberFilter) return;
     if (search.value && !s.activity.toLowerCase().includes(search.value.toLowerCase())) return;
@@ -314,8 +356,10 @@ function renderList(){
         <div class="member-tag">${s.member}</div>
       </div>
     `;
+if (isPast(s.time)) div.classList.add("past");
 
     list.appendChild(div);
+    
   });
 }
 
@@ -419,3 +463,9 @@ function isTrending24hFromStart(timeStr){
 
   return now >= start && now <= end;
 }
+function isPast(timeStr){
+  const start = new Date(timeStr).getTime();
+  const end   = start + 86400000; // +24h
+  return Date.now() > end;
+}
+
