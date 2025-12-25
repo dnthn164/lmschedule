@@ -140,6 +140,10 @@ body {
     background: #eef0ff;
     color: #4c6ef5;
   }
+   button.btnLMSY{
+    background: #77798b;
+    color: #c9df83;
+  }
   .primary{background:var(--main);color:#fff;}
   .danger{background:#ff4d4f;color:#fff;}
   .logout{background:#444;color:#fff;}
@@ -339,6 +343,10 @@ h3{
 .member-Sonya{
   background:#eef0ff;
   color:#4c6ef5;
+}
+.member-LMSY{
+  background:#dde58a;
+  color:#252a14;
 }
 .member-KaoJaneJaneKao{
   background:#aad0e8;
