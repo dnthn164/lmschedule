@@ -1,109 +1,78 @@
-.footer-dark {
-  background: #0f1115;
-  color: #d1d5db;
-  padding: 40px 20px;
-  font-size: 14px;
+/* =====================================================
+   FOOTER – CLEAN VERSION
+===================================================== */
+
+.footer-dark{
+  background:linear-gradient(135deg,#6c63ff,#8b83ff);
+  color:#fff;
+  margin-top:48px;
 }
 
-.footer-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;        /* 🔥 QUAN TRỌNG: căn giữa theo trục dọc */
-  justify-content: space-between;
-  gap: 40px;
-  flex-wrap: wrap;
+.footer-container{
+  max-width:900px;        /* 👈 giống main */
+  margin:0 auto;
+  padding:32px 16px;
+
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+}
+.footer-col h4{
+  font-size:16px;
+  margin-bottom:10px;
 }
 
-/* Căn lại từng cột cho đều */
-.footer-col {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;    /* 🔥 không bị dồn lên trên */
+.footer-item{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  margin-bottom:16px;
+  color:#fff;
 }
 
-/* Cột trái: icon + text thẳng hàng đẹp hơn */
-.footer-item {
-  align-items: center;        /* 🔥 icon & text cùng trục */
+.footer-icon{
+  line-height:1.4;
 }
 
-/* Cột phải: không bị dạt lên */
-.footer-col h4 {
-  margin-top: 0;
+.footer-col h4{
+  margin-bottom:12px;
+  color:#fff;
+}
+
+.footer-col p{
+  line-height:1.6;
+  color:#f2f2f2;
 }
 
 
-/* ITEM BÊN TRÁI */
-.footer-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 14px;
+/* right text */
+.footer-col p{
+  font-size:14px;
+  line-height:1.6;
+  opacity:.95;
 }
 
-.footer-icon {
-  font-size: 18px;
-  line-height: 1.4;
+/* socials */
+.footer-socials{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:16px;
 }
 
-/* LINK */
-.footer-dark a {
-  color: #93c5fd;
-  text-decoration: none;
+.footer-socials a{
+  background:rgba(255,255,255,.15);
+  padding:6px 14px;
+  border-radius:999px;
+  color:#fff;
+  font-size:14px;
+  text-decoration:none;
 }
 
-.footer-dark a:hover {
-  color: #bfdbfe;
-  text-decoration: underline;
-}
 
-/* TIÊU ĐỀ */
-.footer-col h4 {
-  font-size: 16px;
-  color: #fff;
-  margin-bottom: 12px;
-}
-
-/* MÔ TẢ */
-.footer-col p {
-  line-height: 1.6;
-  color: #9ca3af;
-}
-
-/* SOCIAL */
-.footer-socials {
-  margin-top: 14px;
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.footer-socials a {
-  font-size: 13px;
-  padding: 6px 10px;
-  border-radius: 6px;
-  background: #1f2933;
-  color: #e5e7eb;
-  transition: 0.2s;
-}
-
-.footer-socials a:hover {
-  background: #374151;
-  color: #fff;
-}
-
-@media (max-width: 600px) {
-  .footer-container {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .footer-item {
-    justify-content: center;
-  }
-
-  .footer-socials {
-    justify-content: center;
+@media (max-width:768px){
+  .footer-container{
+    grid-template-columns:1fr;
+    gap:24px;
   }
 }

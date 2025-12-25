@@ -27,54 +27,11 @@ body {
   --primary: #4f46e5;
 }
 
-/* ===============================
-   HEADER (STICKY)
-================================ */
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-
-  height: var(--header-h);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 0 16px;
-  background: #0f0f0f;
-  color: #fff;
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
-
-.topbar-left {
-  display: flex;
-  flex-direction: column;
-}
-
-.topbar-left h1 {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.topbar-left .sub {
-  font-size: 12px;
-  color: #9ca3af;
-}
-
-.topbar-right {
-  display: flex;
-  gap: 16px;
-}
-
-.topbar-right a {
-  color: #e5e5e5;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.topbar-right a:hover {
-  color: #fff;
-}
-
 /* ===============================
    TABS (STICKY)
 ================================ */
@@ -201,28 +158,15 @@ body {
 /* ===============================
    MOBILE
 ================================ */
-@media (max-width: 600px) {
-  :root {
-    --header-h: 56px;
-    --tab-h: 52px;
-  }
-
-  .topbar {
-    padding: 0 12px;
-  }
-
-  .topbar-right {
-    gap: 8px;
-  }
-
-  .topbar-right a {
-    font-size: 12px;
-  }
-
+/* ===============================
+   MOBILE
+================================ */
+@media (max-width:768px){
   .idol-section {
     padding: 16px;
   }
 }
+
 /* ===== ADMIN PANEL ===== */
 /* ===== ADMIN PANEL ===== */
 #hashtagAdmin {
@@ -278,29 +222,6 @@ body {
   background: #1d4ed8;
 }
 
-/* ===== HASHTAGS VIEW ===== */
-.tag-group {
-  margin-bottom: 18px;
-}
-
-.hashtags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.hashtags span {
-  background: #111827;
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 13px;
-  cursor: pointer;
-  user-select: none;
-}
-
-.hashtags span:hover {
-  background: #1f2937;
-}
 
 /* ===== ADMIN LIST ITEM ===== */
 .hashtag-item {
@@ -332,4 +253,15 @@ body {
 .hashtag-actions .delete {
   background: #dc2626;
   color: #fff;
+}
+/* ===== FIX HAMBURGER ON DESKTOP ===== */
+@media (min-width: 769px) {
+  .hamburger {
+    display: none;
+  }
+}
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
 }

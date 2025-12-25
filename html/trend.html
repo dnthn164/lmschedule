@@ -5,25 +5,32 @@
   <title>Hướng dẫn Trend X</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="./img/favicons/favicon-16x16.png" type="image/x-icon">
+  <link rel="stylesheet" href="../css/trend.css">
+  <link rel="stylesheet" href="../css/header.css">
   <link rel="stylesheet" href="../css/footer.css">
-<link rel="stylesheet" href="../css/trend.css">
+
+
 </head>
 
 <body>
-<header class="topbar">
+<header class="topbar" id="topbar">
   <div class="topbar-left">
-    <h1>🎤 Trending</h1>
+    <h1>🎤 Lịch OTPs</h1>
     <span class="sub">UTC+7</span>
   </div>
 
-  <div class="topbar-right">
-    <a href="/index.html" title="Schedule">Lịch</a>
-    <a href="#" title="How to trend">Cách trend</a>
-    <a href="./hashtags.html" title="Hashtags">Hashtags</a>
-    <a href="mailto:mystthn@gmail.com?subject=Liên hệ qua otpschedule" target="_blank"
-  rel="noopener noreferrer" title="Problem?">Liên hệ</a>
-  </div>
- 
+  <!-- HAMBURGER (mobile only) -->
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    ☰
+  </button>
+
+  <nav class="topbar-right" id="topbarMenu">
+    <a href="./index.html">Lịch</a>
+    <a href="./html/trend.html">Cách trend</a>
+    <a href="./html/hashtags.html">Hashtags</a>
+    <a href="mailto:mystthn@gmail.com?subject=Liên hệ qua otpschedule">Liên hệ</a>
+    <button id="loginBtn" class="primary login-btn" onclick="openLogin()">🔐 Admin</button>
+  </nav>
 </header>
 
 <article class="letter">
@@ -146,5 +153,7 @@
     </div>
   </div>
 </footer>
+<script src="./js/header.js" defer></script>
+
 </body>
 </html>

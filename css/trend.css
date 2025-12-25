@@ -246,3 +246,14 @@ h3{
     padding:10px 12px;
   }
 }
+/* ===== FIX HAMBURGER ON DESKTOP ===== */
+@media (min-width: 769px) {
+  .hamburger {
+    display: none;
+  }
+}
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+}
