@@ -671,6 +671,10 @@ input[type="datetime-local"]{
     font-size:13px;
     padding:1px 7px;
   }*/
+  .schedule.past{
+  opacity:0.5;
+  filter:grayscale(50%);
+}
 }
 @media (max-width: 768px) {
   .topbar {
@@ -730,7 +734,6 @@ input[type="datetime-local"]{
   background: #5a52e0;
 }
 
-/* Mobile né ngón tay */
 @media (max-width: 768px){
   #scrollTopBtn{
     right: 16px;
