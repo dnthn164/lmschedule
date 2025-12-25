@@ -7,6 +7,7 @@
   <link rel="icon" href="./img/favicons/favicon-16x16.png" type="image/x-icon">
 <link rel="stylesheet" href="./css/footer.css">
   <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/note.css">
 <script src="./js/header.js" defer></script>
 
   <!-- Firebase compat -->
@@ -94,10 +95,23 @@
   <div class="card">
     <input id="search" placeholder="🔍 Tìm theo tên hoạt động" oninput="renderList()">
   </div>
+<div class="info-note">
+  <div class="note-pin"></div>
+
+  <ul>
+    <li>👉 Có thể <strong>copy KW + HT</strong> bằng cách click vào hashtags</li>
+    <li>⏱️ Lịch theo <strong>realtime</strong> chỉ hiển thị trong <strong>48 tiếng</strong> sau khi sự kiện kết thúc, không lưu trữ lại</li>
+    <li>📌 Có thể chọn xem lịch ở <strong>phần tab bên trên</strong></li>
+  </ul>
+
+  <div class="note-footer">
+    Cảm ơn bạn đã ghé thăm 💙
+  </div>
+</div>
 
   <!-- LIST -->
   <div class="card">
-    <h3>📅 Lịch - nhấn vào hashtags để copy KW+HT</h3>
+    <h3>📅 Lịch</h3>
     <div id="list"></div>
   </div>
 

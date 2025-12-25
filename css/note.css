@@ -1,0 +1,87 @@
+/*Note*/
+/* ===============================
+   INFO NOTE
+================================ */
+.info-note {
+  position: relative;
+  max-width: 900px;
+  margin: 16px auto 24px;
+  padding: 16px 18px 18px;
+
+  background: #fff9c4;
+  color: #374151;
+
+  border-radius: 12px;
+  box-shadow:
+    0 10px 20px rgba(0,0,0,.12),
+    inset 0 -2px 0 rgba(0,0,0,.06);
+
+  font-size: 14px;
+  line-height: 1.6;
+
+  transform: rotate(-0.3deg);
+}
+
+/* ghim note */
+.note-pin {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 14px;
+  height: 14px;
+  background: #ef4444;
+  border-radius: 50%;
+
+  box-shadow: 0 2px 6px rgba(0,0,0,.4);
+}
+
+.note-pin::after {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 2px;
+  height: 10px;
+  background: rgba(0,0,0,.35);
+}
+
+/* list */
+.info-note ul {
+  padding-left: 18px;
+}
+
+.info-note li {
+  margin-bottom: 6px;
+}
+
+.info-note strong {
+  color: #111827;
+}
+
+/* footer */
+.note-footer {
+  margin-top: 10px;
+  font-size: 13px;
+  text-align: right;
+  color: #475569;
+  font-style: italic;
+}
+
+/* ===============================
+   MOBILE
+================================ */
+@media (max-width: 768px){
+  .info-note {
+    margin: 12px 12px 20px;
+    padding: 14px 14px 16px;
+    font-size: 13px;
+  }
+
+  .note-footer {
+    text-align: left;
+  }
+}
