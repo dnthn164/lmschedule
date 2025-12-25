@@ -1,6 +1,7 @@
-/* =====================================================
-   TOPBAR
-===================================================== */
+a {
+  text-decoration: none;
+}
+
 .topbar{
   position: sticky;
   top: 0;
@@ -13,7 +14,7 @@
   grid-template-columns: auto auto 1fr auto;
   align-items: center;
 
-  background: linear-gradient(135deg,#6c63ff,#8b83ff);
+  background:linear-gradient(135deg,#002147,#012f63);
   color: #fff;
 }
 
@@ -43,7 +44,7 @@
     top:100%;
     left:0;
     right:0;
-    background:#6c63ff;
+    background:#002147;
     padding:12px 16px;
     gap:8px;
   }

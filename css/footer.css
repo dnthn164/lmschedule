@@ -3,13 +3,13 @@
 ===================================================== */
 
 .footer-dark{
-  background:linear-gradient(135deg,#6c63ff,#8b83ff);
+  background:linear-gradient(135deg,#002147,#012f63);
   color:#fff;
   margin-top:48px;
 }
 
 .footer-container{
-  max-width:900px;        /* 👈 giống main */
+  max-width:900px;    
   margin:0 auto;
   padding:32px 16px;
 
