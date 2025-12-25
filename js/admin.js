@@ -257,8 +257,11 @@ db.collection("schedule")
     snap.forEach(doc=>{
       cache[doc.id] = { ...doc.data(), id:doc.id };
     });
+
+    autoDeleteExpiredSchedules(); 
     renderList();
   });
+
 /*function getTimeBadge(timeStr){ 
  const now = new Date(); 
  const d = new Date(timeStr); 
@@ -281,16 +284,20 @@ db.collection("schedule")
   const now   = Date.now();
   const start = new Date(timeStr).getTime();
   const end   = start + 86400000; // +24h
-
+ // ⚠️ SẮP BỊ XÓA (1h cuối)
+  if (isExpiringSoon(timeStr)) {
+    return { text:"EXPIRES SOON", cls:"badge-expire" };
+  }
+  // 🔥 TRENDING trong 24h kể từ giờ nhập
+  if (now >= start && now <= end) {
+    return { text:"TRENDING NOW", cls:"badge-trending" };
+  }
   // ⏳ ĐÃ QUA (sau khi hết TRENDING)
   if (now > end) {
     return { text:"PAST", cls:"badge-past" };
   }
 
-  // 🔥 TRENDING trong 24h kể từ giờ nhập
-  if (now >= start && now <= end) {
-    return { text:"TRENDING NOW", cls:"badge-trending" };
-  }
+  
 
   const today0 = new Date().setHours(0,0,0,0);
   const d0     = new Date(timeStr).setHours(0,0,0,0);
@@ -490,3 +497,36 @@ document.querySelectorAll('.filter-bar button').forEach(btn=>{
     btn.scrollIntoView({ behavior:'smooth', inline:'center' });
   });
 });
+
+function isExpired48h(timeStr){
+  const start = new Date(timeStr).getTime();
+  const expire = start + 48 * 60 * 60 * 1000; // +48h
+  return Date.now() > expire;
+}
+async function autoDeleteExpiredSchedules(){
+  if (!canEdit) return; // chỉ SUPER ADMIN mới xóa
+
+  const batch = db.batch();
+  let hasDelete = false;
+
+  Object.values(cache).forEach(s => {
+    if (s.time && isExpired48h(s.time)) {
+      const ref = db.collection("schedule").doc(s.id);
+      batch.delete(ref);
+      hasDelete = true;
+    }
+  });
+
+  if (hasDelete) {
+    await batch.commit();
+    console.log("🧹 Đã tự động xóa lịch quá 48h");
+  }
+}
+function isExpiringSoon(timeStr){
+  const start   = new Date(timeStr).getTime();
+  const expire  = start + 48 * 60 * 60 * 1000; // +48h
+  const warning = expire - 60 * 60 * 1000;     // -1h
+
+  const now = Date.now();
+  return now >= warning && now < expire;
+}
