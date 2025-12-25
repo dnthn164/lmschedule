@@ -44,41 +44,7 @@ body{
   border-bottom:1px solid #1f1f1f;
 }
 
-.topbar-left{
-  display:flex;
-  flex-direction:column;
-  gap:2px;
-}
 
-.topbar-left h1{
-  font-size:16px;
-  font-weight:600;
-  color:#fff;
-  line-height:1.2;
-}
-
-.topbar-left .sub{
-  font-size:12px;
-  color:#9ca3af;
-}
-
-.topbar-right{
-  display:flex;
-  align-items:center;
-  gap:20px;
-}
-
-.topbar-right a{
-  font-size:14px;
-  font-weight:500;
-  color:#e5e5e5;
-  text-decoration:none;
-  padding:6px 8px;
-}
-
-.topbar-right a:hover{
-  color:#fff;
-}
 
 /* ADMIN BUTTON */
 .login-btn{
