@@ -211,17 +211,6 @@ h3{
     padding:10px 12px;
   }
 }
-/* ===== FIX HAMBURGER ON DESKTOP ===== */
-@media (min-width: 769px) {
-  .hamburger {
-    display: none;
-  }
-}
-@media (max-width: 768px) {
-  .hamburger {
-    display: flex;
-  }
-}
 #scrollTopBtn{
   position:fixed;
   right:20px;
@@ -253,4 +242,16 @@ h3{
   opacity:1;
   visibility:visible;
   transform:translateY(0);
+}
+
+/* ===== FIX HAMBURGER ON DESKTOP ===== */
+@media (min-width: 769px) {
+  .hamburger {
+    display: none;
+  }
+}
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
 }
