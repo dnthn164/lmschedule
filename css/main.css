@@ -254,7 +254,16 @@ h3{
     margin-left:8px;
     font-weight:600;
   }
-  
+  .badge.badge-trending{
+  background: linear-gradient(45deg,#ff1744,#ff9100);
+  color:#fff;
+  font-weight:700;
+  margin-left:6px;
+  padding:2px 8px;
+  border-radius:999px;
+  font-size:11px;
+  animation:pulse 1.2s infinite;
+}
   .badge.badge-now{
     background:#de3742;
     color:#fff;
@@ -479,6 +488,7 @@ h3{
     border-radius:999px;
   }
 
+
   /* ===== FOOTER ROW ===== */
   .schedule-right{
     margin-top:10px;
@@ -643,10 +653,10 @@ input[type="datetime-local"]{
 
 }
 @media (max-width:640px){
-  .hashtags {
+  /*.hashtags {
     font-size:13px;
-    padding:3px 7px;
-  }
+    padding:1px 7px;
+  }*/
 }
 @media (max-width: 768px) {
   .topbar {

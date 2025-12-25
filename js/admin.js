@@ -265,6 +265,11 @@ function getTimeBadge(timeStr){
  const n0 = new Date(now.setHours(0,0,0,0)); 
  const d0 = new Date(d.setHours(0,0,0,0)); 
  const diff = (d0 - n0) / 86400000; 
+ // 🔥 TRENDING trong 24h kể từ giờ nhập
+  if(isTrending24hFromStart(timeStr)){
+    return { text:"TRENDING NOW", cls:"badge-trending" };
+  }
+
  if(diff === 0) return { text:"TODAY", cls:"badge-now" }; 
  if(diff === 1) return { text:"TOMORROW", cls:"badge-tomorrow" }; 
  if(diff > 1) return { text:"COMING SOON", cls:"badge-soon" }; 
@@ -406,4 +411,11 @@ function setMemberFilter(val){
   document.querySelectorAll(".member-tab").forEach(btn => {
     btn.classList.toggle("active", btn.dataset.member === val);
   });
+}
+function isTrending24hFromStart(timeStr){
+  const now   = Date.now();
+  const start = new Date(timeStr).getTime();
+  const end   = start + 86400000; // +24h
+
+  return now >= start && now <= end;
 }
