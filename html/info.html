@@ -2,8 +2,16 @@
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Section UI</title>
+    <title>Hashtags Idol</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <link
+      rel="icon"
+      href="./img/favicons/favicon-16x16.png"
+      type="image/x-icon"
+    />
     <link rel="stylesheet" href="../css/header.css" />
     <link rel="stylesheet" href="../css/footer.css" />
     <link rel="stylesheet" href="../css/info.css" />
@@ -15,195 +23,196 @@
         <span class="sub">UTC+7</span>
       </div>
 
-      <!-- HAMBURGER (mobile only) 
-      <button class="hamburger" id="hamburger" aria-label="Menu">☰</button>-->
+      <!-- HAMBURGER (mobile only) -->
       <button class="hamburger" id="hamburger" aria-label="Menu">
         <span></span>
       </button>
+
       <nav class="topbar-right" id="topbarMenu">
-        <a href="./index.html">Lịch</a>
-        <a href="./html/trend.html">Cách trend</a>
-        <a href="./html/hashtags.html">Hashtags</a>
+        <a href="/index.html">Lịch</a>
+        <a href="./info.html">Thông tin</a>
+        <a href="./trend.html">Cách trend</a>
+        <a href="./hashtags.html">Hashtags</a>
         <a
           href="mailto:mystthn@gmail.com?subject=Liên hệ qua otpschedule"
           target="_blank"
           >Liên hệ</a
         >
-        <button id="loginBtn" class="primary login-btn" onclick="openLogin()">
-          🔐 Đăng nhập
-        </button>
       </nav>
     </header>
-    <div class="container">
-      <div class="top-tabs">
-        <button data-target="lmsy">LMSY</button>
-        <button data-target="lenamiu">LenaMiu</button>
-      </div>
-      <div class="page">
-        <!-- ===== SECTION ===== -->
-        <section class="ui-section" id="lmsy">
-          <!-- LEFT -->
-          <div class="left">
-            <div class="title">
-              <h3>LMSY</h3>
-              <span>›</span>
-            </div>
 
-            <div class="artwork-row">
-              <div class="art-card">
-                <img src="../img/Sonya.jpg" alt="" />
-                <!-- <span class="credit">by @RenChain</span> -->
-              </div>
-              <div class="art-card">
-                <img src="../img/Sonya.jpg" alt="" />
-                <!-- <span class="credit">by @RenChain</span> -->
-              </div>
-            </div>
+    <nav class="artist-tabs">
+      <a href="#ml">MilkLove</a>
+      <a href="#lmsy" class="active">LMSY</a>
+      <a href="#lenamiu">LenaMiu</a>
+      <a href="#ginjay">GinJay</a>
+      <a href="#arhoungpam">ArhoungPam</a>
+    </nav>
 
-            <button class="view-more">↗ Truy cập trang</button>
+    <main class="content">
+      <section class="ui-section" id="lmsy">
+        <!-- LEFT -->
+        <div class="left">
+          <div class="title">
+            <h3>LMSY</h3>
+            <span>›</span>
           </div>
 
-          <!-- CENTER -->
-          <div class="center">
-            <h3>Series</h3>
-
-            <div class="search-list">
-              <div class="search-item active">
-                <a href="#" target="_blank" rel="noopener noreferrer"
-                  >🔍 Affair the series</a
-                >
-              </div>
-              <div class="search-item">
-                <a href="#" target="_blank" rel="noopener noreferrer"
-                  >🔍 Harmony Secret</a
-                >
-              </div>
-              <div class="search-item">🔍 Updating</div>
+          <div class="artwork-row">
+            <div class="art-card">
+              <img src="../img/AFFAIR 2024.jpg" alt="" />
+              <!-- <span class="credit">by @RenChain</span> -->
+            </div>
+            <div class="art-card">
+              <img src="../img/LMSY.jpg" alt="" />
+              <!-- <span class="credit">by @RenChain</span> -->
             </div>
           </div>
 
-          <!-- RIGHT -->
-          <div class="right">
-            <div class="person-item">
-              <div class="avatar">
-                <img src="../img/Sonya.jpg" alt="" />
-                <!-- <span class="close">×</span> -->
+          <div class="otp-quotes">
+            <h4>💬 OTP Quotes</h4>
+
+            <div class="quote">
+              <span class="speaker">Sonya</span>
+              <p>“We can switch.”</p>
+            </div>
+
+            <div class="quote">
+              <span class="speaker">Lookmhee</span>
+              <p>“If you love Lookmhee, love Sonya too.”</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CENTER -->
+        <div class="center">
+          <h3>Series</h3>
+
+          <div class="search-list">
+            <div class="search-item active">
+              <a
+                href="https://youtu.be/EMxZVIaYktU?si=P082PucUf15-JmB3"
+                target="_blank"
+                rel="noopener noreferrer"
+                >🔍 Affair the series
+              </a>
+            </div>
+            <div class="search-item">
+              <a
+                href="https://youtu.be/yqIl8eod0Kk?si=-qVEtpDYADfY8DKE"
+                target="_blank"
+                rel="noopener noreferrer"
+                >🔍 Harmony Secret</a
+              >
+            </div>
+            <div class="search-item">🔍 Updating</div>
+          </div>
+          <div class="fandom-info">
+            <h4>💖 Fandom</h4>
+
+            <div class="fandom-row">
+              <div class="fandom-item">
+                <span class="icon">🫂</span>
+                <div>Fandom Name: <strong>BESTIES</strong></div>
               </div>
 
-              <div class="info-card">
-                <h4>Lookmhee</h4>
-                <p>Cryo is one of the seven elements...</p>
-
-                <div class="social">
-                  <a href="#" target="_blank">X</a>
-                  <a href="#" target="_blank">IG</a>
-                  <a href="#" target="_blank">Weibo</a>
+              <div class="fandom-item">
+                <span class="icon">🐨</span>
+                <div>
+                  <strong>Lookmhee</strong>
+                  <p>Soft • Elegant • Calm</p>
                 </div>
               </div>
-            </div>
 
-            <div class="person-item">
-              <div class="avatar">
-                <img src="../img/Sonya.jpg" alt="" />
-                <!-- <span class="close">×</span> -->
-              </div>
-
-              <div class="info-card">
-                <h4>Sonya</h4>
-                <p>Sumeru is one of the seven regions...</p>
-
-                <div class="social">
-                  <a href="#" target="_blank">X</a>
-                  <a href="#" target="_blank">IG</a>
-                  <a href="#" target="_blank">Weibo</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <!-- ===== SECTION ===== -->
-        <section class="ui-section" id="lenamiu">
-          <!-- LEFT -->
-          <div class="left">
-            <div class="title">
-              <h3>LMSY</h3>
-              <span>›</span>
-            </div>
-
-            <div class="artwork-row">
-              <div class="art-card">
-                <img src="../img/Sonya.jpg" alt="" />
-                <!-- <span class="credit">by @RenChain</span> -->
-              </div>
-              <div class="art-card">
-                <img src="../img/Sonya.jpg" alt="" />
-                <!-- <span class="credit">by @RenChain</span> -->
-              </div>
-            </div>
-
-            <button class="view-more">↗ Truy cập trang</button>
-          </div>
-
-          <!-- CENTER -->
-          <div class="center">
-            <h3>Series</h3>
-
-            <div class="search-list">
-              <div class="search-item active">
-                <a href="#" target="_blank" rel="noopener noreferrer"
-                  >🔍 Affair the series</a
-                >
-              </div>
-              <div class="search-item">
-                <a href="#" target="_blank" rel="noopener noreferrer"
-                  >🔍 Harmony Secret</a
-                >
-              </div>
-              <div class="search-item">🔍 Updating</div>
-            </div>
-          </div>
-
-          <!-- RIGHT -->
-          <div class="right">
-            <div class="person-item">
-              <div class="avatar">
-                <img src="../img/Sonya.jpg" alt="" />
-                <!-- <span class="close">×</span> -->
-              </div>
-
-              <div class="info-card">
-                <h4>Lookmhee</h4>
-                <p>Cryo is one of the seven elements...</p>
-
-                <div class="social">
-                  <a href="#" target="_blank">X</a>
-                  <a href="#" target="_blank">IG</a>
-                  <a href="#" target="_blank">Weibo</a>
-                </div>
-              </div>
-            </div>
-
-            <div class="person-item">
-              <div class="avatar">
-                <img src="../img/Sonya.jpg" alt="" />
-                <!-- <span class="close">×</span> -->
-              </div>
-
-              <div class="info-card">
-                <h4>Sonya</h4>
-                <p>Sumeru is one of the seven regions...</p>
-
-                <div class="social">
-                  <a href="#" target="_blank">X</a>
-                  <a href="#" target="_blank">IG</a>
-                  <a href="#" target="_blank">Weibo</a>
+              <div class="fandom-item">
+                <span class="icon">🐰</span>
+                <div>
+                  <strong>Sonya</strong>
+                  <p>Cute • Kind • Friendly</p>
                 </div>
               </div>
             </div>
           </div>
-        </section>
-      </div>
-    </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="right">
+          <div class="person-item">
+            <div class="avatar">
+              <img src="../img/Sonya.jpg" alt="" />
+            </div>
+
+            <div class="info-card">
+              <h4>Saranphat Pedersen (Sonya Saranphat)</h4>
+              <p class="subtitle">She began her career in 2022</p>
+
+              <!-- PHẦN SCROLL -->
+              <div class="info-scroll">
+                <p><b>Gender:</b> Female</p>
+                <p><b>Date of birth:</b> April 19, 1999</p>
+                <p><b>Zodiac:</b> Aries</p>
+                <p><b>Height:</b> 170 cm</p>
+                <p><b>Weight:</b> 47 kg</p>
+                <p><b>Occupation:</b> Actress, Model</p>
+                <p><b>Education:</b> Bangkok University</p>
+                <p><b>Agency:</b> Change2561</p>
+                <p>
+                  <b>Known For:</b> Bad Buddy, Pleng Ruk Pleng Kaen, The Fire
+                  Goddess, Maya Tawan, Roy Marn, Sanaeha Phayabat, Kularb Kaew,
+                  Koo Kam, Fai Ruk Salub, Affair, Harmony Secret
+                </p>
+              </div>
+
+              <div class="social">
+                <a href="https://x.com/sonyasarann" target="_blank">X</a>
+                <a href="https://www.instagram.com/sonyasarann/" target="_blank"
+                  >IG</a
+                >
+                <a
+                  href="https://passport.weibo.com/visitor/visitor?entry=miniblog&a=enter&url=https%3A%2F%2Fweibo.com%2Fu%2F7919568299&domain=weibo.com&ua=WhatsApp%2F2&_rand=1766737889616&sudaref="
+                  target="_blank"
+                  >Weibo</a
+                >
+              </div>
+            </div>
+          </div>
+          <div class="person-item">
+            <div class="avatar">
+              <img src="../img/lookmhee.jpg" alt="" />
+            </div>
+
+            <div class="info-card">
+              <h4>Punyapat Wangpongsathaporn (Lookmhee Punyapat)</h4>
+
+              <!-- PHẦN SCROLL -->
+              <div class="info-scroll">
+                <p><b>Gender:</b> Female</p>
+                <p><b>Date of birth:</b> February 18, 1999</p>
+                <p><b>Zodiac:</b> Aquarius</p>
+                <p><b>Height:</b> 169 cm</p>
+                <p><b>Weight:</b> 53 kg</p>
+                <p><b>Occupation:</b> Actress, Model</p>
+                <p>
+                  <b>Education:</b> Bachelor's degree in Culinary Arts and
+                  Kitchen Management, Dusit Thani College
+                </p>
+                <p><b>Agency:</b> Change2561</p>
+                <p><b>Known For:</b> Affair, Harmony Secret</p>
+              </div>
+
+              <div class="social">
+                <a href="https://x.com/Lookmheewang">X</a>
+                <a href="https://www.instagram.com/lmlookmhee/">IG</a>
+                <a
+                  href="https://passport.weibo.com/visitor/visitor?entry=miniblog&a=enter&url=https%3A%2F%2Fweibo.com%2Fu%2F7917425450&domain=weibo.com&ua=WhatsApp%2F2&_rand=1766737917334&sudaref="
+                  >Weibo</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
     <footer class="footer-dark">
       <div class="footer-container">
         <!-- LEFT -->
@@ -245,7 +254,7 @@
         </div>
       </div>
     </footer>
-    <script src="../js/tabinfo.js"></script>
-    <script src="../js/header.js"></script>
+    <button id="scrollTopBtn" aria-label="Scroll to top">TOP</button>
+    <script src="../js/header.js" defer></script>
   </body>
 </html>
