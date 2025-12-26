@@ -200,7 +200,7 @@ button {
     min-width: 180px;
     max-width: 220px;
 
-    background: #0b2f5b; /* sáng hơn header */
+    background: #0b2f5b;
     border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 14px;
 
