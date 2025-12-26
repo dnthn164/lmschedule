@@ -256,7 +256,7 @@ db.collection("schedule")
       cache[doc.id] = { ...doc.data(), id: doc.id };
     });
 
-    autoDeleteExpiredSchedules();
+    // autoDeleteExpiredSchedules();
     renderList();
   });
 
@@ -329,6 +329,7 @@ function renderList() {
   });
 
   items.forEach((s) => {
+    if (isExpired48h(s.time) && !canEdit) return;
     if (memberFilter !== "ALL" && s.member !== memberFilter) return;
     if (
       search.value &&
