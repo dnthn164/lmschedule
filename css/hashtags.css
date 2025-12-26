@@ -18,18 +18,6 @@ body {
   background: #f3f4f6;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-button {
-  border: none;
-  background: none;
-  font-family: inherit;
-  cursor: pointer;
-}
-
 /* ===============================
    VARIABLES
 ================================ */
@@ -39,140 +27,13 @@ button {
   --primary: #4f46e5;
 }
 
-/* ===============================
-   HEADER
-================================ */
 .topbar {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-
-  height: var(--header-h);
-  padding: 0 16px;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  background: linear-gradient(135deg, #002147, #012f63);
-  color: #fff;
 }
-
-.topbar-left {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.topbar-left h1 {
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.topbar-left .sub {
-  font-size: 12px;
-  opacity: 0.85;
-}
-
 /* ===============================
-   HAMBURGER
-================================ */
-.hamburger {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-
-  display: none;
-  align-items: center;
-  justify-content: center;
-
-  background: rgba(255, 255, 255, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-}
-
-.hamburger span {
-  position: relative;
-  width: 20px;
-  height: 2.5px;
-  background: #fff;
-  border-radius: 3px;
-  transition: 0.25s;
-}
-
-.hamburger span::before,
-.hamburger span::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  width: 20px;
-  height: 2.5px;
-  background: #fff;
-  border-radius: 3px;
-  transition: 0.25s;
-}
-
-.hamburger span::before {
-  top: -7px;
-}
-.hamburger span::after {
-  top: 7px;
-}
-
-.hamburger.active {
-  background: #fff;
-}
-
-.hamburger.active span {
-  background: transparent;
-}
-
-.hamburger.active span::before,
-.hamburger.active span::after {
-  background: #002147;
-  top: 0;
-}
-
-.hamburger.active span::before {
-  transform: rotate(45deg);
-}
-.hamburger.active span::after {
-  transform: rotate(-45deg);
-}
-
-/* ===============================
-   MENU (DESKTOP)
-================================ */
-.topbar-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.topbar-right a {
-  font-size: 13px;
-  font-weight: 600;
-  padding: 6px 10px;
-  border-radius: 999px;
-  opacity: 0.9;
-}
-
-.topbar-right a:hover {
-  background: rgba(255, 255, 255, 0.18);
-  opacity: 1;
-}
-
-.login-btn {
-  padding: 8px 16px;
-  font-size: 13px;
-  font-weight: 700;
-
-  color: #002147;
-  background: #fff;
-  border-radius: 999px;
-}
-
-/* ===============================
-   TABS
+   TABS (STICKY)
 ================================ */
 .artist-tabs {
   position: sticky;
@@ -185,7 +46,9 @@ button {
 
   background: #fff;
   border-bottom: 1px solid #e5e7eb;
+
   overflow-x: auto;
+  overflow-y: visible;
 }
 
 .artist-tabs::-webkit-scrollbar {
@@ -196,13 +59,17 @@ button {
   padding: 8px 16px;
   border-radius: 999px;
   background: #f1f5f9;
+  color: #111;
+  text-decoration: none;
   font-size: 14px;
+  font-weight: 500;
   white-space: nowrap;
 }
 
 .artist-tabs a.active {
   background: var(--primary);
   color: #fff;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
 }
 
 /* ===============================
@@ -215,6 +82,9 @@ button {
   padding-bottom: 20vh;
 }
 
+/* ===============================
+   SECTIONS
+================================ */
 .idol-section {
   scroll-margin-top: calc(var(--header-h) + var(--tab-h) + 16px);
 
@@ -224,11 +94,31 @@ button {
   margin-bottom: 32px;
 
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+  transition: 0.25s;
+}
+
+.idol-section.active {
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.35), 0 10px 28px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.idol-section h2 {
+  margin-bottom: 12px;
 }
 
 /* ===============================
    TAGS
 ================================ */
+.tag-group {
+  margin-bottom: 18px;
+}
+
+.tag-group h4 {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #555;
+}
+
 .hashtags {
   display: flex;
   flex-wrap: wrap;
@@ -240,6 +130,11 @@ button {
   border-radius: 999px;
   font-size: 14px;
   cursor: pointer;
+  transition: 0.15s;
+}
+
+.hashtags span:active {
+  transform: scale(0.95);
 }
 
 .hashtags.main span {
@@ -259,8 +154,63 @@ button {
 }
 
 /* ===============================
-   SCROLL TOP
+   MOBILE
 ================================ */
+
+/* ===== ADMIN PANEL ===== */
+/* ===== ADMIN PANEL ===== */
+#hashtagAdmin {
+  max-width: 520px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #0f172a;
+  border-radius: 12px;
+}
+
+#hashtagAdmin h3 {
+  margin: 0 0 16px;
+  text-align: center;
+}
+
+#hashtagAdmin .form-group {
+  margin-bottom: 14px;
+}
+
+#hashtagAdmin label {
+  font-size: 13px;
+  color: #cbd5f5;
+}
+
+#hashtagAdmin input,
+#hashtagAdmin textarea,
+#hashtagAdmin select {
+  width: 100%;
+  margin-top: 6px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: none;
+  background: #020617;
+  color: #fff;
+  outline: none;
+}
+
+#hashtagAdmin textarea {
+  min-height: 70px;
+}
+
+#hashtagAdmin button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+#hashtagAdmin button:hover {
+  background: #1d4ed8;
+}
 #scrollTopBtn {
   position: fixed;
   right: 20px;
@@ -274,8 +224,12 @@ button {
   justify-content: center;
 
   border-radius: 50%;
+  border: none;
   background: #6c63ff;
   color: #fff;
+  font-weight: 700;
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 
   opacity: 0;
   visibility: hidden;
@@ -290,49 +244,48 @@ button {
   transform: translateY(0);
 }
 
-/* ===============================
-   MOBILE
-================================ */
+/* ===== ADMIN LIST ITEM ===== */
+.hashtag-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.hashtag-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.hashtag-actions button {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.hashtag-actions .edit {
+  background: #16a34a;
+  color: #fff;
+}
+
+.hashtag-actions .delete {
+  background: #dc2626;
+  color: #fff;
+}
+/* ===== FIX HAMBURGER ON DESKTOP ===== */
+@media (min-width: 769px) {
+  .hamburger {
+    display: none;
+  }
+}
 @media (max-width: 768px) {
   .hamburger {
     display: flex;
   }
-
-  .topbar-right {
-    position: absolute;
-    top: 100%;
-    right: 12px;
-
-    min-width: 180px;
-
-    background: #0b2f5b;
-    border-radius: 14px;
-    padding: 10px;
-
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(-8px) scale(0.98);
-    transition: 0.25s;
-  }
-
-  .topbar-right.show {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateY(0) scale(1);
-  }
-
   .idol-section {
     padding: 16px;
-  }
-}
-
-/* DESKTOP */
-@media (min-width: 769px) {
-  .hamburger {
-    display: none;
   }
 }

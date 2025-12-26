@@ -17,7 +17,6 @@ html,
 body {
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
 }
 
 body {
@@ -25,6 +24,7 @@ body {
     Ubuntu, sans-serif;
   background: var(--bg);
   color: #1f1f1f;
+  overflow-x: hidden;
 }
 
 a {
@@ -80,26 +80,6 @@ a {
 .topbar-right a:hover {
   background: rgba(255, 255, 255, 0.18);
   opacity: 1;
-}
-.filter-bar {
-  position: sticky;
-  top: 72px;
-  z-index: 200;
-
-  background: #fff;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-
-  padding: 10px 12px;
-  overflow-x: auto;
-  white-space: nowrap;
-}
-
-.filter-bar.is-sticky {
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
 
 .login-btn {
@@ -238,21 +218,15 @@ input[type="datetime-local"] {
 
 .filter-bar {
   position: sticky;
-  top: 0;
-  z-index: 100;
+  top: var(--header-height);
+  z-index: 900;
+
   background: #fff;
-
   display: flex;
-  align-items: center;
-  justify-content: center;
   gap: 8px;
-
   padding: 10px 12px;
   overflow-x: auto;
   white-space: nowrap;
-
-  will-change: box-shadow;
-  transform: translateZ(0);
 }
 
 .filter-bar.is-sticky {
@@ -450,27 +424,23 @@ input[type="datetime-local"] {
   position: fixed;
   right: 20px;
   bottom: 24px;
-
   width: 44px;
   height: 44px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   border-radius: 50%;
   border: none;
   background: #6c63ff;
   color: #fff;
   font-weight: 700;
-
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-
   opacity: 0;
   visibility: hidden;
   transform: translateY(10px);
   transition: 0.25s;
-  z-index: 9999;
+  z-index: 99999; /* luôn trên topbar/filter/footer */
+  cursor: pointer;
 }
 
 #scrollTopBtn.show {
@@ -480,6 +450,7 @@ input[type="datetime-local"] {
 }
 
 .topbar {
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -493,9 +464,9 @@ input[type="datetime-local"] {
   color: #fff;
   cursor: pointer;
 }
-.filter-bar {
-  top: 64px;
-}
+
+/*Sticky*/
+
 /* ================= MOBILE ================= */
 
 @media (max-width: 768px) {
@@ -535,12 +506,6 @@ input[type="datetime-local"] {
   .topbar-right a,
   .topbar-right button {
     width: 100%;
-  }
-
-  /* ===== FILTER BAR ===== */
-  .filter-bar {
-    top: 96px;
-    justify-content: flex-start;
   }
 
   .filter-bar button {

@@ -486,20 +486,6 @@ function isPast(timeStr) {
   return Date.now() > end;
 }
 
-///////////////Sticky///////////////////
-const filterBar = document.getElementById("filterBar");
-const anchor = document.getElementById("stickyAnchor");
-
-const observer = new IntersectionObserver(
-  ([entry]) => {
-    // khi anchor KHÔNG còn nhìn thấy → sticky
-    filterBar.classList.toggle("is-sticky", !entry.isIntersecting);
-  },
-  {
-    threshold: 0,
-  }
-);
-
 observer.observe(anchor);
 
 document.querySelectorAll(".filter-bar button").forEach((btn) => {
@@ -540,3 +526,4 @@ function isExpiringSoon(timeStr) {
   const now = Date.now();
   return now >= warning && now < expire;
 }
+/*Scroll TOP*/
