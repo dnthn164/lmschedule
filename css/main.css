@@ -479,41 +479,6 @@ input[type="datetime-local"] {
   transform: translateY(0);
 }
 
-@media (max-width: 768px) {
-  .container {
-    padding: 12px;
-    margin: 0;
-  }
-
-  .filter-bar {
-    justify-content: flex-start;
-  }
-
-  .filter-bar button {
-    font-size: 12px;
-    padding: 6px 12px;
-  }
-
-  .schedule {
-    display: block;
-  }
-
-  .schedule-right {
-    margin-top: 10px;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-  }
-
-  .badge {
-    font-size: 10px;
-  }
-
-  .popup {
-    width: 92%;
-  }
-}
-
 .topbar {
   display: flex;
   align-items: center;
@@ -532,125 +497,74 @@ input[type="datetime-local"] {
   top: 64px;
 }
 /* ================= MOBILE ================= */
-@media (max-width: 768px) {
-  .hamburger {
-    display: block;
-  }
-
-  .topbar {
-    flex-wrap: wrap;
-  }
-
-  /* menu mobile */
-  .topbar-right {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-
-    background: linear-gradient(135deg, #6c63ff, #8b83ff);
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-
-    padding: 12px 16px;
-
-    transform: translateY(-10px);
-    opacity: 0;
-    pointer-events: none;
-
-    transition: 0.25s ease;
-  }
-
-  .topbar-right a,
-  .topbar-right button {
-    width: 100%;
-  }
-
-  .topbar-right.show {
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: auto;
-  }
-}
-@media (max-width: 768px) {
-  .topbar {
-    padding: 12px 14px;
-  }
-
-  .topbar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .topbar-left h1 {
-    font-size: 16px;
-  }
-
-  .topbar-right {
-    width: 100%;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-}
-@media (max-width: 768px) {
-  .filter-bar {
-    top: 96px;
-  }
-}
 
 @media (max-width: 768px) {
-  .filter-bar {
-    top: 56px;
+  /* ===== LAYOUT CHUNG ===== */
+  .container {
+    padding: 12px;
+    margin: 0;
   }
-}
 
-@media (max-width: 768px) {
+  /* ===== TOPBAR ===== */
   .topbar {
     display: flex;
-    flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: nowrap;
+    padding: 12px 14px;
   }
 
   .topbar-left {
     flex: 1;
   }
 
+  .topbar-left h1 {
+    font-size: 16px;
+  }
+
+  /* ===== HAMBURGER ===== */
   .hamburger {
     display: flex;
     align-items: center;
     justify-content: center;
-
     font-size: 22px;
     padding: 6px 10px;
   }
 
-  .topbar-right {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
+  /* ===== MOBILE MENU ===== */
 
-    background: linear-gradient(135deg, #002147, #012f63);
-
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-
-    padding: 12px 16px;
-
-    transform: translateY(-8px);
-    opacity: 0;
-    pointer-events: none;
-    transition: 0.25s ease;
+  .topbar-right a,
+  .topbar-right button {
+    width: 100%;
   }
 
-  .topbar-right.show {
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: auto;
+  /* ===== FILTER BAR ===== */
+  .filter-bar {
+    top: 96px;
+    justify-content: flex-start;
+  }
+
+  .filter-bar button {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  /* ===== CONTENT ===== */
+  .schedule {
+    display: block;
+  }
+
+  .schedule-right {
+    margin-top: 10px;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .badge {
+    font-size: 10px;
+  }
+
+  .popup {
+    width: 92%;
   }
 }
