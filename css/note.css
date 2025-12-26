@@ -12,9 +12,8 @@
   color: #374151;
 
   border-radius: 12px;
-  box-shadow:
-    0 10px 20px rgba(0,0,0,.12),
-    inset 0 -2px 0 rgba(0,0,0,.06);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.06);
 
   font-size: 14px;
   line-height: 1.6;
@@ -34,7 +33,7 @@
   background: #ef4444;
   border-radius: 50%;
 
-  box-shadow: 0 2px 6px rgba(0,0,0,.4);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 .note-pin::after {
@@ -46,7 +45,7 @@
 
   width: 2px;
   height: 10px;
-  background: rgba(0,0,0,.35);
+  background: rgba(0, 0, 0, 0.35);
 }
 
 /* list */
@@ -74,7 +73,7 @@
 /* ===============================
    MOBILE
 ================================ */
-@media (max-width: 768px){
+@media (max-width: 768px) {
   .info-note {
     margin: 12px 12px 20px;
     padding: 14px 14px 16px;

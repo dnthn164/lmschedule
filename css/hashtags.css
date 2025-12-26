@@ -27,10 +27,10 @@ body {
   --primary: #4f46e5;
 }
 
-.topbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 /* ===============================
    TABS (STICKY)
@@ -69,7 +69,7 @@ body {
 .artist-tabs a.active {
   background: var(--primary);
   color: #fff;
-  box-shadow: 0 4px 12px rgba(79,70,229,.35);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
 }
 
 /* ===============================
@@ -93,14 +93,12 @@ body {
   padding: 24px;
   margin-bottom: 32px;
 
-  box-shadow: 0 10px 28px rgba(0,0,0,.08);
-  transition: .25s;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+  transition: 0.25s;
 }
 
 .idol-section.active {
-  box-shadow:
-    0 0 0 3px rgba(79,70,229,.35),
-    0 10px 28px rgba(0,0,0,.12);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.35), 0 10px 28px rgba(0, 0, 0, 0.12);
   transform: translateY(-2px);
 }
 
@@ -132,11 +130,11 @@ body {
   border-radius: 999px;
   font-size: 14px;
   cursor: pointer;
-  transition: .15s;
+  transition: 0.15s;
 }
 
 .hashtags span:active {
-  transform: scale(.95);
+  transform: scale(0.95);
 }
 
 .hashtags.main span {
@@ -161,7 +159,7 @@ body {
 /* ===============================
    MOBILE
 ================================ */
-@media (max-width:768px){
+@media (max-width: 768px) {
   .idol-section {
     padding: 16px;
   }
@@ -222,7 +220,6 @@ body {
   background: #1d4ed8;
 }
 
-
 /* ===== ADMIN LIST ITEM ===== */
 .hashtag-item {
   display: flex;
@@ -265,35 +262,35 @@ body {
     display: flex;
   }
 }
-#scrollTopBtn{
-  position:fixed;
-  right:20px;
-  bottom:24px;
+#scrollTopBtn {
+  position: fixed;
+  right: 20px;
+  bottom: 24px;
 
-  width:44px;
-  height:44px;
+  width: 44px;
+  height: 44px;
 
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  border-radius:50%;
-  border:none;
-  background:#6c63ff;
-  color:#fff;
-  font-weight:700;
+  border-radius: 50%;
+  border: none;
+  background: #6c63ff;
+  color: #fff;
+  font-weight: 700;
 
-  box-shadow:0 8px 24px rgba(0,0,0,.25);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 
-  opacity:0;
-  visibility:hidden;
-  transform:translateY(10px);
-  transition:.25s;
-  z-index:9999;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: 0.25s;
+  z-index: 9999;
 }
 
-#scrollTopBtn.show{
-  opacity:1;
-  visibility:visible;
-  transform:translateY(0);
+#scrollTopBtn.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }

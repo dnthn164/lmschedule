@@ -1,15 +1,15 @@
 // =====================
 // SELECTORS
 // =====================
-const tabs = document.querySelectorAll('.artist-tabs a');
-const sections = document.querySelectorAll('.idol-section');
+const tabs = document.querySelectorAll(".artist-tabs a");
+const sections = document.querySelectorAll(".idol-section");
 
 // =====================
 // STICKY OFFSET
 // =====================
 function calcStickyOffset() {
-  const header = document.querySelector('.topbar');
-  const tabBar = document.querySelector('.artist-tabs');
+  const header = document.querySelector(".topbar");
+  const tabBar = document.querySelector(".artist-tabs");
   return (header?.offsetHeight || 0) + (tabBar?.offsetHeight || 0);
 }
 
@@ -19,29 +19,26 @@ function updateStickyOffset() {
   STICKY_OFFSET = calcStickyOffset();
 }
 
-window.addEventListener('resize', updateStickyOffset);
-window.addEventListener('load', updateStickyOffset);
+window.addEventListener("resize", updateStickyOffset);
+window.addEventListener("load", updateStickyOffset);
 
 // =====================
 // CLICK TAB → SCROLL CHUẨN
 // =====================
-tabs.forEach(tab => {
-  tab.addEventListener('click', e => {
+tabs.forEach((tab) => {
+  tab.addEventListener("click", (e) => {
     e.preventDefault();
 
-    const id = tab.getAttribute('href')?.slice(1);
+    const id = tab.getAttribute("href")?.slice(1);
     const target = document.getElementById(id);
     if (!target) return;
 
     const y =
-      window.scrollY +
-      target.getBoundingClientRect().top -
-      STICKY_OFFSET -
-      8;
+      window.scrollY + target.getBoundingClientRect().top - STICKY_OFFSET - 8;
 
     window.scrollTo({
       top: y,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   });
 });
@@ -67,7 +64,7 @@ function updateActive() {
   let maxVisible = 0;
   let activeSection = sections[0];
 
-  sections.forEach(section => {
+  sections.forEach((section) => {
     const visible = getVisibleHeight(section);
     if (visible > maxVisible) {
       maxVisible = visible;
@@ -79,31 +76,28 @@ function updateActive() {
 
   const id = activeSection.id;
 
-  sections.forEach(s => s.classList.remove('active'));
-  activeSection.classList.add('active');
+  sections.forEach((s) => s.classList.remove("active"));
+  activeSection.classList.add("active");
 
-  tabs.forEach(tab => {
-    tab.classList.toggle(
-      'active',
-      tab.getAttribute('href') === `#${id}`
-    );
+  tabs.forEach((tab) => {
+    tab.classList.toggle("active", tab.getAttribute("href") === `#${id}`);
   });
 }
 
 // =====================
 // SCROLL / INIT
 // =====================
-window.addEventListener('scroll', updateActive, { passive: true });
-window.addEventListener('resize', updateActive);
-window.addEventListener('load', updateActive);
+window.addEventListener("scroll", updateActive, { passive: true });
+window.addEventListener("resize", updateActive);
+window.addEventListener("load", updateActive);
 
 // =====================
 // COPY HASHTAG
 // =====================
-document.querySelectorAll('.hashtags span').forEach(tag => {
-  tag.addEventListener('click', () => {
+document.querySelectorAll(".hashtags span").forEach((tag) => {
+  tag.addEventListener("click", () => {
     navigator.clipboard.writeText(tag.innerText);
-    tag.classList.add('copied');
-    setTimeout(() => tag.classList.remove('copied'), 600);
+    tag.classList.add("copied");
+    setTimeout(() => tag.classList.remove("copied"), 600);
   });
 });
