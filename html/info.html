@@ -3,100 +3,249 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>OTPs Series Profile</title>
+    <title>Section UI</title>
+    <link rel="stylesheet" href="../css/header.css" />
+    <link rel="stylesheet" href="../css/footer.css" />
     <link rel="stylesheet" href="../css/info.css" />
   </head>
   <body>
-    <div class="series-container">
-      <!-- Series 1 -->
-      <div class="series">
-        <h1>🎤 OTPs Series 1</h1>
+    <header class="topbar" id="topbar">
+      <div class="topbar-left">
+        <h1>🎤 Lịch OTPs</h1>
+        <span class="sub">UTC+7</span>
+      </div>
 
-        <!-- Bộ 1 -->
-        <div class="series-row">
-          <!-- Section trái: poster -->
-          <div class="series-poster">
-            <img src="https://i.pravatar.cc/300?img=10" alt="LenaMiu Poster" />
-            <h2>LenaMiu</h2>
-          </div>
-          <div class="series-poster">
-            <img src="https://i.pravatar.cc/300?img=10" alt="LenaMiu Poster" />
-            <h2>LenaMiu</h2>
-          </div>
-
-          <!-- Section phải: danh sách idols -->
-          <div class="series-idols">
-            <!-- Idol 1 -->
-            <div class="idol-card">
-              <div class="idol-avatar">
-                <img src="https://i.pravatar.cc/150?img=11" alt="Lena" />
-              </div>
-              <h3>Lena</h3>
-              <div class="social-links">
-                <a href="#">X</a>
-                <a href="#">IG</a>
-                <a href="#">Weibo</a>
-              </div>
-              <p>
-                Lena tỏa sáng với vocal tuyệt vời và nhảy điêu luyện, luôn giữ
-                năng lượng trên sân khấu.
-              </p>
+      <!-- HAMBURGER (mobile only) 
+      <button class="hamburger" id="hamburger" aria-label="Menu">☰</button>-->
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span>
+      </button>
+      <nav class="topbar-right" id="topbarMenu">
+        <a href="./index.html">Lịch</a>
+        <a href="./html/trend.html">Cách trend</a>
+        <a href="./html/hashtags.html">Hashtags</a>
+        <a
+          href="mailto:mystthn@gmail.com?subject=Liên hệ qua otpschedule"
+          target="_blank"
+          >Liên hệ</a
+        >
+        <button id="loginBtn" class="primary login-btn" onclick="openLogin()">
+          🔐 Đăng nhập
+        </button>
+      </nav>
+    </header>
+    <div class="container">
+      <div class="top-tabs">
+        <button data-target="lmsy">LMSY</button>
+        <button data-target="lenamiu">LenaMiu</button>
+      </div>
+      <div class="page">
+        <!-- ===== SECTION ===== -->
+        <section class="ui-section" id="lmsy">
+          <!-- LEFT -->
+          <div class="left">
+            <div class="title">
+              <h3>LMSY</h3>
+              <span>›</span>
             </div>
 
-            <!-- Idol 2 -->
-            <div class="idol-card">
-              <div class="idol-avatar">
-                <img src="https://i.pravatar.cc/150?img=12" alt="Miu" />
+            <div class="artwork-row">
+              <div class="art-card">
+                <img src="../img/Sonya.jpg" alt="" />
+                <!-- <span class="credit">by @RenChain</span> -->
               </div>
-              <h3>Miu</h3>
-              <div class="social-links">
-                <a href="#">X</a>
-                <a href="#">IG</a>
-                <a href="#">Weibo</a>
+              <div class="art-card">
+                <img src="../img/Sonya.jpg" alt="" />
+                <!-- <span class="credit">by @RenChain</span> -->
               </div>
-              <p>
-                Miu nổi bật với rap sắc sảo và visual ấn tượng, thu hút ánh nhìn
-                fan mỗi lần xuất hiện.
-              </p>
             </div>
+
+            <button class="view-more">↗ Truy cập trang</button>
+          </div>
+
+          <!-- CENTER -->
+          <div class="center">
+            <h3>Series</h3>
+
+            <div class="search-list">
+              <div class="search-item active">
+                <a href="#" target="_blank" rel="noopener noreferrer"
+                  >🔍 Affair the series</a
+                >
+              </div>
+              <div class="search-item">
+                <a href="#" target="_blank" rel="noopener noreferrer"
+                  >🔍 Harmony Secret</a
+                >
+              </div>
+              <div class="search-item">🔍 Updating</div>
+            </div>
+          </div>
+
+          <!-- RIGHT -->
+          <div class="right">
+            <div class="person-item">
+              <div class="avatar">
+                <img src="../img/Sonya.jpg" alt="" />
+                <!-- <span class="close">×</span> -->
+              </div>
+
+              <div class="info-card">
+                <h4>Lookmhee</h4>
+                <p>Cryo is one of the seven elements...</p>
+
+                <div class="social">
+                  <a href="#" target="_blank">X</a>
+                  <a href="#" target="_blank">IG</a>
+                  <a href="#" target="_blank">Weibo</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="person-item">
+              <div class="avatar">
+                <img src="../img/Sonya.jpg" alt="" />
+                <!-- <span class="close">×</span> -->
+              </div>
+
+              <div class="info-card">
+                <h4>Sonya</h4>
+                <p>Sumeru is one of the seven regions...</p>
+
+                <div class="social">
+                  <a href="#" target="_blank">X</a>
+                  <a href="#" target="_blank">IG</a>
+                  <a href="#" target="_blank">Weibo</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- ===== SECTION ===== -->
+        <section class="ui-section" id="lenamiu">
+          <!-- LEFT -->
+          <div class="left">
+            <div class="title">
+              <h3>LMSY</h3>
+              <span>›</span>
+            </div>
+
+            <div class="artwork-row">
+              <div class="art-card">
+                <img src="../img/Sonya.jpg" alt="" />
+                <!-- <span class="credit">by @RenChain</span> -->
+              </div>
+              <div class="art-card">
+                <img src="../img/Sonya.jpg" alt="" />
+                <!-- <span class="credit">by @RenChain</span> -->
+              </div>
+            </div>
+
+            <button class="view-more">↗ Truy cập trang</button>
+          </div>
+
+          <!-- CENTER -->
+          <div class="center">
+            <h3>Series</h3>
+
+            <div class="search-list">
+              <div class="search-item active">
+                <a href="#" target="_blank" rel="noopener noreferrer"
+                  >🔍 Affair the series</a
+                >
+              </div>
+              <div class="search-item">
+                <a href="#" target="_blank" rel="noopener noreferrer"
+                  >🔍 Harmony Secret</a
+                >
+              </div>
+              <div class="search-item">🔍 Updating</div>
+            </div>
+          </div>
+
+          <!-- RIGHT -->
+          <div class="right">
+            <div class="person-item">
+              <div class="avatar">
+                <img src="../img/Sonya.jpg" alt="" />
+                <!-- <span class="close">×</span> -->
+              </div>
+
+              <div class="info-card">
+                <h4>Lookmhee</h4>
+                <p>Cryo is one of the seven elements...</p>
+
+                <div class="social">
+                  <a href="#" target="_blank">X</a>
+                  <a href="#" target="_blank">IG</a>
+                  <a href="#" target="_blank">Weibo</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="person-item">
+              <div class="avatar">
+                <img src="../img/Sonya.jpg" alt="" />
+                <!-- <span class="close">×</span> -->
+              </div>
+
+              <div class="info-card">
+                <h4>Sonya</h4>
+                <p>Sumeru is one of the seven regions...</p>
+
+                <div class="social">
+                  <a href="#" target="_blank">X</a>
+                  <a href="#" target="_blank">IG</a>
+                  <a href="#" target="_blank">Weibo</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <footer class="footer-dark">
+      <div class="footer-container">
+        <!-- LEFT -->
+        <div class="footer-col">
+          <div class="footer-item">
+            <span class="footer-icon">📍</span>
+            <div>
+              <strong>Hồ Chí Minh</strong><br />
+              Việt Nam
+            </div>
+          </div>
+
+          <div class="footer-item">
+            <span class="footer-icon">📞</span>
+            <div>Catch me if u can</div>
+          </div>
+
+          <div class="footer-item">
+            <span class="footer-icon">✉️</span>
+            <a href="mailto:mystthn@gamil.com">Email</a>
           </div>
         </div>
 
-        <!-- Bộ 2 -->
-        <div class="series-row">
-          <div class="series-poster">
-            <img src="https://i.pravatar.cc/300?img=20" alt="GinJay Poster" />
-            <h2>GinJay</h2>
-          </div>
-          <div class="series-idols">
-            <div class="idol-card">
-              <div class="idol-avatar">
-                <img src="https://i.pravatar.cc/150?img=21" alt="Gin" />
-              </div>
-              <h3>Gin</h3>
-              <div class="social-links">
-                <a href="#">X</a>
-                <a href="#">IG</a>
-                <a href="#">Weibo</a>
-              </div>
-              <p>Gin giữ vai trò trưởng nhóm, dẫn dắt các thành viên.</p>
-            </div>
+        <!-- RIGHT -->
+        <div class="footer-col">
+          <h4>Một chút về nông dân</h4>
+          <p>
+            Web lỏ nhà trồng, chỉ để đu OTPs vui vẻ<br />
+            Đánh giá kém, tổn thương lắm<br />
+            Nông dân này đu nhiều nhà
+          </p>
 
-            <div class="idol-card">
-              <div class="idol-avatar">
-                <img src="https://i.pravatar.cc/150?img=22" alt="Jay" />
-              </div>
-              <h3>Jay</h3>
-              <div class="social-links">
-                <a href="#">X</a>
-                <a href="#">IG</a>
-                <a href="#">Weibo</a>
-              </div>
-              <p>Jay nhảy đẹp và rap linh hoạt, năng lượng chính của series.</p>
-            </div>
+          <div class="footer-socials">
+            <a href="#">Facebook</a>
+            <a href="#">Instagram</a>
+            <a href="#">Twitter </a>
+            <a href="#">Threads</a>
           </div>
         </div>
       </div>
-    </div>
+    </footer>
+    <script src="../js/tabinfo.js"></script>
+    <script src="../js/header.js"></script>
   </body>
 </html>
